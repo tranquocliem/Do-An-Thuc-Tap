@@ -1,0 +1,61 @@
+@baseURL = http://localhost:8000/api
+
+# Account
+
+# @name Register
+POST {{baseURL}}/account/register
+Content-Type: application/json
+
+{   "email":"test@example.com",
+    "username":"tranquocliem",
+    "fullname":"Trần Quốc Liêm",
+    "website":"https://github.com/tranquocliem",
+    "phone":"0782872822",
+    "story":"Xin chào các bạn đã đến với trang cá nhân của mình",
+    "password":"123456"
+}
+
+###
+
+# @name Login
+POST {{baseURL}}/account/login
+Content-Type: application/json
+
+{
+    "username":"tranquocliem",
+    "password":"123456"
+}
+
+###
+
+# @name Logout
+GET {{baseURL}}/account/logout
+
+###
+
+GET {{baseURL}}/account/getUser?username=tranquocliem
+
+###
+
+# @name SearchUser
+GET {{baseURL}}/account/searchUser?username=quocliem
+
+###
+
+# @name Authenticated
+GET {{baseURL}}/account/authenticated
+
+###
+
+# Recruiment
+
+# @name getRecruitment
+POST {{baseURL}}/recruitment/getRecruitment
+Content-Type: application/json
+
+{
+    "skip":0
+}
+
+###
+

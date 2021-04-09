@@ -1,0 +1,54 @@
+.login-page form {
+  transition: 0.5s;
+  animation: animationLogin 1s ease-in-out;
+}
+
+.form-register {
+  max-width: 450px !important;
+}
+
+@keyframes animationLogin {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.gender .text-select-radio {
+  color: rgba(0, 0, 0, 0.664);
+  font-weight: bold;
+}
+
+.onVali {
+  color: rgb(92, 8, 8) !important;
+  font-weight: bold;
+  animation: valiAnimation 1s;
+  transition: 0.5s;
+}
+
+.offVali {
+  padding-top: 0px;
+  display: none;
+  animation: valiAnimation 1s;
+  transition: 0.2s;
+  /* visibility: hidden; */
+}
+
+.pd-top {
+  padding-top: 25px !important;
+}
+
+.pd-bt {
+  padding-top: 15px !important;
+}
+
+@keyframes valiAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
