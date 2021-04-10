@@ -1,9 +1,10 @@
 import React from "react";
 import Avatar from "../Avatar/Avatar";
 import ImgLoading from "../../img/loading.gif";
+import EditProfile from "./EditProfile";
+import FollowBtn from "./FollowBtn";
 
 function Info(props) {
-  console.log(props.user);
   if (props.user && !props.loading) {
     return (
       <>
@@ -16,8 +17,18 @@ function Info(props) {
                 <h2>{props.user.username}</h2>
 
                 {props.edit ? (
-                  <button className="btn btn-info">Chỉnh sửa cá nhân</button>
-                ) : null}
+                  <button
+                    className="btn btn-info"
+                    type="button"
+                    data-mdb-toggle="modal"
+                    data-mdb-target="#exampleModal"
+                    data-mdb-whatever="@mdo"
+                  >
+                    Chỉnh sửa cá nhân
+                  </button>
+                ) : (
+                  <FollowBtn />
+                )}
               </div>
               <div className="follow-btn">
                 <span className="mr-5">
@@ -45,12 +56,23 @@ function Info(props) {
               </a>
               <p>{props.user.story}</p>
             </div>
+
+            {<EditProfile user={props.user} />}
+
+            {/* {onEdit && <EditProfile user={props.user} setOnEdit={setOnEdit} />} */}
           </div>
         </div>
       </>
     );
   } else {
-    return <img src={ImgLoading} alt="loading-info" />;
+    return (
+      <img
+        className="d-block mx-auto my-4"
+        draggable="false"
+        src={ImgLoading}
+        alt="loading-info"
+      />
+    );
   }
 }
 
