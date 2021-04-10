@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { checkImage } from "../../Shared/CheckImage";
+import { checkImage, uploadImage } from "../../Shared/CheckImage";
 import Toastify from "../Toastify/Toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MyToast } from "../Toastify/toast";
+import Loading from "../Loading/Loading";
+import { updateUser } from "../../Service/AccountService";
 
 function EditProfile(props) {
   const [userData, setUserData] = useState({
@@ -13,13 +16,16 @@ function EditProfile(props) {
     gender: "",
   });
 
+  const offModal = () => {
+    props.offModal();
+  };
+
   useEffect(() => {
     setUserData(props.user);
   }, [props.user]);
 
-  console.log(userData);
-
   const [avatar, setAvatar] = useState("");
+  const [pending, setPending] = useState(false);
 
   const changeAvatar = (e) => {
     const file = e.target.files[0];
@@ -43,18 +49,67 @@ function EditProfile(props) {
     setUserData({ ...userData, [name]: value });
   };
 
+  const updateProfile = async (id) => {
+    if (!userData.fullname) {
+      return MyToast("err", "Không bỏ trông họ và tên");
+    } else if (userData.fullname.length > 35) {
+      return MyToast("err", "Họ và tên quá dài");
+    } else if (userData.story.length > 200) {
+      return MyToast("err", "Tiểu sử dài quá");
+    }
+    try {
+      let media;
+      setPending(true);
+      if (avatar) media = await uploadImage([avatar]);
+      const variable = {
+        fullname: userData.fullname,
+        phone: userData.phone,
+        website: userData.website,
+        story: userData.story,
+        gender: userData.gender,
+        avatar: avatar ? media[0].url : props.user.avatar,
+      };
+      const data = await updateUser(variable);
+      const { message } = data;
+      setTimeout(
+        () => {
+          if (message.msgError) {
+            MyToast("err", `${message.msgBody}`);
+          }
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          props.updateProfile(id);
+          MyToast("succ", `${message.msgBody}`);
+          setPending(false);
+        },
+        avatar ? 1000 : 2000
+      );
+    } catch (error) {
+      return MyToast("err", `${error}`);
+    }
+  };
+
   return (
     <>
       <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
+      <div
+        className="pending no-select"
+        style={pending ? { display: "flex" } : { display: "none" }}
+      >
+        <div className="spinner-loading font-weight-bold">
+          <Loading bg="none" />
+        </div>
+      </div>
       <div>
+        {props.onModal ? (
+          <div className="my-show" onClick={offModal}></div>
+        ) : null}
         <div
-          className="modal fade"
-          id="exampleModal"
-          tabIndex={-1}
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
+          className="my-modal"
+          style={
+            !props.onModal ? { display: "none", overflow: "hidden" } : null
+          }
         >
-          <div className="modal-dialog">
+          <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="exampleModalLabel">
@@ -63,8 +118,7 @@ function EditProfile(props) {
                 <button
                   type="button"
                   className="btn-close"
-                  data-mdb-dismiss="modal"
-                  aria-label="Close"
+                  onClick={offModal}
                 />
               </div>
               <div className="modal-body">
@@ -80,6 +134,7 @@ function EditProfile(props) {
                       <i className="fas fa-camera"></i>
                       <p>Thay đổi</p>
                       <input
+                        title="Thay đổi ảnh"
                         type="file"
                         name="file"
                         id="file-up"
@@ -170,30 +225,12 @@ function EditProfile(props) {
                       id="gender"
                       className="custom-select text-capitalize"
                       onChange={onChange}
+                      value={userData.gender}
                     >
-                      {userData.gender === "Nam" ? (
-                        <option value="Nam" selected>
-                          Nam
-                        </option>
-                      ) : (
-                        <option value="Nam">Nam</option>
-                      )}
-                      {userData.gender === "Nữ" ? (
-                        <option value="Nữ" selected>
-                          Nữ
-                        </option>
-                      ) : (
-                        <option value="Nữ">Nữ</option>
-                      )}
-                      {userData.gender === "Không muốn tiết lộ" ? (
-                        <option value="Không muốn tiết lộ" selected>
-                          Không muốn tiết lộ
-                        </option>
-                      ) : (
-                        <option value="Không muốn tiết lộ">
-                          Không muốn tiết lộ
-                        </option>
-                      )}
+                      <option value="Nam">Nam</option>
+
+                      <option value="Nữ">Nữ</option>
+
                       <option value="Không muốn tiết lộ">
                         Không muốn tiết lộ
                       </option>
@@ -205,11 +242,15 @@ function EditProfile(props) {
                 <button
                   type="button"
                   className="btn btn-danger"
-                  data-mdb-dismiss="modal"
+                  onClick={offModal}
                 >
                   Close
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button
+                  onClick={updateProfile}
+                  type="submit"
+                  className="btn btn-primary"
+                >
                   Lưu
                 </button>
               </div>

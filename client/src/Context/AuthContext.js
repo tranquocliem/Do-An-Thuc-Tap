@@ -22,7 +22,7 @@ const Auth = ({ children }) => {
   return (
     <div>
       {!isLoaded ? (
-        <Loading />
+        <Loading bg="black" />
       ) : (
         <AuthContext.Provider
           value={{ user, setUser, isAuthenticated, setIsAuthenticated }}

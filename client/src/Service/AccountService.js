@@ -59,6 +59,24 @@ export const getUser = (username) => {
           msgBody: "Lỗi!!!",
           msgError: true,
         },
+        err,
+      };
+    });
+};
+
+export const updateUser = (variable) => {
+  return axios
+    .patch("/api/account/updateUser", variable)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        err,
       };
     });
 };

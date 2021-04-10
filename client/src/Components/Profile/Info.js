@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "../Avatar/Avatar";
 import ImgLoading from "../../img/loading.gif";
 import EditProfile from "./EditProfile";
 import FollowBtn from "./FollowBtn";
 
 function Info(props) {
+  const [onModal, setOnModal] = useState(false);
+  const offModal = () => {
+    setOnModal(false);
+  };
+  const updateProfile = (id) => {
+    props.updateProfile(id);
+    setOnModal(false);
+  };
   if (props.user && !props.loading) {
     return (
       <>
@@ -20,11 +28,9 @@ function Info(props) {
                   <button
                     className="btn btn-info"
                     type="button"
-                    data-mdb-toggle="modal"
-                    data-mdb-target="#exampleModal"
-                    data-mdb-whatever="@mdo"
+                    onClick={() => setOnModal(true)}
                   >
-                    Chỉnh sửa cá nhân
+                    Chỉnh sửa
                   </button>
                 ) : (
                   <FollowBtn />
@@ -57,9 +63,14 @@ function Info(props) {
               <p>{props.user.story}</p>
             </div>
 
-            {<EditProfile user={props.user} />}
-
-            {/* {onEdit && <EditProfile user={props.user} setOnEdit={setOnEdit} />} */}
+            {
+              <EditProfile
+                onModal={onModal}
+                offModal={offModal}
+                updateProfile={updateProfile}
+                user={props.user}
+              />
+            }
           </div>
         </div>
       </>

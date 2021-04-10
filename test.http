@@ -33,7 +33,23 @@ GET {{baseURL}}/account/logout
 
 ###
 
+# @name GetUser
 GET {{baseURL}}/account/getUser?username=tranquocliem
+
+###
+
+# @name UpdateUser
+PATCH  {{baseURL}}/account/updateUser
+Content-Type: application/json
+
+{
+    "avatar":"https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png", 
+    "fullname":"Trần Quốc Liêm", 
+    "phone":"0782872822", 
+    "story":"Xin chào các bạn đã đến với trang cá nhân của mình", 
+    "website":"https://github.com/tranquocliem", 
+    "gender":"Nam"
+}
 
 ###
 

@@ -1,10 +1,16 @@
 import React from "react";
 import "./loading.css";
 
-function Loading() {
+function Loading(props) {
   return (
     <>
-      <div className="loading">
+      <div
+        className="loading"
+        style={{
+          position: `${props.position}`,
+          backgroundColor: `${props.bg}`,
+        }}
+      >
         <svg>
           <g>
             <path d="M 50,100 A 1,1 0 0 1 50,0" />

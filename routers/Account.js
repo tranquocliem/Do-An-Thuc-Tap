@@ -344,7 +344,7 @@ accRouter.get(
   }
 );
 
-//Get Thông Tin User
+//Get thông tin User
 accRouter.get(
   "/getUser",
   passport.authenticate("jwt", { session: false }),
@@ -377,6 +377,41 @@ accRouter.get(
   }
 );
 
+//Update thông tin user
+accRouter.patch(
+  "/updateUser",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { avatar, fullname, phone, story, website, gender } = req.body;
+      if (!fullname) {
+        return res
+          .status(400)
+          .json({ message: { msgBody: "Không để trống họ và tên" } });
+      }
+
+      await Account.findOneAndUpdate(
+        { _id: req.user._id },
+        { avatar, fullname, phone, story, website, gender }
+      );
+
+      res.status(200).json({
+        message: {
+          msgBody: "Cập nhật thông tin thành công",
+          msgError: false,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: {
+          msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
 //gửi link qua mail để đặt lại mật khẩu đã quên
 accRouter.post("/forgetPass", (req, res) => {
   const { email } = req.body;
