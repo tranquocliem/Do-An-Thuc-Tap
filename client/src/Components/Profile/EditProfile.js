@@ -18,6 +18,7 @@ function EditProfile(props) {
 
   const offModal = () => {
     props.offModal();
+    setUserData(props.user);
   };
 
   useEffect(() => {
@@ -87,7 +88,6 @@ function EditProfile(props) {
       return MyToast("err", `${error}`);
     }
   };
-
   return (
     <>
       <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
@@ -244,7 +244,7 @@ function EditProfile(props) {
                   className="btn btn-danger"
                   onClick={offModal}
                 >
-                  Close
+                  Tắt
                 </button>
                 <button
                   onClick={updateProfile}

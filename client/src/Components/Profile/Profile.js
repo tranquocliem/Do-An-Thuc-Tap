@@ -51,11 +51,15 @@ function Profile() {
     return (
       <>
         <MyHelmet
-          title={`${User.fullname} (@${User.username})`}
+          title={
+            User.fullname ? `${User.fullname} (@${User.username})` : "Instagirl"
+          }
           description={`Trang cá nhân của ${User.fullname}`}
         />
         <div className="profile">
           <Info
+            username={user.username}
+            usernameParam={username}
             updateProfile={updateProfile}
             user={User}
             edit={edit}

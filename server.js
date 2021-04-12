@@ -13,11 +13,9 @@ require("dotenv").config({
 
 app.use(cors());
 app.use(cookieParser());
-app.use(bodyParser.json());
 app.use(express.json());
 
 //kết nối với database
-
 // const db = require("./configs/key").mongoURI;
 const db = "mongodb://localhost:27017/DATT";
 
@@ -32,6 +30,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/account", require("./routers/Account"));
+app.use("/api/follow", require("./routers/Follow"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("./client/build"));

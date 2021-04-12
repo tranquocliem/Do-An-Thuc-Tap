@@ -6,12 +6,17 @@ import FollowBtn from "./FollowBtn";
 
 function Info(props) {
   const [onModal, setOnModal] = useState(false);
+  const [btnFollow, setBtnFollow] = useState(false);
   const offModal = () => {
     setOnModal(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
   const updateProfile = (id) => {
     props.updateProfile(id);
     setOnModal(false);
+  };
+  const onFollowAndUnFollow = (btnFollow) => {
+    setBtnFollow(btnFollow);
   };
   if (props.user && !props.loading) {
     return (
@@ -33,18 +38,26 @@ function Info(props) {
                     Chỉnh sửa
                   </button>
                 ) : (
-                  <FollowBtn />
+                  <FollowBtn onFollowAndUnFollow={onFollowAndUnFollow} />
                 )}
               </div>
-              <div className="follow-btn">
-                <span className="mr-5">
+              <div
+                className="follow-btn no-select"
+                style={{
+                  pointerEvents:
+                    props.username === props.usernameParam ? "unset" : "none",
+                }}
+              >
+                <span className="mr-5 ">
                   {props.user.followers
-                    ? props.user.followers.length + " Follower"
+                    ? btnFollow
+                      ? props.user.followers.length + 1 + " Người theo dõi"
+                      : props.user.followers.length + " Người theo dõi"
                     : null}
                 </span>
                 <span className="ml-5">
                   {props.user.followers
-                    ? props.user.following.length + " Following"
+                    ? "Đang theo dõi " + props.user.following.length
                     : null}
                 </span>
               </div>
@@ -63,14 +76,14 @@ function Info(props) {
               <p>{props.user.story}</p>
             </div>
 
-            {
+            {props.usernameParam === props.username ? (
               <EditProfile
                 onModal={onModal}
                 offModal={offModal}
                 updateProfile={updateProfile}
                 user={props.user}
               />
-            }
+            ) : null}
           </div>
         </div>
       </>

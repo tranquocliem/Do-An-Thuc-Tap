@@ -63,15 +63,21 @@ GET {{baseURL}}/account/authenticated
 
 ###
 
-# Recruiment
-
-# @name getRecruitment
-POST {{baseURL}}/recruitment/getRecruitment
+# @name Follow
+POST {{baseURL}}/follow/following
 Content-Type: application/json
 
 {
-    "skip":0
+    "followers":"60702fd2d026de2354604fef"
 }
 
 ###
+
+# @name UnFollow
+DELETE  {{baseURL}}/follow/unfollow
+Content-Type: application/json
+
+{
+    "followers":"60702fd2d026de2354604fef"
+}
 

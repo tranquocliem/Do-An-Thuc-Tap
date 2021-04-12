@@ -23,6 +23,14 @@ const AccountSchema = new mongoose.Schema(
       default:
         "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
     },
+    // avatar: {
+    //   url: {
+    //     type: String,
+    //     default:
+    //       "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
+    //   },
+    //   public_id: { type: String, default: "" },
+    // },
     website: {
       type: String,
       default: "",
