@@ -81,6 +81,23 @@ export const updateUser = (variable) => {
     });
 };
 
+export const destroyAvatar = (public_id) => {
+  return axios
+    .post("/api/account/destroyAvatar", public_id)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
 export const searchUser = (username) => {
   return axios
     .get(`/api/account/searchUser?username=${username}`)

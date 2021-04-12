@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MyToast } from "../Toastify/toast";
 import Loading from "../Loading/Loading";
-import { updateUser } from "../../Service/AccountService";
+import { destroyAvatar, updateUser } from "../../Service/AccountService";
 
 function EditProfile(props) {
   const [userData, setUserData] = useState({
@@ -61,7 +61,10 @@ function EditProfile(props) {
     try {
       let media;
       setPending(true);
-      if (avatar) media = await uploadImage([avatar]);
+      if (avatar) {
+        media = await uploadImage([avatar]);
+        destroyAvatar({ public_id: props.user.public_id });
+      }
       const variable = {
         fullname: userData.fullname,
         phone: userData.phone,
@@ -69,6 +72,7 @@ function EditProfile(props) {
         story: userData.story,
         gender: userData.gender,
         avatar: avatar ? media[0].url : props.user.avatar,
+        public_id: avatar ? media[0].public_id : props.user.avatar,
       };
       const data = await updateUser(variable);
       const { message } = data;

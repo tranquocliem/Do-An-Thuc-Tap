@@ -53,6 +53,16 @@ Content-Type: application/json
 
 ###
 
+# @name DeleteAvatar
+POST {{baseURL}}/account/destroyAvatar
+Content-Type: application/json
+
+{
+    "public_id":"instagirl/br4brywwib0sp8nlxdxw"
+}
+
+###
+
 # @name SearchUser
 GET {{baseURL}}/account/searchUser?username=quocliem
 

@@ -11,6 +11,13 @@ const nodemailer = require("nodemailer");
 const NodeRSA = require("node-rsa");
 const fs = require("fs");
 const path = require("path");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 // //gửi mail để xác thực
 // accRouter.post("/sendMail", async (req, res) => {
@@ -383,7 +390,15 @@ accRouter.patch(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const { avatar, fullname, phone, story, website, gender } = req.body;
+      const {
+        avatar,
+        fullname,
+        phone,
+        story,
+        website,
+        gender,
+        public_id,
+      } = req.body;
       if (!fullname) {
         return res
           .status(400)
@@ -392,7 +407,7 @@ accRouter.patch(
 
       await Account.findOneAndUpdate(
         { _id: req.user._id },
-        { avatar, fullname, phone, story, website, gender }
+        { avatar, fullname, phone, story, website, gender, public_id }
       );
 
       res.status(200).json({
@@ -412,6 +427,47 @@ accRouter.patch(
     }
   }
 );
+
+//Xoá ảnh cloudinary
+accRouter.post(
+  "/destroyAvatar",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    try {
+      const { public_id } = req.user;
+      if (!public_id) {
+        return res.status(203).json({
+          success: false,
+          message: {
+            msgBody: "Hình ảnh không tồn tại",
+            msgError: true,
+          },
+        });
+      }
+      cloudinary.uploader.destroy(public_id, async (err, result) => {
+        if (err) throw err;
+
+        res.status(200).json({
+          success: true,
+          message: {
+            msgBody: "Xoá thành công",
+            msgError: false,
+          },
+        });
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
 //gửi link qua mail để đặt lại mật khẩu đã quên
 accRouter.post("/forgetPass", (req, res) => {
   const { email } = req.body;
@@ -788,6 +844,7 @@ accRouter.get(
       username,
       gender,
       avatar,
+      public_id,
       phone,
       website,
       story,
@@ -804,6 +861,7 @@ accRouter.get(
         username,
         gender,
         avatar,
+        public_id,
         phone,
         website,
         story,

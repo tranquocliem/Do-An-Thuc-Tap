@@ -73,7 +73,12 @@ function Info(props) {
               >
                 {props.user.website}
               </a>
-              <p>{props.user.story}</p>
+              {props.user.story &&
+                props.user.story.split("\n").map((s, i) => (
+                  <p style={{ marginBottom: 5 }} key={i}>
+                    {s}
+                  </p>
+                ))}
             </div>
 
             {props.usernameParam === props.username ? (
