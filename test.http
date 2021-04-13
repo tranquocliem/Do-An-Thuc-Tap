@@ -22,7 +22,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"tranquocliem",
+    "username":"tranhuunghia",
     "password":"123456"
 }
 
@@ -54,12 +54,7 @@ Content-Type: application/json
 ###
 
 # @name DeleteAvatar
-POST {{baseURL}}/account/destroyAvatar
-Content-Type: application/json
-
-{
-    "public_id":"instagirl/br4brywwib0sp8nlxdxw"
-}
+GET  {{baseURL}}/account/destroyAvatar
 
 ###
 
@@ -78,16 +73,45 @@ POST {{baseURL}}/follow/following
 Content-Type: application/json
 
 {
-    "followers":"60702fd2d026de2354604fef"
+    "followers":"60744b85dd939243f4120031"
 }
 
 ###
 
 # @name UnFollow
-DELETE  {{baseURL}}/follow/unfollow
+DELETE {{baseURL}}/follow/unfollow
 Content-Type: application/json
 
 {
-    "followers":"60702fd2d026de2354604fef"
+    "followers":"60744b6bdd939243f4120030"
 }
 
+###
+
+# @name GetMyFollowing
+GET {{baseURL}}/follow/getMyFollowing
+
+###
+
+# @name GetMyFollowers
+GET {{baseURL}}/follow/getMyFollowers
+
+###
+
+# @name GetFollowing
+POST  {{baseURL}}/follow/getFollowing
+Content-Type: application/json
+
+{
+    "id":"60744bdadd939243f4120032"
+}
+
+###
+
+# @name GetFollowers
+POST  {{baseURL}}/follow/getFollowers
+Content-Type: application/json
+
+{
+    "id":"60744bdadd939243f4120032"
+}

@@ -81,9 +81,9 @@ export const updateUser = (variable) => {
     });
 };
 
-export const destroyAvatar = (public_id) => {
+export const destroyAvatar = () => {
   return axios
-    .post("/api/account/destroyAvatar", public_id)
+    .get("/api/account/destroyAvatar")
     .then((res) => {
       return res.data;
     })

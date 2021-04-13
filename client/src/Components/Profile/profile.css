@@ -177,3 +177,20 @@
   height: 100vh;
   background-color: #000;
 }
+
+/* Avatar Full */
+
+.full-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.full-avatar img {
+  max-height: 700px;
+  min-height: 700px;
+}
+
+.close-avatar {
+  height: fit-content;
+}

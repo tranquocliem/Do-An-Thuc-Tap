@@ -16,17 +16,18 @@ function EditProfile(props) {
     gender: "",
   });
 
-  const offModal = () => {
-    props.offModal();
-    setUserData(props.user);
-  };
-
   useEffect(() => {
     setUserData(props.user);
   }, [props.user]);
 
   const [avatar, setAvatar] = useState("");
   const [pending, setPending] = useState(false);
+
+  const offModal = () => {
+    props.offModal();
+    setUserData(props.user);
+    setAvatar("");
+  };
 
   const changeAvatar = (e) => {
     const file = e.target.files[0];
@@ -63,7 +64,8 @@ function EditProfile(props) {
       setPending(true);
       if (avatar) {
         media = await uploadImage([avatar]);
-        destroyAvatar({ public_id: props.user.public_id });
+        // destroyAvatar({ public_id: props.user.public_id });
+        destroyAvatar();
       }
       const variable = {
         fullname: userData.fullname,
@@ -72,7 +74,7 @@ function EditProfile(props) {
         story: userData.story,
         gender: userData.gender,
         avatar: avatar ? media[0].url : props.user.avatar,
-        public_id: avatar ? media[0].public_id : props.user.avatar,
+        public_id: avatar ? media[0].public_id : 0,
       };
       const data = await updateUser(variable);
       const { message } = data;

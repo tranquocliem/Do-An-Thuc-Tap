@@ -359,7 +359,7 @@ accRouter.get(
     try {
       const user = await Account.findOne({
         username: req.query.username,
-      }).select("-password -resetLink");
+      }).select("-password -resetLink -public_id");
 
       if (user) {
         return res.status(200).json({ user });
@@ -405,10 +405,17 @@ accRouter.patch(
           .json({ message: { msgBody: "Không để trống họ và tên" } });
       }
 
-      await Account.findOneAndUpdate(
-        { _id: req.user._id },
-        { avatar, fullname, phone, story, website, gender, public_id }
-      );
+      if (public_id === 0) {
+        await Account.findOneAndUpdate(
+          { _id: req.user._id },
+          { avatar, fullname, phone, story, website, gender }
+        );
+      } else {
+        await Account.findOneAndUpdate(
+          { _id: req.user._id },
+          { avatar, fullname, phone, story, website, gender, public_id }
+        );
+      }
 
       res.status(200).json({
         message: {
@@ -429,12 +436,14 @@ accRouter.patch(
 );
 
 //Xoá ảnh cloudinary
-accRouter.post(
+accRouter.get(
   "/destroyAvatar",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
+  async (req, res) => {
     try {
-      const { public_id } = req.user;
+      const { _id } = req.user;
+      const user = await Account.findOne({ _id });
+      const public_id = user.public_id;
       if (!public_id) {
         return res.status(203).json({
           success: false,
@@ -844,7 +853,6 @@ accRouter.get(
       username,
       gender,
       avatar,
-      public_id,
       phone,
       website,
       story,
@@ -861,7 +869,6 @@ accRouter.get(
         username,
         gender,
         avatar,
-        public_id,
         phone,
         website,
         story,

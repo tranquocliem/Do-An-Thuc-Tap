@@ -70,7 +70,7 @@ followRouter.post(
 );
 
 // UnFollow
-followRouter.delete(
+followRouter.post(
   "/unfollow",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
@@ -98,6 +98,94 @@ followRouter.delete(
       res.status(200).json({ success: true });
     } catch (error) {
       res.status(400).json({ success: false, error });
+    }
+  }
+);
+
+//Get những ai tôi đã theo dõi
+followRouter.get(
+  "/getMyFollowing",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const followings = await Follow.find({
+        following: req.user._id,
+      }).populate("followers", "username fullname avatar");
+      res.status(200).json({
+        success: true,
+        total: followings.length,
+        followings,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+      });
+    }
+  }
+);
+
+//Get những ai đã theo dõi tôi
+followRouter.get(
+  "/getMyFollowers",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const followers = await Follow.find({
+        followers: req.user._id,
+      }).populate("following", "username fullname avatar");
+      res.status(200).json({
+        success: true,
+        total: followers.length,
+        followers,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+      });
+    }
+  }
+);
+
+//Get Followers
+followRouter.post(
+  "/getFollowers",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const follow = await Follow.find({
+        followers: req.body.id,
+      }).populate("following", "username fullname avatar");
+      res.status(200).json({
+        success: true,
+        total: follow.length,
+        follow,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+      });
+    }
+  }
+);
+
+//Get Following
+followRouter.post(
+  "/getFollowing",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const follow = await Follow.find({
+        following: req.body.id,
+      }).populate("followers", "username fullname avatar");
+      res.status(200).json({
+        success: true,
+        total: follow.length,
+        follow,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+      });
     }
   }
 );
