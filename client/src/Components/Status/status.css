@@ -20,10 +20,6 @@
   background: #ddd;
 }
 
-.modal-translate {
-  transform: translateY(17%);
-}
-
 .close-status {
   background: #dddddd9a;
   color: #555;
@@ -48,6 +44,8 @@
 
 .modal-body .input-images i {
   font-size: 2rem;
+  margin-left: 25px;
+  margin-right: 25px;
   cursor: pointer;
 }
 
@@ -62,4 +60,94 @@
   top: 0;
   left: 0;
   opacity: 0;
+}
+
+.modal-body .show-images {
+  max-height: 388px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  place-items: center;
+  /* padding: 10px 0; */
+}
+
+.modal-body .show-images #file-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body .show-images #file-img img {
+  display: block;
+  object-fit: cover;
+  object-position: top;
+  width: 100%;
+  height: 100%;
+  max-height: 125px;
+  min-height: 125px;
+}
+
+.modal-body .show-images #file-img span {
+  position: absolute;
+  /* top: 1px;
+  right: 1px; */
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  /* background: white;
+  color: crimson; */
+  background: rgba(85, 85, 85, 0.521);
+  padding: 3px 7px;
+  /* border: 1px solid crimson;
+  border-radius: 50%; */
+  font-size: 10px;
+  font-weight: bolder;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.modal-body .show-images #file-img span p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: rgb(235, 13, 57);
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: 900;
+  z-index: 5;
+}
+
+.modal-body .show-images #file-img:hover span {
+  opacity: 1;
+}
+
+/* .modal-body .show-images #file-img:hover span:hover {
+  background: crimson;
+  color: white;
+} */
+
+.modal-body .camera span {
+  position: absolute;
+  top: -22px;
+  right: 3px;
+  color: rgba(220, 20, 60, 0.623);
+  font-size: 3rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-body .camera span:hover {
+  color: crimson;
+}
+
+.loading-camera {
+  text-align: center;
+  color: rgba(0, 0, 0, 0.534);
+  font-weight: bold;
+  font-size: 2rem;
 }
