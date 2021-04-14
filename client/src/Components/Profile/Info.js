@@ -86,7 +86,7 @@ function Info(props) {
 
         <div className="info">
           <div className="info-container">
-            <div onClick={fullScreenAvatar}>
+            <div className="avatar-info" onClick={fullScreenAvatar}>
               <Avatar user={props.user} size="super-avatar" />
             </div>
             <div className="info-content">

@@ -1,0 +1,65 @@
+.status {
+  background: white;
+  box-shadow: 0 0 5px #ddd;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.status .status-Btn {
+  background: #f1f1f1;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  color: #555;
+  padding: 0 15px;
+  text-align: left;
+  margin: 0 5px;
+}
+
+.status .status-Btn:hover {
+  background: #ddd;
+}
+
+.modal-translate {
+  transform: translateY(17%);
+}
+
+.close-status {
+  background: #dddddd9a;
+  color: #555;
+  font-weight: bold;
+  font-size: 1.3rem;
+  position: absolute;
+  right: 0;
+  transform: translate(-35%, 35%);
+  opacity: 0.6;
+}
+
+.modal-body .textarea-content {
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+.modal-body .input-images {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-body .input-images i {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.modal-body .input-images .file-upload {
+  overflow: hidden;
+  margin: 0 10px;
+  position: relative;
+}
+
+.modal-body .input-images .file-upload #file {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}

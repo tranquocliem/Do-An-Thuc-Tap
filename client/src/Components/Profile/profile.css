@@ -179,6 +179,9 @@
 }
 
 /* Avatar Full */
+.avatar-info {
+  cursor: pointer;
+}
 
 .full-avatar {
   display: flex;
