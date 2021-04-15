@@ -64,7 +64,6 @@ function EditProfile(props) {
       setPending(true);
       if (avatar) {
         media = await uploadImage([avatar]);
-        // destroyAvatar({ public_id: props.user.public_id });
         destroyAvatar();
       }
       const variable = {

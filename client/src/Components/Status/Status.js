@@ -7,14 +7,20 @@ import { Link } from "react-router-dom";
 import Toastify from "../Toastify/Toastify";
 import { MyToast } from "../Toastify/toast";
 import "react-toastify/dist/ReactToastify.css";
-import Loading from "../../img/loading.gif";
+import LoadingImg from "../../img/loading.gif";
+import { createPost } from "../../Service/PostService";
+import Loading from "../Loading/Loading";
+import { uploadImage } from "../../Shared/CheckImage";
+import Emoji from "../Emoji/Emoji";
 
 function Status() {
   const { user } = useContext(AuthContext);
 
   const [onModal, setOnModal] = useState(false);
+
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
+  const [showEmoji, setShowEmoji] = useState(false);
 
   const [camera, setCamera] = useState(false);
   const cameraRef = useRef();
@@ -24,10 +30,13 @@ function Status() {
   const [reverse, setReverse] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
 
+  const [pending, setPending] = useState(false);
+
   let fulln = user.fullname ? user.fullname.split(" ") : [];
 
   const offOnModal = () => {
     setOnModal(!onModal);
+    setShowEmoji(false);
     setTimeout(() => {
       document.testInput && document.testInput.focus();
     }, 1);
@@ -119,9 +128,62 @@ function Status() {
     setReverse(!reverse);
   };
 
+  const addEmoji = (e) => {
+    let sym = e.unified.split("-");
+    let codesArray = [];
+    sym.forEach((el) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setContent(content + emoji);
+  };
+
+  const onOffshowEmoji = () => {
+    setShowEmoji(!showEmoji);
+  };
+
+  const resetModal = () => {
+    setOnModal(false);
+    setContent("");
+    setImages([]);
+    setShowEmoji(false);
+    setCamera(false);
+    setBtnStopCamera(false);
+    setShowCamera(false);
+    if (tracks) tracks.stop();
+  };
+
+  const onSubmit = async () => {
+    let media = [];
+    if (images.length <= 0) {
+      return MyToast("err", "Vui lòng đăng tải một tấm ảnh");
+    }
+    setPending(true);
+    try {
+      media = await uploadImage(images);
+      const variable = {
+        content,
+        images: media,
+      };
+      const data = await createPost(variable);
+      const { message } = data;
+      setPending(false);
+      resetModal();
+      MyToast("succ", `${message.msgBody}`);
+    } catch (error) {
+      return MyToast("err", `${error}`);
+    }
+  };
+
   return (
     <>
       <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
+      <div
+        className="pending no-select"
+        style={pending ? { display: "flex" } : { display: "none" }}
+      >
+        <div className="spinner-loading font-weight-bold">
+          <Loading bg="none" />
+        </div>
+      </div>
       <div className="status my-3 d-flex">
         <Link to={`/profile/${user.username}`}>
           <Avatar user={user} size="big-avatar" />
@@ -159,7 +221,7 @@ function Status() {
               </button>
               <div className="modal-body">
                 <form>
-                  <div className="form-group">
+                  <div className="form-group no-select">
                     <TextareaAutosize
                       ref={(textarea) => {
                         document.testInput = textarea;
@@ -176,7 +238,17 @@ function Status() {
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                     />
+                    <span
+                      className="show-emoji"
+                      role="img"
+                      aria-labelledby=""
+                      onClick={onOffshowEmoji}
+                    >
+                      😊
+                    </span>
                   </div>
+
+                  {showEmoji && <Emoji addEmoji={addEmoji} />}
 
                   <div className="form-group show-images">
                     {images.map((img, i) => (
@@ -202,9 +274,9 @@ function Status() {
                     <div className="camera position-relative">
                       {!showCamera && (
                         <img
-                          src={Loading}
+                          src={LoadingImg}
                           alt="loading-camera"
-                          className="d-block mx-auto"
+                          className="d-block mx-auto mt-2"
                         />
                       )}
                       <video
@@ -217,6 +289,7 @@ function Status() {
                         ref={cameraRef}
                         width="100%"
                         height="100%"
+                        className="mt-2"
                       />
                       <canvas ref={canvasRef} style={{ display: "none" }} />
                       {btnStopCamera && (
@@ -266,9 +339,8 @@ function Status() {
               <div className="modal-footer">
                 <button
                   type="button"
-                  disabled
                   className="btn btn-dark w-100"
-                  onClick={offOnModal}
+                  onClick={onSubmit}
                 >
                   Đăng
                 </button>

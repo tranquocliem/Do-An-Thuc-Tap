@@ -133,8 +133,8 @@
 
 .modal-body .camera span {
   position: absolute;
-  top: -22px;
-  right: 3px;
+  top: -4%;
+  right: 0;
   color: rgba(220, 20, 60, 0.623);
   font-size: 3rem;
   font-weight: 900;
@@ -150,4 +150,17 @@
   color: rgba(0, 0, 0, 0.534);
   font-weight: bold;
   font-size: 2rem;
+}
+
+/* Emoji */
+.modal-body .show-emoji {
+  position: absolute;
+  right: 2px;
+  top: 18px;
+  opacity: 0.5;
+  z-index: 10;
+}
+
+.modal-body .show-emoji:hover {
+  opacity: 1;
 }

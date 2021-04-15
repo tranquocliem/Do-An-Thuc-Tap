@@ -3,7 +3,6 @@ const followRouter = express.Router();
 const passport = require("passport");
 const passportConfig = require("../configs/passport");
 const Account = require("../models/Account");
-const { findOneAndDelete } = require("../models/Follow");
 const Follow = require("../models/Follow");
 
 // Follow
