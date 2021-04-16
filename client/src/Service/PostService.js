@@ -16,3 +16,20 @@ export const createPost = (variable) => {
       };
     });
 };
+
+export const getPost = () => {
+  return axios
+    .get("/api/post/getPost")
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};

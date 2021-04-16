@@ -52,4 +52,38 @@ postRouter.post(
   }
 );
 
+// Get bài viết theo tài khoản và người tài khoản này đang theo dõi
+postRouter.get(
+  "/getPost",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { _id, following } = req.user;
+
+      const posts = await Post.find({ writer: [...following, _id] })
+        .sort("-createdAt")
+        .populate("writer", "username fullname avatar");
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Lấy bài viết thành công",
+          msgError: false,
+        },
+        total: posts.length,
+        posts,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lấy bài viết không thành công",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
 module.exports = postRouter;

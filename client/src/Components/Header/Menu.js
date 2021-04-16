@@ -35,7 +35,7 @@ function Menu() {
         </li>
         <li className="nav-item dropdown px-2">
           <span
-            className="nav-link dropdown-toggle avatar-header"
+            className="nav-link dropdown-toggle avatar-header no-select"
             id="navbarDropdown"
             role="button"
             data-toggle="dropdown"

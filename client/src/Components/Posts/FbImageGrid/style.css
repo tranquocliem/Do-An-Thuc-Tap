@@ -1,0 +1,152 @@
+.grid-container {
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.grid-container .col-lg-1,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-sm-1,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-xs-1,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.grid-container .container {
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+  width: 100% !important;
+}
+
+.grid-container .col-md-4 {
+  width: 33.33333333%;
+}
+
+.grid-container .border {
+  border: 2px solid white;
+  /* border-radius: 6px; */
+}
+
+.grid-container .background {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.height-one {
+  width: 100%;
+  padding-top: 100%;
+}
+
+.height-two {
+  width: 50%;
+  padding-top: 50%;
+}
+
+.height-three {
+  width: 33.3333%;
+  padding-top: 33.3333%;
+}
+
+.grid-container .cover {
+  background-color: #222;
+  opacity: 0.8;
+  position: absolute;
+  right: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  /* border-radius: 6px; */
+}
+
+.grid-container .cover-text {
+  right: 0;
+  left: 0;
+  bottom: 0;
+  color: white;
+  font-size: 7%;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(0%, -50%);
+  -ms-transform: translate(0%, -50%);
+  transform: translate(0%, -50%);
+  text-align: center;
+}
+
+.grid-container .cover-text > p {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.grid-container .slide {
+  height: 0;
+  bottom: 100%;
+  transition: 0.5s ease;
+  overflow: hidden;
+  font-size: 3%;
+}
+
+.grid-container .border:hover .slide {
+  bottom: 0;
+  height: auto;
+}
+
+.grid-container .border:hover .animate-text {
+  top: 62%;
+}
+
+.ril__image,
+.ril__imagePrev,
+.ril__imageNext {
+  top: 50px !important;
+}

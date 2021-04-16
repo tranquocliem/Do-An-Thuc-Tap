@@ -1,0 +1,28 @@
+.post .card {
+  box-shadow: 0 0 10px #ddd;
+}
+
+.post .card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 15px 25px;
+}
+
+.post .card_header .card-name {
+  transform: translateY(3px);
+}
+
+.post .card_header .dropdown-menu {
+  position: absolute;
+  left: inherit !important;
+  right: 0;
+  margin: 5px 0;
+}
+
+.text-no-post {
+  color: rgba(0, 0, 0, 0.534);
+  font-weight: bold;
+  font-size: 1.5rem;
+}

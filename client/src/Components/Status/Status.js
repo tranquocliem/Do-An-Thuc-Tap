@@ -13,7 +13,7 @@ import Loading from "../Loading/Loading";
 import { uploadImage } from "../../Shared/CheckImage";
 import Emoji from "../Emoji/Emoji";
 
-function Status() {
+function Status(props) {
   const { user } = useContext(AuthContext);
 
   const [onModal, setOnModal] = useState(false);
@@ -37,6 +37,8 @@ function Status() {
   const offOnModal = () => {
     setOnModal(!onModal);
     setShowEmoji(false);
+    setCamera(false);
+    if (tracks) tracks.stop();
     setTimeout(() => {
       document.testInput && document.testInput.focus();
     }, 1);
@@ -92,9 +94,7 @@ function Status() {
           setBtnStopCamera(true);
           setShowCamera(true);
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch((err) => {});
     }
   };
 
@@ -167,6 +167,7 @@ function Status() {
       const { message } = data;
       setPending(false);
       resetModal();
+      props.reloadPost();
       MyToast("succ", `${message.msgBody}`);
     } catch (error) {
       return MyToast("err", `${error}`);
@@ -184,7 +185,7 @@ function Status() {
           <Loading bg="none" />
         </div>
       </div>
-      <div className="status my-3 d-flex">
+      <div className="status my-3 d-flex no-select">
         <Link to={`/profile/${user.username}`}>
           <Avatar user={user} size="big-avatar" />
         </Link>
@@ -291,7 +292,13 @@ function Status() {
                         height="100%"
                         className="mt-2"
                       />
-                      <canvas ref={canvasRef} style={{ display: "none" }} />
+                      <canvas
+                        ref={canvasRef}
+                        style={{
+                          display: "none",
+                          transform: !reverse ? "scalex(1)" : "scalex(-1)",
+                        }}
+                      />
                       {btnStopCamera && (
                         <span onClick={offCamera}>&times;</span>
                       )}
