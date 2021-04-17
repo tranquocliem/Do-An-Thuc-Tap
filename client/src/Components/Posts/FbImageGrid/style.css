@@ -1,7 +1,7 @@
 .grid-container {
   text-align: center;
   width: 100%;
-  padding: 20px;
+  padding: 15px 20px 0 20px;
 }
 
 .grid-container .col-lg-1,
@@ -76,7 +76,7 @@
 
 .grid-container .background {
   background-size: cover !important;
-  background-position: center !important;
+  background-position: top !important;
   background-repeat: no-repeat !important;
 }
 
@@ -148,5 +148,6 @@
 .ril__image,
 .ril__imagePrev,
 .ril__imageNext {
+  max-height: 850px !important;
   top: 50px !important;
 }

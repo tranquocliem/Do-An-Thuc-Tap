@@ -10,8 +10,12 @@
   padding: 15px 25px;
 }
 
+.post .card_header img {
+  transform: translateX(-4.5px);
+}
+
 .post .card_header .card-name {
-  transform: translateY(3px);
+  transform: translate(8px, 3px);
 }
 
 .post .card_header .dropdown-menu {
@@ -25,4 +29,44 @@
   color: rgba(0, 0, 0, 0.534);
   font-weight: bold;
   font-size: 1.5rem;
+}
+
+.card-body {
+  padding-bottom: 0;
+}
+
+.card_body_content {
+  margin-left: 10px;
+}
+
+.post .card_body_content .readMore {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: rgba(27, 27, 158, 0.808);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.post .card_body_content .readMore:hover {
+  text-decoration: underline;
+  color: rgb(27, 27, 158);
+}
+
+.post .card-icon-menu {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: pointer;
+}
+
+.post .card-icon-menu i {
+  font-size: 28px;
+  margin: 10px;
+}
+
+/* Modal Edit */
+.modal-body .input-images .file-upload .file-update {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
 }

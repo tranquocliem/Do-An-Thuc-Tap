@@ -155,7 +155,7 @@
 /* Emoji */
 .modal-body .show-emoji {
   position: absolute;
-  right: 2px;
+  right: 25px;
   top: 18px;
   opacity: 0.5;
   z-index: 10;

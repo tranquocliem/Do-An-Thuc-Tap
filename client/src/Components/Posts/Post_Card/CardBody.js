@@ -1,15 +1,41 @@
-import React from "react";
+/* eslint-disable no-control-regex */
+import React, { useState } from "react";
 import FbGridImages from "../FbImageGrid";
-// import FbImageLibrary from "react-fb-image-grid";
-// import {} from "../FbImageGrid/index"
 
 function CardBody(props) {
-  const images = props.post.images;
+  const [readMore, setReadMore] = useState(false);
+
+  const images = props.post ? props.post.images : [];
   let arrImage = [];
   images.map((image) => arrImage.push(image.url));
+  const content =
+    props.post &&
+    props.post.content.replace(new RegExp("\r?\n", "g"), "<br />");
   return (
-    <div>
-      <div className="mx-2">{props.post.content}</div>
+    <div className="card-body">
+      <div className="card_body_content" style={{ marginTop: "-15px" }}>
+        <span
+          dangerouslySetInnerHTML={{
+            __html:
+              props.post && content.length < 189
+                ? content
+                : readMore
+                ? content + " "
+                : props.post && content.slice(0, 189) + "......",
+          }}
+        />
+        {props.post &&
+          props.post.content.length > 189 &&
+          (readMore ? (
+            <p onClick={() => setReadMore(!readMore)} className="readMore">
+              Ẩn bớt
+            </p>
+          ) : (
+            <span onClick={() => setReadMore(!readMore)} className="readMore">
+              Xem thêm
+            </span>
+          ))}
+      </div>
       <FbGridImages renderOverlay={() => "Xem ảnh"} images={arrImage} />
     </div>
   );

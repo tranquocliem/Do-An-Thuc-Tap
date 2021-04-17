@@ -120,3 +120,40 @@ Content-Type: application/json
 
 # @name GetPosts
 GET   {{baseURL}}/post/getPost
+
+###
+
+# @name GetPostsById
+GET   {{baseURL}}/post/postById?id=607a51f922b9401064cf6025
+
+###
+
+# @name DestroyImages
+POST  {{baseURL}}/post/destroyImages
+Content-Type: application/json
+
+{
+    "public_id":[
+        "test/IMG_0013_dofdxa",
+        "test/IMG_0048_e3hc3i",
+        "test/IMG_0012_o6ew51",
+        "test/IMG_0015_mw69uj",
+        "test/avartar_tgarqi"
+    ]
+}
+
+###
+
+# @name UpdatePost
+PATCH   {{baseURL}}/post/updatePost?id=607972a4d91c493b6c47cace
+Content-Type: application/json
+
+{
+    "content":"Test Update",
+    "images" : [ 
+        {
+            "public_id" : "instagirl/snz7jwrn2wpjenlakbwc",
+            "url" : "https://res.cloudinary.com/tranquocliem/image/upload/v1618571940/instagirl/snz7jwrn2wpjenlakbwc.png"
+        }
+    ]
+}

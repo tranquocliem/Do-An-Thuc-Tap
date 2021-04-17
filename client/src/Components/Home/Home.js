@@ -19,6 +19,7 @@ function Home(props) {
       setLoadingPost(false);
     }
   };
+
   useEffect(() => {
     setLoadingPost(true);
     setTimeout(() => {

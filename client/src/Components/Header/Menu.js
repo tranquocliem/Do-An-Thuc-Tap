@@ -19,7 +19,12 @@ function Menu() {
     <div className="menu mx-auto">
       <ul className="navbar-nav flex-row">
         <li className="nav-item px-2">
-          <NavLink className="nav-link" exact to="/">
+          <NavLink
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="nav-link"
+            exact
+            to="/"
+          >
             <i className="fas fa-home "></i>
           </NavLink>
         </li>

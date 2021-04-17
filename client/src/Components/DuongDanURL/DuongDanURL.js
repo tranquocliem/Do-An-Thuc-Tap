@@ -8,6 +8,7 @@ import UnPrivateRouter from "../../ProtectingRouter/UnPrivateRouter";
 import NotFound from "../NotFound/NotFound";
 import Profile from "../Profile/Profile";
 import Discover from "../Discover/Discover";
+import DetailPost from "../Posts/DetailPost/DetailPost";
 function DuongDanURL() {
   return (
     <Switch>
@@ -15,6 +16,7 @@ function DuongDanURL() {
       <UnPrivateRouter path="/login" component={Login} />
       <UnPrivateRouter path="/register" component={Register} />
       <PrivateRouter path="/profile/:username" component={Profile} />
+      <PrivateRouter path="/post/:id" component={DetailPost} />
       <PrivateRouter path="/discover" component={Discover} />
       <Route path="*" component={NotFound} />
     </Switch>
