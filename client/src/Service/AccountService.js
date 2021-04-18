@@ -106,6 +106,23 @@ export const searchUser = (username) => {
     });
 };
 
+export const suggestions = () => {
+  return axios
+    .get("/api/account/suggestions")
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
 export const isAuthenticated = () => {
   return fetch("/api/account/authenticated").then((res) => {
     if (res.status !== 401) return res.json().then((data) => data);

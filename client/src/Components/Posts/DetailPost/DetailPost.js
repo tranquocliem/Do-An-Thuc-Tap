@@ -312,6 +312,8 @@ function DetailPost(props) {
         </div>
       </div>
 
+      <footer className="bg-light text-center text-lg-start mb-5"></footer>
+
       <div
         className="pending no-select"
         style={pending ? { display: "flex" } : { display: "none" }}

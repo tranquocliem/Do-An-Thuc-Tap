@@ -1,0 +1,62 @@
+.main-suggestions {
+  box-shadow: 0 0 10px #ddd;
+  padding: 10px;
+  margin-top: 1rem;
+}
+
+@media (max-width: 767px) {
+  .main-suggestions {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+}
+
+.main-suggestions .reLoadSuggestions {
+  cursor: pointer;
+  opacity: 0.7;
+  font-weight: bold;
+}
+
+.main-suggestions .reLoadSuggestions:hover {
+  opacity: 1;
+}
+
+.main-suggestions small {
+  color: #4f4f4f;
+}
+
+.main-suggestions .suggestions .btnFollow {
+  position: absolute;
+  right: 25px;
+  transform: translateY(-150%);
+}
+
+.main-suggestions .suggestions-post .btnFollow {
+  position: absolute;
+  right: 25px;
+  transform: translateY(-150%);
+}
+
+@media (max-width: 1200px) {
+  .main-suggestions .suggestions .btnFollow {
+    position: relative;
+    right: 0;
+    transform: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .main-suggestions .suggestions .btnFollow {
+    position: absolute;
+    right: 25px;
+    transform: translateY(-150%);
+  }
+}
+
+@media (max-width: 441px) {
+  .main-suggestions .suggestions .btnFollow {
+    position: relative;
+    right: 0;
+    transform: none;
+  }
+}

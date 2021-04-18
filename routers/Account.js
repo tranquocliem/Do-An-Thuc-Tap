@@ -477,6 +477,58 @@ accRouter.get(
   }
 );
 
+// Gợi ý
+accRouter.get(
+  "/suggestions",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const newArr = [...req.user.following, req.user_id];
+
+      const num = req.query.num || 10;
+
+      const users = await Account.aggregate([
+        { $match: { _id: { $nin: newArr } } },
+        { $sample: { size: num } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "followers",
+            foreignField: "_id",
+            as: "followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "following",
+            foreignField: "_id",
+            as: "following",
+          },
+        },
+      ]).project("-password");
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Lấy gợi ý thành công",
+          msgError: false,
+        },
+        total: users.length,
+        users,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+      });
+    }
+  }
+);
+
 //gửi link qua mail để đặt lại mật khẩu đã quên
 accRouter.post("/forgetPass", (req, res) => {
   const { email } = req.body;

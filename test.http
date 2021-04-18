@@ -157,3 +157,8 @@ Content-Type: application/json
         }
     ]
 }
+
+###
+
+# @name Suggestions
+GET    {{baseURL}}/account/suggestions
