@@ -1,3 +1,4 @@
+/* Post_Card (Heard,Body,Footer) */
 .post .card {
   box-shadow: 0 0 10px #ddd;
 }
@@ -63,7 +64,15 @@
   margin: 10px;
 }
 
-/* Modal Edit */
+.total-heart {
+  position: relative;
+  margin-left: 10px;
+  font-size: 1.8rem;
+  color: crimson;
+  opacity: 0.6;
+}
+
+/* Modal Edit DetailPost */
 .modal-body .input-images .file-upload .file-update {
   position: absolute;
   top: 0;

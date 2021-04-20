@@ -6,7 +6,7 @@ export const follow = (variable) => {
     .then((res) => {
       return res.data;
     })
-    .catch((err) => {
+    .catch((res, err) => {
       return {
         message: {
           msgBody: "Lỗi!!!",

@@ -110,7 +110,11 @@ export const suggestions = () => {
   return axios
     .get("/api/account/suggestions")
     .then((res) => {
-      return res.data;
+      if (res.status !== 401) {
+        return res.data;
+      } else {
+        return;
+      }
     })
     .catch((err) => {
       return {

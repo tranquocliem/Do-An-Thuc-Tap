@@ -9,6 +9,7 @@ import Suggestions from "../Suggestions/Suggestions";
 import { suggestions } from "../../Service/AccountService";
 import { AuthContext } from "../../Context/AuthContext";
 import { MyToast } from "../Toastify/toast";
+import { follow, unFollow } from "../../Service/FollowService";
 
 function Home(props) {
   const [posts, setPosts] = useState();
@@ -72,10 +73,30 @@ function Home(props) {
     }, 500);
   };
 
-  const onFollow = () => {
-    setTimeout(() => {
-      reLoadSuggestions();
-    }, 600);
+  const onFollowAndUnFollow = (idUser, btnFollow, username) => {
+    if (btnFollow) {
+      const variable = {
+        followers: idUser,
+      };
+      follow(variable).then((data) => {
+        if (data.success) {
+          MyToast("succ", `Đã theo dõi ${username}`);
+        } else {
+          MyToast("err", `Bạn đã ${data.message.msgBody} ${username} rồi`);
+        }
+      });
+    } else {
+      const variable = {
+        followers: idUser,
+      };
+      unFollow(variable).then((data) => {
+        if (data.success) {
+          MyToast("err", `Đã bỏ theo dõi ${username}`);
+        } else {
+          MyToast("err", `Lỗi!!!`);
+        }
+      });
+    }
   };
 
   return (
@@ -102,7 +123,7 @@ function Home(props) {
                 suggestionsUser={suggestionsUser}
                 loadingSuggestions={loadingSuggestions}
                 reLoadSuggestions={reLoadSuggestions}
-                onFollow={onFollow}
+                onFollowAndUnFollow={onFollowAndUnFollow}
                 posts={posts}
               />
             )}
@@ -113,9 +134,10 @@ function Home(props) {
               suggestionsUser={suggestionsUser}
               loadingSuggestions={loadingSuggestions}
               reLoadSuggestions={reLoadSuggestions}
-              onFollow={onFollow}
+              onFollowAndUnFollow={onFollowAndUnFollow}
               myUser={true}
               suggestions="suggestions"
+              footer={true}
             />
           </div>
         </div>

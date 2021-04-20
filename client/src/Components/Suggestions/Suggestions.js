@@ -11,8 +11,8 @@ function Suggestions(props) {
     props.reLoadSuggestions();
   };
 
-  const onFollow = () => {
-    props.onFollow();
+  const onFollowAndUnFollow = (idUser, btnFollow, username) => {
+    props.onFollowAndUnFollow(idUser, btnFollow, username);
   };
 
   return (
@@ -46,12 +46,35 @@ function Suggestions(props) {
                   <Link to={`/profile/${u.username}/`}>
                     <ListUsers user={u} />
                   </Link>
-                  <BtnFollow onFollow={onFollow} />
+                  <BtnFollow
+                    user={u}
+                    onFollowAndUnFollow={onFollowAndUnFollow}
+                  />
                 </div>
               ))}
           </div>
         )}
       </div>
+      {props.footer && (
+        <div style={{ opacity: 0.8 }} className="my-2">
+          <a
+            href="https://www.facebook.com/tranquocliem99/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            https://www.facebook.com/tranquocliem99/
+          </a>
+          <small className="d-block">
+            Chào mừng bạn đến với trang website 𝓲𝓷𝓼𝓽𝓪𝓰𝓲𝓻𝓵
+          </small>
+          <small>
+            © 2021 INSTAGIRL FROM{" "}
+            <a href="/profile/tranquocliem/" target="_blank" rel="noreferrer">
+              TRẦN QUỐC LIÊM
+            </a>
+          </small>
+        </div>
+      )}
     </>
   );
 }

@@ -3,14 +3,17 @@ import React, { useState } from "react";
 function BtnFollow(props) {
   const [btnFollow, setBtnFollow] = useState(false);
 
-  const onFollow = () => {
+  const idUser = props.user._id;
+  const username = props.user.username;
+
+  const onFollowAndUnFollow = () => {
     setBtnFollow(!btnFollow);
-    props.onFollow();
+    props.onFollowAndUnFollow(idUser, !btnFollow, username);
   };
 
   return (
     <button
-      onClick={onFollow}
+      onClick={onFollowAndUnFollow}
       type="button"
       className={`btn ${btnFollow ? "btn-danger" : "btn-info"} btnFollow`}
     >

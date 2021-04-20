@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const createPost = (variable) => {
+export const dropHeart = (variable) => {
   return axios
-    .post("/api/post/createPost", variable)
+    .post("/api/heart/dropHeart", variable)
     .then((res) => {
       return res.data;
     })
@@ -17,30 +17,9 @@ export const createPost = (variable) => {
     });
 };
 
-export const getPost = () => {
+export const unHeart = (postId) => {
   return axios
-    .get("/api/post/getPost")
-    .then((res) => {
-      if (res.status !== 401) {
-        return res.data;
-      } else {
-        return;
-      }
-    })
-    .catch((err) => {
-      return {
-        message: {
-          msgBody: "Lỗi!!!",
-          msgError: true,
-        },
-        err,
-      };
-    });
-};
-
-export const getPostById = (id) => {
-  return axios
-    .get(`/api/post/postById?id=${id}`)
+    .delete(`/api/heart/unHeart?postId=${postId}`)
     .then((res) => {
       return res.data;
     })
@@ -55,9 +34,9 @@ export const getPostById = (id) => {
     });
 };
 
-export const updatePost = (id, variable) => {
+export const getHeartPost = (id) => {
   return axios
-    .patch(`/api/post/updatePost?id=${id}`, variable)
+    .get(`/api/heart/getHeartPost?id=${id}`)
     .then((res) => {
       return res.data;
     })
@@ -72,9 +51,9 @@ export const updatePost = (id, variable) => {
     });
 };
 
-export const destroyImages = (variable) => {
+export const getHeart = (id) => {
   return axios
-    .post("/api/post/destroyImages", variable)
+    .get(`/api/heart/getHeart?id=${id}`)
     .then((res) => {
       return res.data;
     })

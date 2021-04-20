@@ -69,7 +69,14 @@ postRouter.get(
 
       const posts = await Post.find({ writer: [...following, _id] })
         .sort("-createdAt")
-        .populate("writer", "username fullname avatar");
+        .populate("writer", "username fullname avatar")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user likes",
+            select: "-password",
+          },
+        });
 
       return res.status(200).json({
         success: true,
@@ -101,10 +108,15 @@ postRouter.get(
     try {
       const _id = req.query.id;
 
-      const post = await Post.findOne({ _id }).populate(
-        "writer",
-        "username fullname avatar"
-      );
+      const post = await Post.findOne({ _id })
+        .populate("writer", "username fullname avatar")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "user likes",
+            select: "-password",
+          },
+        });
 
       res.status(200).json({
         success: true,

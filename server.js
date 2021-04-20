@@ -32,6 +32,8 @@ mongoose
 app.use("/api/account", require("./routers/Account"));
 app.use("/api/follow", require("./routers/Follow"));
 app.use("/api/post", require("./routers/Post"));
+app.use("/api/heart", require("./routers/Heart"));
+app.use("/api/comment", require("./routers/Comment"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("./client/build"));

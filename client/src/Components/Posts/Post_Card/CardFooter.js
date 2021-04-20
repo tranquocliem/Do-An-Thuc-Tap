@@ -1,20 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { dropHeart, getHeartPost, unHeart } from "../../../Service/HearService";
 
 function CardFooter(props) {
   const [isLike, SetIsLike] = useState(false);
   const [savePost, setSavePost] = useState(false);
+  const [totalHeart, setTotalHeart] = useState(0);
+  const [hearts, setHearts] = useState([]);
+
+  const postId = props.post && props.post._id;
+  const userId = props.user && props.user._id;
+
+  const fGetHeart = async (id) => {
+    if (!id) return;
+    const data = await getHeartPost(id);
+    if (data.success) {
+      setTotalHeart(data.total);
+      setHearts(data.hearts);
+    }
+  };
+
+  const fDropHeart = async () => {
+    const variable = {
+      postId,
+    };
+    const data = await dropHeart(variable);
+    if (data.success) {
+      SetIsLike(true);
+      setTotalHeart(totalHeart + 1);
+    }
+  };
+
+  const fUnHeart = async () => {
+    const data = await unHeart(postId);
+    if (data.success) {
+      SetIsLike(false);
+      setTotalHeart(totalHeart - 1);
+    }
+  };
+
+  useEffect(() => {
+    fGetHeart(postId);
+  }, [postId]);
+
+  useEffect(() => {
+    hearts.map((h) => h.userId === userId && SetIsLike(true));
+  }, [hearts, userId]);
+
+  const dropAndUnHeart = () => {
+    if (isLike) {
+      fUnHeart();
+    } else {
+      fDropHeart();
+    }
+  };
+
   return (
     <div className="card_footer">
       <div className="card-icon-menu">
         <div>
           {!isLike ? (
-            <i onClick={() => SetIsLike(!isLike)} className="far fa-heart"></i>
+            <>
+              <span className="total-heart">
+                {totalHeart >= 1000 ? totalHeart / 1000 + "K" : totalHeart}
+              </span>
+              <i onClick={dropAndUnHeart} className="far fa-heart"></i>
+            </>
           ) : (
-            <i
-              onClick={() => SetIsLike(!isLike)}
-              className="fas fa-heart text-danger"
-            ></i>
+            <>
+              <span className="total-heart">
+                {totalHeart >= 1000 ? totalHeart / 1000 + "K" : totalHeart}
+              </span>
+              <i
+                onClick={dropAndUnHeart}
+                className="fas fa-heart text-danger"
+              ></i>
+            </>
           )}
           <Link
             to={`/post/${props.post && props.post._id}`}
@@ -38,10 +99,7 @@ function CardFooter(props) {
           ></i>
         )}
       </div>
-      <div className="d-flex justify-content-between">
-        <h6 style={{ padding: "0 34px", cursor: "pointer" }}>
-          {props.post && props.post.likes.length}
-        </h6>
+      <div className="d-flex justify-content-end">
         <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
           {props.post && props.post.comments.length} bình luận
         </h6>

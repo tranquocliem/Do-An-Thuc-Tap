@@ -304,7 +304,7 @@ function DetailPost(props) {
                     </div>
                   </div>
                   <CardBody post={post} />
-                  <CardFooter post={post} />
+                  <CardFooter post={post} user={user} />
                 </div>
               </div>
             )}

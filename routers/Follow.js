@@ -32,10 +32,10 @@ followRouter.post(
       });
 
       if (user.length > 0) {
-        return res.status(400).json({
+        return res.status(203).json({
           success: false,
           message: {
-            msgBody: "Đã theo dõi rồi!!",
+            msgBody: "Đã theo dõi",
             msgErr: true,
           },
         });

@@ -145,7 +145,7 @@ Content-Type: application/json
 ###
 
 # @name UpdatePost
-PATCH   {{baseURL}}/post/updatePost?id=607972a4d91c493b6c47cace
+PATCH {{baseURL}}/post/updatePost?id=607972a4d91c493b6c47cace
 Content-Type: application/json
 
 {
@@ -161,4 +161,29 @@ Content-Type: application/json
 ###
 
 # @name Suggestions
-GET    {{baseURL}}/account/suggestions
+GET {{baseURL}}/account/suggestions
+
+###
+
+# @name DropHeart
+POST  {{baseURL}}/heart/dropHeart
+Content-Type: application/json
+
+{
+    "postId":"607a51f922b9401064cf6025"
+}
+
+###
+
+# @name UnHeart
+DELETE {{baseURL}}/heart/unHeart?postId=607a51f922b9401064cf6025
+
+###
+
+# @name GetHeart
+GET    {{baseURL}}/heart/getHeart?id=607a51f922b9401064cf6025
+
+###
+
+# @name GetHeartPost
+GET    {{baseURL}}/heart/getHeartPost?id=607a51f922b9401064cf6025
