@@ -60,15 +60,18 @@ postRouter.post(
 );
 
 // Get bài viết theo tài khoản và người tài khoản này đang theo dõi
-postRouter.get(
+postRouter.post(
   "/getPost",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
+      const skip = req.body.skip ? req.body.skip : 0;
       const { _id, following } = req.user;
 
       const posts = await Post.find({ writer: [...following, _id] })
         .sort("-createdAt")
+        .skip(skip)
+        .limit(3)
         .populate("writer", "username fullname avatar")
         .populate({
           path: "comments",
@@ -77,6 +80,7 @@ postRouter.get(
             select: "-password",
           },
         });
+      const total = await Post.countDocuments({ writer: [...following, _id] });
 
       return res.status(200).json({
         success: true,
@@ -84,7 +88,7 @@ postRouter.get(
           msgBody: "Lấy bài viết thành công",
           msgError: false,
         },
-        total: posts.length,
+        total: total,
         posts,
       });
     } catch (error) {

@@ -9,7 +9,11 @@ function CardHeader(props) {
     <>
       <div className="card_header">
         <div className="d-flex">
-          <Avatar user={props.post && props.post.writer} size="big-avatar" />
+          <Link
+            to={props.post ? `/profile/${props.post.writer.username}` : "!#"}
+          >
+            <Avatar user={props.post && props.post.writer} size="big-avatar" />
+          </Link>
           <div className="card-name">
             <h6 className="m-0">
               <Link

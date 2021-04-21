@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { getPost } from "../../Service/PostService";
 import MyHelmet from "../Helmet/MyHelmet";
@@ -10,40 +11,55 @@ import { suggestions } from "../../Service/AccountService";
 import { AuthContext } from "../../Context/AuthContext";
 import { MyToast } from "../Toastify/toast";
 import { follow, unFollow } from "../../Service/FollowService";
+import { Waypoint } from "react-waypoint";
 
 function Home(props) {
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState([]);
   const [loadingPost, setLoadingPost] = useState(false);
-  const [totalPost, setTotalPost] = useState(0);
+  const [totalPost, setTotalPost] = useState(1);
 
   const [suggestionsUser, setSuggestionsUser] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+
+  const [dem, setdem] = useState(1);
+  const [skip, setSkip] = useState(0);
+  const [loadingLoadMore, setLoadingLoadMore] = useState(false);
+  const [okScroll, setOkScroll] = useState(true);
 
   const { user } = useContext(AuthContext);
 
   const userID = user._id;
 
-  const getPosts = async () => {
-    const data = await getPost();
+  const getPosts = async (variable) => {
+    const data = await getPost(variable);
     if (data.posts) {
-      setPosts(data.posts);
+      setPosts([...posts, data.posts]);
       setTotalPost(data.total);
-      setLoadingPost(false);
     }
   };
 
   useEffect(() => {
     setLoadingPost(true);
     setTimeout(() => {
-      getPosts();
+      setLoadingPost(false);
     }, 600);
   }, []);
+
+  useEffect(() => {
+    const variable = {
+      skip,
+    };
+    setTimeout(() => {
+      getPosts(variable);
+    }, 600);
+  }, [skip]);
 
   const reloadPost = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setLoadingPost(true);
     setTimeout(() => {
       getPosts();
+      setLoadingPost(false);
     }, 600);
   };
 
@@ -99,6 +115,30 @@ function Home(props) {
     }
   };
 
+  const totalLoadmore = Math.ceil(totalPost / 3);
+
+  const infiniteScroll = () => {
+    if (totalLoadmore <= 1) return;
+    const Skip = skip + 3;
+    const Dem = dem + 1;
+
+    const variable = {
+      skip: Skip,
+    };
+
+    setLoadingLoadMore(true);
+    setSkip(Skip);
+    setdem(Dem);
+    setOkScroll(false);
+    if (okScroll) {
+      setTimeout(() => {
+        getPosts(variable);
+        setLoadingLoadMore(false);
+        setOkScroll(true);
+      }, 200);
+    }
+  };
+
   return (
     <>
       <MyHelmet
@@ -118,14 +158,29 @@ function Home(props) {
             ) : totalPost === 0 ? (
               <h2 className="text-no-post text-center">Không có bài viết!</h2>
             ) : (
-              <Posts
-                user={user}
-                suggestionsUser={suggestionsUser}
-                loadingSuggestions={loadingSuggestions}
-                reLoadSuggestions={reLoadSuggestions}
-                onFollowAndUnFollow={onFollowAndUnFollow}
-                posts={posts}
+              posts.map((p, i) => (
+                <div key={i}>
+                  <Posts
+                    user={user}
+                    suggestionsUser={suggestionsUser}
+                    loadingSuggestions={loadingSuggestions}
+                    reLoadSuggestions={reLoadSuggestions}
+                    onFollowAndUnFollow={onFollowAndUnFollow}
+                    posts={p}
+                  />
+                </div>
+              ))
+            )}
+            {loadingLoadMore && (
+              <img
+                className="d-block mx-auto"
+                style={{ width: "50px" }}
+                src={ImgLoading}
+                alt="load-more"
               />
+            )}
+            {totalPost <= 3 || dem === totalLoadmore ? null : (
+              <Waypoint onEnter={infiniteScroll}></Waypoint>
             )}
           </div>
           <div className="col-md-4">

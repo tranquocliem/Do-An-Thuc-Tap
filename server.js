@@ -34,6 +34,7 @@ app.use("/api/follow", require("./routers/Follow"));
 app.use("/api/post", require("./routers/Post"));
 app.use("/api/heart", require("./routers/Heart"));
 app.use("/api/comment", require("./routers/Comment"));
+app.use("/api/heartcomment", require("./routers/HeartComment"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("./client/build"));

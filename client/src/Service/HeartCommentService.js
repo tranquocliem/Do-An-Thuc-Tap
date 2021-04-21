@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const createComment = (variable) => {
+export const dropHeartComment = (variable) => {
   return axios
-    .post("/api/comment/createComment", variable)
+    .post("/api/heartcomment/dropHeartComment", variable)
     .then((res) => {
       return res.data;
     })
@@ -17,9 +17,9 @@ export const createComment = (variable) => {
     });
 };
 
-export const getComment = (postId, limit) => {
+export const unHeartComment = (commentId) => {
   return axios
-    .get(`/api/comment/getComment?postId=${postId}&limit=${limit}`)
+    .delete(`/api/heartcomment/unHeartComment?commentId=${commentId}`)
     .then((res) => {
       return res.data;
     })
@@ -34,9 +34,9 @@ export const getComment = (postId, limit) => {
     });
 };
 
-export const updateComment = (commentId, content) => {
+export const getHeartComment = (id) => {
   return axios
-    .patch(`/api/comment/updateComment?_id=${commentId}`, content)
+    .get(`/api/heartcomment/getHeartComment?id=${id}`)
     .then((res) => {
       return res.data;
     })

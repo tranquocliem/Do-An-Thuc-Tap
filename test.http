@@ -22,7 +22,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"tranquocliem",
+    "username":"test",
     "password":"123456"
 }
 
@@ -187,3 +187,38 @@ GET    {{baseURL}}/heart/getHeart?id=607a51f922b9401064cf6025
 
 # @name GetHeartPost
 GET    {{baseURL}}/heart/getHeartPost?id=607a51f922b9401064cf6025
+
+###
+
+# @name GetCommentByPostId
+GET    {{baseURL}}/comment/getComment?postId=607ea73a96e54c1b1c2c103c&limit=2
+
+###
+
+# @name UpdateComment
+PATCH  {{baseURL}}/comment/updateComment?_id=607fd6d2b747a30200c3c57c
+Content-Type: application/json
+
+{
+    "content":"Comment 14 Updated"
+}
+
+###
+
+# @name DropHeartComment
+POST {{baseURL}}/heartcomment/dropHeartComment
+Content-Type: application/json
+
+{
+    "commentId":"607fd6d2b747a30200c3c57c"
+}
+
+###
+
+# @name UnHeartComment
+DELETE {{baseURL}}/heartcomment/unHeartComment?commentId=607fd6d2b747a30200c3c57c
+
+###
+
+# @name GetHeartComment
+GET {{baseURL}}/heartcomment/getHeartComment?id=607fd6d2b747a30200c3c57c

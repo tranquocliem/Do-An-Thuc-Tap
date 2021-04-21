@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { dropHeart, getHeartPost, unHeart } from "../../../Service/HearService";
+import {
+  dropHeart,
+  getHeartPost,
+  unHeart,
+} from "../../../Service/HeartService";
 
 function CardFooter(props) {
   const [isLike, SetIsLike] = useState(false);
@@ -98,11 +102,6 @@ function CardFooter(props) {
             className="fas fa-bookmark text-primary"
           ></i>
         )}
-      </div>
-      <div className="d-flex justify-content-end">
-        <h6 style={{ padding: "0 25px", cursor: "pointer" }}>
-          {props.post && props.post.comments.length} bình luận
-        </h6>
       </div>
     </div>
   );

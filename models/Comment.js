@@ -8,6 +8,7 @@ const CommentSchema = new mongoose.Schema(
     },
     tag: Object,
     reply: mongoose.Types.ObjectId,
+    postId: { type: mongoose.Types.ObjectId, ref: "Post" },
     likes: [{ type: mongoose.Types.ObjectId, ref: "Account" }],
     user: { type: mongoose.Types.ObjectId, ref: "Account" },
   },

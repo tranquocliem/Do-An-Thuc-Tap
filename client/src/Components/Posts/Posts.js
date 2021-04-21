@@ -1,11 +1,8 @@
 import React from "react";
 import Suggestions from "../Suggestions/Suggestions";
 import "./posts.css";
-import CardBody from "./Post_Card/CardBody";
-import CardFooter from "./Post_Card/CardFooter";
-import CardHeader from "./Post_Card/CardHeader";
-import Comments from "./Comments";
-import InputComment from "./InputComment";
+import Comments from "../Posts/Comments/Comments";
+import PostCard from "./Post_Card/PostCard";
 
 function Posts(props) {
   return (
@@ -14,12 +11,8 @@ function Posts(props) {
         props.posts.map((post, i) => (
           <div key={post._id}>
             <div className="card my-3">
-              <CardHeader post={post} />
-              <CardBody post={post} />
-              <CardFooter post={post} user={props.user} />
-
+              <PostCard post={post} user={props.user} />
               <Comments post={post} user={props.user} />
-              <InputComment post={post} user={props.user} />
             </div>
             {i % 2 !== 0 && (
               <div>

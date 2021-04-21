@@ -17,9 +17,9 @@ export const createPost = (variable) => {
     });
 };
 
-export const getPost = () => {
+export const getPost = (variable) => {
   return axios
-    .get("/api/post/getPost")
+    .post("/api/post/getPost", variable)
     .then((res) => {
       if (res.status !== 401) {
         return res.data;

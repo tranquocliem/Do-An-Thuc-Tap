@@ -19,6 +19,7 @@ import { uploadImage } from "../../../Shared/CheckImage";
 import Loading from "../../Loading/Loading";
 import Emoji from "../../Emoji/Emoji";
 import TextareaAutosize from "react-textarea-autosize";
+import CommentDetail from "./CommentDetail";
 
 function DetailPost(props) {
   const { user } = useContext(AuthContext);
@@ -305,6 +306,7 @@ function DetailPost(props) {
                   </div>
                   <CardBody post={post} />
                   <CardFooter post={post} user={user} />
+                  <CommentDetail post={post} postId={id} user={user} />
                 </div>
               </div>
             )}
