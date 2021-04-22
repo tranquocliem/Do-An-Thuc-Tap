@@ -37,7 +37,7 @@
   transform: translateY(-150%);
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 999px) {
   .main-suggestions .suggestions .btnFollow {
     position: relative;
     right: 0;

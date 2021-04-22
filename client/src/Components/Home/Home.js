@@ -147,7 +147,7 @@ function Home(props) {
       />
       <div className="container">
         <div className="row home mx-0">
-          <div className="col-md-8">
+          <div className="col-md-7">
             <Status reloadPost={reloadPost} />
             {loadingPost ? (
               <img
@@ -183,7 +183,7 @@ function Home(props) {
               <Waypoint onEnter={infiniteScroll}></Waypoint>
             )}
           </div>
-          <div className="col-md-4">
+          <div className="col-md-5">
             <Suggestions
               user={user}
               suggestionsUser={suggestionsUser}

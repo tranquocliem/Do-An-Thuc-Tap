@@ -1,31 +1,33 @@
 const express = require("express");
-const commentRouter = express.Router();
+const replyCommentRouter = express.Router();
 const passport = require("passport");
 const passportConfig = require("../configs/passport");
 const Comment = require("../models/Comment");
 const ReplyComment = require("../models/ReplyComment");
 const HeartComment = require("../models/HeartComment");
 
-// Tạo bình luận
-commentRouter.post(
-  "/createComment",
+// Tạo reply bình luận
+replyCommentRouter.post(
+  "/createReplyComment",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const { postId, postUserId, content } = req.body;
+      const { content, tag, postId, postUserId, reply } = req.body;
 
-      const newComment = new Comment({
-        writer: req.user._id,
+      const newReplyComment = new ReplyComment({
         content,
+        tag,
         postId,
         postUserId,
+        reply,
+        writer: req.user._id,
       });
 
-      await newComment.save();
+      await newReplyComment.save();
 
       return res.status(200).json({
         success: true,
-        newComment,
+        newReplyComment,
       });
     } catch (error) {
       res.status(500).json({ success: false, error });
@@ -33,25 +35,27 @@ commentRouter.post(
   }
 );
 
-// Get comment by postid
-commentRouter.get(
-  "/getComment",
+// Get reply comment by postid và commentid
+replyCommentRouter.get(
+  "/getReplyComment",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const { postId, limit } = req.query;
+      const { postId, reply, limit } = req.query;
 
-      const comments = await Comment.find({ postId })
+      const Replycomments = await ReplyComment.find({ postId, reply })
         .populate("writer", "-password")
-        .sort("-createdAt")
         .limit(parseInt(limit));
 
-      const totalComment = await Comment.countDocuments({ postId });
+      const totalReplyComment = await ReplyComment.countDocuments({
+        postId,
+        reply,
+      });
 
       return res.status(200).json({
         success: true,
-        total: totalComment,
-        comments,
+        total: totalReplyComment,
+        Replycomments,
       });
     } catch (error) {
       res.status(500).json({ success: false, error });
@@ -59,24 +63,26 @@ commentRouter.get(
   }
 );
 
-// Update comment
-commentRouter.patch(
-  "/updateComment",
+// Update reply comment
+replyCommentRouter.patch(
+  "/updateReplyComment",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const { _id } = req.query;
       const { content } = req.body;
 
-      await Comment.findOneAndUpdate(
+      await ReplyComment.findOneAndUpdate(
         { _id, writer: req.user._id },
         { content }
       );
 
+      console.log(_id, content);
+
       return res.status(200).json({
         success: true,
         message: {
-          msgBody: "Cập nhật bình luận thành công",
+          msgBody: "Cập nhật reply bình luận thành công",
           msgErr: false,
         },
       });
@@ -86,28 +92,27 @@ commentRouter.patch(
   }
 );
 
-// Delete comment
-commentRouter.delete(
-  "/deleteComment",
+// Delete reply comment
+replyCommentRouter.delete(
+  "/deleteReplyComment",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const { _id } = req.query;
       const userId = req.user._id;
 
-      const comment = await Comment.findOne({ _id });
+      const replyComment = await ReplyComment.findOne({ _id });
 
       if (
-        userId.toString() === comment.writer.toString() ||
-        userId.toString() === comment.postUserId.toString()
+        userId.toString() === replyComment.writer.toString() ||
+        userId.toString() === replyComment.postUserId.toString()
       ) {
-        await Comment.findOneAndDelete({ _id });
-        await ReplyComment.deleteMany({ reply: _id });
+        await ReplyComment.findOneAndDelete({ _id });
         await HeartComment.deleteMany({ commentId: _id });
         return res.status(200).json({
           success: true,
           message: {
-            msgBody: "Xoá bình luận thành công",
+            msgBody: "Xoá trả lời thành công",
             msgErr: false,
           },
         });
@@ -126,4 +131,4 @@ commentRouter.delete(
   }
 );
 
-module.exports = commentRouter;
+module.exports = replyCommentRouter;

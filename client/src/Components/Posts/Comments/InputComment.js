@@ -1,30 +1,52 @@
 import React, { useState } from "react";
 import { createComment } from "../../../Service/CommentService";
+import { createReplyComment } from "../../../Service/ReplyCommentService";
 import "./comments.css";
 
-function InputComment(props) {
+function InputComment({
+  post,
+  comment,
+  reloadComment,
+  children,
+  setOnReply,
+  user,
+  reply,
+  reloadReplyComment,
+}) {
   const [content, setContent] = useState("");
 
   const onSubmit = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-    const newComment = {
-      postId: props.post._id,
-      content,
-      likes: [],
-      user: props.user,
-      createAt: new Date().toISOString(),
-    };
 
-    await createComment(newComment);
-    setContent("");
-    props.reload();
+    if (reply) {
+      const newReplyComment = {
+        postId: post._id,
+        postUserId: post.writer._id,
+        content,
+        tag: comment.writer,
+        reply,
+      };
+      await createReplyComment(newReplyComment);
+      setContent("");
+      setOnReply(false);
+      reloadReplyComment();
+    } else {
+      const newComment = {
+        postId: post._id,
+        postUserId: post.writer._id,
+        content,
+      };
+      await createComment(newComment);
+      setContent("");
+      reloadComment();
+    }
   };
 
   return (
     <>
       <form onSubmit={onSubmit} className="card-footer comment-input">
-        {/* {children} */}
+        {children}
         <input
           type="text"
           placeholder="Thêm bình luận..."

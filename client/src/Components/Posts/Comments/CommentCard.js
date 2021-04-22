@@ -10,8 +10,17 @@ import {
   getHeartComment,
   unHeartComment,
 } from "../../../Service/HeartCommentService";
+import InputComment from "./InputComment";
+import { updateReplyComment } from "../../../Service/ReplyCommentService";
 
-function CommentCard({ post, comment, user }) {
+function CommentCard({
+  children,
+  post,
+  comment,
+  commentId,
+  user,
+  reloadReplyComment,
+}) {
   const [content, setContent] = useState("");
   const [readMore, setReadMore] = useState(false);
   const [onEdit, setOnEdit] = useState(false);
@@ -19,6 +28,9 @@ function CommentCard({ post, comment, user }) {
   const [isLike, SetIsLike] = useState(false);
   const [totalHeartComment, setTotalHeartComment] = useState(0);
   const [heartComments, setHeartComments] = useState([]);
+
+  const [onReply, setOnReply] = useState(false);
+  const [reply, setReply] = useState();
 
   const fGetHeartComment = async (id) => {
     if (!id) return;
@@ -70,13 +82,19 @@ function CommentCard({ post, comment, user }) {
 
   const onUpdateComment = async () => {
     if (comment.content !== content) {
-      if (user._id !== comment.user._id) {
+      if (user._id !== comment.writer._id) {
         setContent(comment.content);
         setOnEdit(false);
         return;
       }
-      await updateComment(comment._id, { content });
-      setOnEdit(false);
+
+      if (comment.reply) {
+        await updateReplyComment(comment._id, { content });
+        setOnEdit(false);
+      } else {
+        await updateComment(comment._id, { content });
+        setOnEdit(false);
+      }
     } else {
       setOnEdit(false);
     }
@@ -87,14 +105,19 @@ function CommentCard({ post, comment, user }) {
     }
   };
 
+  const OnOffReply = () => {
+    setOnReply(!onReply);
+    setReply(commentId);
+  };
+
   return (
     <div className="comment-card mt-2">
       <Link
-        to={`/profile/${post.writer.username}`}
+        to={`/profile/${comment.writer.username}`}
         className="d-flex text-dark"
       >
-        <Avatar user={post.writer} size="small-avatar" />
-        <h6 className="mx-1">{comment.user.username}</h6>
+        <Avatar user={comment.writer} size="small-avatar" />
+        <h6 className="mx-1">{comment.writer.username}</h6>
       </Link>
 
       <div className="comment-content">
@@ -109,6 +132,12 @@ function CommentCard({ post, comment, user }) {
             />
           ) : (
             <div>
+              {comment.tag && comment.tag._id !== comment.writer._id && (
+                <Link to={`/profile/${comment.tag.username}`}>
+                  {comment.tag.username}
+                  {"  "}
+                </Link>
+              )}
               <span>
                 {content.length < 100
                   ? content
@@ -116,7 +145,6 @@ function CommentCard({ post, comment, user }) {
                   ? content + " "
                   : content.slice(0, 100) + "......"}
               </span>
-
               {content.length > 100 &&
                 (readMore ? (
                   <p
@@ -136,7 +164,7 @@ function CommentCard({ post, comment, user }) {
             </div>
           )}
 
-          <div style={{ cursor: "pointer" }}>
+          <div className="no-select" style={{ cursor: "pointer" }}>
             <small className="text-muted mr-3">
               {moment(comment.createdAt).fromNow()}
             </small>
@@ -159,7 +187,9 @@ function CommentCard({ post, comment, user }) {
                 </small>
               </>
             ) : (
-              <small className="font-weight-bold mr-3">trả lời</small>
+              <small className="font-weight-bold mr-3" onClick={OnOffReply}>
+                {onReply ? "huỷ" : "trả lời"}
+              </small>
             )}
           </div>
         </div>
@@ -189,6 +219,22 @@ function CommentCard({ post, comment, user }) {
           )}
         </div>
       </div>
+
+      {onReply && (
+        <InputComment
+          setOnReply={setOnReply}
+          post={post}
+          comment={comment}
+          user={user}
+          reply={reply}
+          reloadReplyComment={reloadReplyComment}
+        >
+          <Link to={`/profile/${comment.writer.username}`}>
+            @{comment.writer.username}:
+          </Link>
+        </InputComment>
+      )}
+      {children}
     </div>
   );
 }

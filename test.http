@@ -205,6 +205,26 @@ Content-Type: application/json
 
 ###
 
+# @name UpdateReplyComment
+PATCH  {{baseURL}}/replycomment/updateReplyComment?_id=608106127f8f2d3f7491e345
+Content-Type: application/json
+
+{
+    "content":"Cung quan điểm luôn trời"
+}
+
+###
+
+# @name DeleteComment
+DELETE {{baseURL}}/comment/deleteComment?_id=6081511e17fca809502a3f7f
+
+###
+
+# @name DeleteReplyComment
+DELETE {{baseURL}}/replycomment/deleteReplyComment?_id=60815070eb5f1a2e2c209aef
+
+###
+
 # @name DropHeartComment
 POST {{baseURL}}/heartcomment/dropHeartComment
 Content-Type: application/json
