@@ -22,7 +22,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"test",
+    "username":"tranquocliem",
     "password":"123456"
 }
 
@@ -125,6 +125,11 @@ GET   {{baseURL}}/post/getPost
 
 # @name GetPostsById
 GET   {{baseURL}}/post/postById?id=607a51f922b9401064cf6025
+
+###
+
+# @name GetPostsByWriter
+GET {{baseURL}}/post/postByWriter?writer=60744a94ead6c73ee8dfd9a3
 
 ###
 

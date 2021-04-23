@@ -142,6 +142,49 @@ postRouter.get(
   }
 );
 
+// Get bài viết theo tác giả
+postRouter.get(
+  "/postByWriter",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { writer } = req.query;
+
+      if (req.user._id.toString() !== writer.toString()) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Có lỗi về quyền",
+            msgError: true,
+          },
+        });
+      }
+
+      const posts = await Post.find({ writer })
+        .sort("-createdAt")
+        .populate("writer", "username fullname avatar");
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Lấy bài viết thành công",
+          msgError: false,
+        },
+        total: posts.length,
+        posts,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lấy bài viết không thành công",
+          msgError: true,
+        },
+      });
+    }
+  }
+);
+
 //Xoá ảnh cloudinary
 postRouter.post(
   "/destroyImages",

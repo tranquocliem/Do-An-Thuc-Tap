@@ -50,3 +50,20 @@ export const updateComment = (commentId, content) => {
       };
     });
 };
+
+export const deleteComment = (CommentId) => {
+  return axios
+    .delete(`/api/comment/deleteComment?_id=${CommentId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};

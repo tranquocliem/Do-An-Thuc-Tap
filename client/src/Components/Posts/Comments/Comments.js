@@ -7,6 +7,7 @@ import ImgLoading from "../../../img/loading.gif";
 function Comments({ post, user }) {
   const [comments, setComments] = useState([]);
   const [totalComments, setTotalComments] = useState(0);
+  const [totalCM, setTotalCM] = useState(0);
   const [loadingComment, setLoadingComment] = useState(false);
 
   const [limit, setLimit] = useState(3);
@@ -16,6 +17,7 @@ function Comments({ post, user }) {
     const data = await getComment(id, limit);
     setComments(data.comments);
     setTotalComments(data.total);
+    setTotalCM(data.totalComment);
   };
 
   useEffect(() => {
@@ -23,6 +25,7 @@ function Comments({ post, user }) {
       const data = await getComment(id, limit);
       setComments(data.comments);
       setTotalComments(data.total);
+      setTotalCM(data.totalComment);
     };
     setTimeout(() => {
       fGetComment(post._id, limit);
@@ -77,6 +80,7 @@ function Comments({ post, user }) {
         )}
         {comments.map((comment) => (
           <CommentDisplay
+            reloadComment={reloadComment}
             key={comment._id}
             comment={comment}
             post={post}
@@ -91,7 +95,7 @@ function Comments({ post, user }) {
             alt="loading-comments"
           />
         )}
-        {totalComments > limit ? (
+        {totalCM > limit ? (
           <div
             className="show-and-hide-comment no-select p-2 border-top"
             style={{ cursor: "pointer" }}
@@ -100,7 +104,7 @@ function Comments({ post, user }) {
             Xem tất cả bình luận
           </div>
         ) : (
-          totalComments > 3 &&
+          totalCM > 3 &&
           !loadingShowComment && (
             <div
               className="show-and-hide-comment no-select p-2 border-top"

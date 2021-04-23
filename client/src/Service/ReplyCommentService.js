@@ -55,3 +55,20 @@ export const updateReplyComment = (replyCommentId, content) => {
       };
     });
 };
+
+export const deleteReplyComment = (replyCommentId) => {
+  return axios
+    .delete(`/api/replycomment/deleteReplyComment?_id=${replyCommentId}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};

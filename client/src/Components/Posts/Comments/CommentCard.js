@@ -20,6 +20,7 @@ function CommentCard({
   commentId,
   user,
   reloadReplyComment,
+  reloadComment,
 }) {
   const [content, setContent] = useState("");
   const [readMore, setReadMore] = useState(false);
@@ -56,6 +57,8 @@ function CommentCard({
   const fDropHeartComment = async () => {
     const variable = {
       commentId: comment._id,
+      replyHeart: commentId,
+      postId: post._id,
     };
     const data = await dropHeartComment(variable);
     if (data.success) {
@@ -108,6 +111,11 @@ function CommentCard({
   const OnOffReply = () => {
     setOnReply(!onReply);
     setReply(commentId);
+  };
+
+  const reloadHeartComment = () => {
+    fGetHeartComment(comment._id);
+    if (isLike) SetIsLike(false);
   };
 
   return (
@@ -203,6 +211,9 @@ function CommentCard({
             comment={comment}
             user={user}
             setOnEdit={setOnEdit}
+            reloadReplyComment={reloadReplyComment}
+            reloadComment={reloadComment}
+            reloadHeartComment={reloadHeartComment}
           />
 
           {!isLike ? (
@@ -228,6 +239,7 @@ function CommentCard({
           user={user}
           reply={reply}
           reloadReplyComment={reloadReplyComment}
+          reloadComment={reloadComment}
         >
           <Link to={`/profile/${comment.writer.username}`}>
             @{comment.writer.username}:

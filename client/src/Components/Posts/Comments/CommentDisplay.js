@@ -3,7 +3,7 @@ import CommentCard from "./CommentCard";
 import { getReplyComment } from "../../../Service/ReplyCommentService";
 import ImgLoading from "../../../img/loading.gif";
 
-function CommentDisplay({ post, comment, user }) {
+function CommentDisplay({ post, comment, user, reloadComment }) {
   const [replycomments, setReplyComments] = useState([]);
   const [totalReplyComments, setTotalReplyComments] = useState(0);
   const [loadingReplyComment, setLoadingReplyComment] = useState(true);
@@ -54,6 +54,7 @@ function CommentDisplay({ post, comment, user }) {
         comment={comment}
         post={post}
         reloadReplyComment={reloadReplyComment}
+        reloadComment={reloadComment}
       >
         {loadingReplyComment && totalReplyComments > 0 ? (
           <img
@@ -73,6 +74,7 @@ function CommentDisplay({ post, comment, user }) {
                     comment={item}
                     post={post}
                     user={user}
+                    reloadComment={reloadComment}
                     reloadReplyComment={reloadReplyComment}
                   />
                 )

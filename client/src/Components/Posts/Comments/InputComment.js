@@ -30,6 +30,7 @@ function InputComment({
       await createReplyComment(newReplyComment);
       setContent("");
       setOnReply(false);
+      reloadComment();
       reloadReplyComment();
     } else {
       const newComment = {

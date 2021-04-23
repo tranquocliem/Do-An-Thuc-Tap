@@ -11,7 +11,7 @@ heartCommentRouter.post(
   async (req, res) => {
     try {
       const userId = req.user._id;
-      const { commentId } = req.body;
+      const { commentId, replyHeart, postId } = req.body;
 
       const isHeart = await HeartComment.findOne({ userId, commentId });
 
@@ -25,7 +25,12 @@ heartCommentRouter.post(
         });
       }
 
-      const dropHeartComment = new HeartComment({ userId, commentId });
+      const dropHeartComment = new HeartComment({
+        userId,
+        commentId,
+        replyHeart,
+        postId,
+      });
 
       await dropHeartComment.save();
 

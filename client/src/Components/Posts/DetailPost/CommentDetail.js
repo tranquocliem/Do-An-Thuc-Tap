@@ -81,6 +81,7 @@ function CommentDetail({ post, user, postId }) {
             key={comment._id}
             comment={comment}
             post={post}
+            reloadComment={reloadComment}
           />
         ))}
         {loadingShowComment && (

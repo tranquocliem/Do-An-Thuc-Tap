@@ -1,8 +1,26 @@
 import React from "react";
+import { deleteReplyComment } from "../../../Service/ReplyCommentService";
+import { deleteComment } from "../../../Service/CommentService";
 
-function CommentMenu({ post, comment, user, setOnEdit }) {
-  const deleteComment = () => {
-    alert("Xoá nè");
+function CommentMenu({
+  post,
+  comment,
+  user,
+  setOnEdit,
+  reloadReplyComment,
+  reloadComment,
+  reloadHeartComment,
+}) {
+  const deleteCommentAndReply = () => {
+    if (comment.reply) {
+      deleteReplyComment(comment._id);
+      reloadReplyComment();
+      reloadHeartComment();
+    } else {
+      deleteComment(comment._id);
+      reloadComment();
+      reloadHeartComment();
+    }
   };
   const MenuItem = () => {
     return (
@@ -13,7 +31,10 @@ function CommentMenu({ post, comment, user, setOnEdit }) {
         >
           <i className="fas fa-edit"></i> Chỉnh sửa
         </div>
-        <div className="dropdown-item no-select" onClick={deleteComment}>
+        <div
+          className="dropdown-item no-select"
+          onClick={deleteCommentAndReply}
+        >
           <i className="fas fa-trash-alt"></i> Xoá
         </div>
       </>
@@ -37,7 +58,7 @@ function CommentMenu({ post, comment, user, setOnEdit }) {
                 ) : (
                   <div
                     className="dropdown-item no-select"
-                    onClick={deleteComment}
+                    onClick={deleteCommentAndReply}
                   >
                     <i className="fas fa-trash-alt"></i> Xoá
                   </div>

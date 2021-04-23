@@ -47,10 +47,13 @@ commentRouter.get(
         .limit(parseInt(limit));
 
       const totalComment = await Comment.countDocuments({ postId });
+      const totalReplyComment = await ReplyComment.countDocuments({ postId });
 
       return res.status(200).json({
         success: true,
-        total: totalComment,
+        totalComment,
+        totalReplyComment,
+        total: totalComment + totalReplyComment,
         comments,
       });
     } catch (error) {
@@ -104,6 +107,7 @@ commentRouter.delete(
         await Comment.findOneAndDelete({ _id });
         await ReplyComment.deleteMany({ reply: _id });
         await HeartComment.deleteMany({ commentId: _id });
+        await HeartComment.deleteMany({ replyHeart: _id });
         return res.status(200).json({
           success: true,
           message: {

@@ -28,7 +28,7 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.static("./serverUI"));
-app.use("/", (req, res) => {
+app.use("/home", (req, res) => {
   res.sendFile(path.join(__dirname, "./serverUI/index.html"));
 });
 app.use("/api/account", require("./routers/Account"));
