@@ -3,9 +3,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const path = require("path");
-const Account = require("./models/Account");
 
 require("dotenv").config({
   path: "./configs/.env",
@@ -29,6 +27,10 @@ mongoose
   .then(() => console.log("MongoDB Connected...."))
   .catch((err) => console.log(err));
 
+app.use(express.static("./serverUI"));
+app.use("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "./serverUI/index.html"));
+});
 app.use("/api/account", require("./routers/Account"));
 app.use("/api/follow", require("./routers/Follow"));
 app.use("/api/post", require("./routers/Post"));
