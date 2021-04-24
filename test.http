@@ -119,7 +119,12 @@ Content-Type: application/json
 ###
 
 # @name GetPosts
-GET   {{baseURL}}/post/getPost
+POST {{baseURL}}/post/getPost
+Content-Type: application/json
+
+{
+    "skip":6
+}
 
 ###
 

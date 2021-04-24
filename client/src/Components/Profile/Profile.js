@@ -11,7 +11,7 @@ import {
 import MyHelmet from "../Helmet/MyHelmet";
 import NotFound from "../NotFound/NotFound";
 import Info from "./Info";
-import Posts from "./Posts";
+import PostsByUser from "./Posts/PostsByUser";
 import "./profile.css";
 
 function Profile() {
@@ -132,7 +132,7 @@ function Profile() {
             edit={edit}
             loading={loading}
           />
-          <Posts user={User} />
+          <PostsByUser user={User} myUser={user} />
         </div>
       </>
     );

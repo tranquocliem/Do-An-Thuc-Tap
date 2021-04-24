@@ -13,7 +13,7 @@ import { MyToast } from "../Toastify/toast";
 import { follow, unFollow } from "../../Service/FollowService";
 import { Waypoint } from "react-waypoint";
 
-function Home(props) {
+function Home() {
   const [posts, setPosts] = useState([]);
   const [loadingPost, setLoadingPost] = useState(false);
   const [totalPost, setTotalPost] = useState(1);
@@ -24,6 +24,7 @@ function Home(props) {
   const [dem, setdem] = useState(1);
   const [skip, setSkip] = useState(0);
   const [loadingLoadMore, setLoadingLoadMore] = useState(false);
+
   const [okScroll, setOkScroll] = useState(true);
 
   const { user } = useContext(AuthContext);
@@ -34,6 +35,14 @@ function Home(props) {
     const data = await getPost(variable);
     if (data.posts) {
       setPosts([...posts, data.posts]);
+      setTotalPost(data.total);
+    }
+  };
+
+  const getPostsForCreate = async (variable) => {
+    const data = await getPost(variable);
+    if (data.posts) {
+      setPosts([data.posts]);
       setTotalPost(data.total);
     }
   };
@@ -49,17 +58,60 @@ function Home(props) {
     const variable = {
       skip,
     };
+    const getPosts = async (variable) => {
+      const data = await getPost(variable);
+      if (data.posts) {
+        setPosts([...posts, data.posts]);
+        setTotalPost(data.total);
+      }
+    };
     setTimeout(() => {
       getPosts(variable);
     }, 600);
-  }, [skip]);
+  }, []);
+
+  const totalLoadmore = Math.ceil(totalPost / 3);
+
+  const infiniteScroll = () => {
+    if (totalLoadmore === dem || totalPost <= 3) return;
+
+    setLoadingLoadMore(true);
+
+    setOkScroll(false);
+    if (okScroll) {
+      setTimeout(() => {
+        const Skip = skip + 3;
+        const Dem = dem + 1;
+        const variable = {
+          skip: Skip,
+        };
+        setSkip(Skip);
+        setdem(Dem);
+        getPosts(variable);
+        setLoadingLoadMore(false);
+        setOkScroll(true);
+      }, 500);
+    }
+  };
+
+  // window.onscroll = function () {
+  //   const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+  //   if (scrollTop + clientHeight >= scrollHeight) {
+  //     infiniteScroll();
+  //   }
+  // };
 
   const reloadPost = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setLoadingPost(true);
+    setSkip(0);
+    setdem(1);
+    const variable = {
+      skip: 0,
+    };
     setTimeout(() => {
-      getPosts();
       setLoadingPost(false);
+      getPostsForCreate(variable);
     }, 600);
   };
 
@@ -115,30 +167,6 @@ function Home(props) {
     }
   };
 
-  const totalLoadmore = Math.ceil(totalPost / 3);
-
-  const infiniteScroll = () => {
-    if (totalLoadmore <= 1) return;
-    const Skip = skip + 3;
-    const Dem = dem + 1;
-
-    const variable = {
-      skip: Skip,
-    };
-
-    setLoadingLoadMore(true);
-    setSkip(Skip);
-    setdem(Dem);
-    setOkScroll(false);
-    if (okScroll) {
-      setTimeout(() => {
-        getPosts(variable);
-        setLoadingLoadMore(false);
-        setOkScroll(true);
-      }, 200);
-    }
-  };
-
   return (
     <>
       <MyHelmet
@@ -179,9 +207,6 @@ function Home(props) {
                 alt="load-more"
               />
             )}
-            {totalPost <= 3 || dem === totalLoadmore ? null : (
-              <Waypoint onEnter={infiniteScroll}></Waypoint>
-            )}
           </div>
           <div className="col-md-5">
             <Suggestions
@@ -196,6 +221,9 @@ function Home(props) {
             />
           </div>
         </div>
+        {totalPost <= 3 || dem === totalLoadmore ? null : (
+          <Waypoint onEnter={infiniteScroll}></Waypoint>
+        )}
       </div>
       <footer className="bg-light text-center text-lg-start mb-5"></footer>
     </>

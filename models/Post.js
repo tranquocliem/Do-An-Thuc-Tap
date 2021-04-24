@@ -8,8 +8,6 @@ const PostSchema = new mongoose.Schema(
       require: true,
     },
     writer: { type: mongoose.Types.ObjectId, ref: "Account" },
-    likes: [{ type: mongoose.Types.ObjectId, ref: "Account" }],
-    comments: [{ type: mongoose.Types.ObjectId, ref: "Comment" }],
   },
   { timestamps: true }
 );

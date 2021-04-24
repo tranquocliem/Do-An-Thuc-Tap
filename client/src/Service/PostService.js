@@ -55,6 +55,23 @@ export const getPostById = (id) => {
     });
 };
 
+export const getPostByWriter = (id) => {
+  return axios
+    .get(`/api/post/postByWriter?writer=${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
 export const updatePost = (id, variable) => {
   return axios
     .patch(`/api/post/updatePost?id=${id}`, variable)

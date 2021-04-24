@@ -20,6 +20,7 @@ import Loading from "../../Loading/Loading";
 import Emoji from "../../Emoji/Emoji";
 import TextareaAutosize from "react-textarea-autosize";
 import CommentDetail from "./CommentDetail";
+import "../posts.css";
 
 function DetailPost(props) {
   const { user } = useContext(AuthContext);

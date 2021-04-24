@@ -41,7 +41,7 @@ postRouter.post(
       return res.status(200).json({
         success: true,
         message: {
-          msgBody: "Tại bài viết thành công",
+          msgBody: "Tạo bài viết thành công",
           msgError: false,
         },
         post,
@@ -50,7 +50,7 @@ postRouter.post(
       res.status(500).json({
         success: false,
         message: {
-          msgBody: "Tại bài viết không thành công",
+          msgBody: "Tạo bài viết không thành công",
           msgError: true,
         },
         error,
@@ -59,7 +59,7 @@ postRouter.post(
   }
 );
 
-// Get bài viết theo tài khoản và người tài khoản này đang theo dõi
+// Get bài viết theo tài khoản và người tài khoản này đang theo dõi (Home)
 postRouter.post(
   "/getPost",
   passport.authenticate("jwt", { session: false }),
@@ -104,7 +104,7 @@ postRouter.post(
   }
 );
 
-// Get bài viết theo id
+// Get bài viết theo id (detail Post)
 postRouter.get(
   "/postById",
   passport.authenticate("jwt", { session: false }),
@@ -142,23 +142,13 @@ postRouter.get(
   }
 );
 
-// Get bài viết theo tác giả
+// Get bài viết theo tác giả (Profile)
 postRouter.get(
   "/postByWriter",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
       const { writer } = req.query;
-
-      if (req.user._id.toString() !== writer.toString()) {
-        return res.status(400).json({
-          success: false,
-          message: {
-            msgBody: "Có lỗi về quyền",
-            msgError: true,
-          },
-        });
-      }
 
       const posts = await Post.find({ writer })
         .sort("-createdAt")

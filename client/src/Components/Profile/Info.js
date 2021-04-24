@@ -18,10 +18,12 @@ function Info(props) {
     setOnModal(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
   const updateProfile = (id) => {
     props.updateProfile(id);
     setOnModal(false);
   };
+
   const onFollowAndUnFollow = () => {
     props.onFollowAndUnFollow();
   };
