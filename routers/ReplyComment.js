@@ -5,6 +5,7 @@ const passportConfig = require("../configs/passport");
 const Comment = require("../models/Comment");
 const ReplyComment = require("../models/ReplyComment");
 const HeartComment = require("../models/HeartComment");
+const Post = require("../models/Post");
 
 // Tạo reply bình luận
 replyCommentRouter.post(
@@ -22,6 +23,29 @@ replyCommentRouter.post(
         reply,
         writer: req.user._id,
       });
+
+      const post = await Post.findOne({ _id: postId });
+      const comment = await Comment.findOne({ _id: reply });
+
+      if (!post) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bài viết không tồn tại",
+            msgErr: true,
+          },
+        });
+      }
+
+      if (!comment) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bình luận không tồn tại",
+            msgErr: true,
+          },
+        });
+      }
 
       await newReplyComment.save();
 
@@ -76,8 +100,6 @@ replyCommentRouter.patch(
         { _id, writer: req.user._id },
         { content }
       );
-
-      console.log(_id, content);
 
       return res.status(200).json({
         success: true,

@@ -28,9 +28,10 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use(express.static("./serverUI"));
-app.use("/home", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./serverUI/index.html"));
 });
+
 app.use("/api/account", require("./routers/Account"));
 app.use("/api/follow", require("./routers/Follow"));
 app.use("/api/post", require("./routers/Post"));

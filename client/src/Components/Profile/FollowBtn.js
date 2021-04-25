@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { follow, getFollowers, unFollow } from "../../Service/FollowService";
 import { MyToast } from "../Toastify/toast";
-import Toastify from "../Toastify/Toastify";
 
 function FollowBtn(props) {
   const [btnFollow, setBtnFollow] = useState(false);
@@ -57,7 +56,6 @@ function FollowBtn(props) {
   if (pendingBtn) {
     return (
       <>
-        <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
         {btnFollow ? (
           <button
             onClick={onFollowAndUnFollow}

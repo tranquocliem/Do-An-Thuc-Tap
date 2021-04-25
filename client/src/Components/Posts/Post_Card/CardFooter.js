@@ -5,6 +5,7 @@ import {
   getHeartPost,
   unHeart,
 } from "../../../Service/HeartService";
+import ShareModal from "./ShareModal";
 
 function CardFooter(props) {
   const [isLike, SetIsLike] = useState(false);
@@ -14,6 +15,8 @@ function CardFooter(props) {
 
   const postId = props.post && props.post._id;
   const userId = props.user && props.user._id;
+
+  const [isShare, setIsShare] = useState(false);
 
   const fGetHeart = async (id) => {
     if (!id) return;
@@ -25,19 +28,25 @@ function CardFooter(props) {
   };
 
   const fDropHeart = async () => {
-    const variable = {
-      postId,
-    };
-    const data = await dropHeart(variable);
-    if (data.success) {
+    try {
+      const variable = {
+        postId,
+      };
+      await dropHeart(variable);
+      SetIsLike(true);
+      setTotalHeart(totalHeart + 1);
+    } catch (error) {
       SetIsLike(true);
       setTotalHeart(totalHeart + 1);
     }
   };
 
   const fUnHeart = async () => {
-    const data = await unHeart(postId);
-    if (data.success) {
+    try {
+      await unHeart(postId);
+      SetIsLike(false);
+      setTotalHeart(totalHeart - 1);
+    } catch (error) {
       SetIsLike(false);
       setTotalHeart(totalHeart - 1);
     }
@@ -87,7 +96,10 @@ function CardFooter(props) {
           >
             <i className="far fa-comment"></i>
           </Link>
-          <i className="far fa-paper-plane"></i>
+          <i
+            className="far fa-paper-plane"
+            onClick={() => setIsShare(!isShare)}
+          ></i>
         </div>
         {!savePost ? (
           <i
@@ -103,6 +115,9 @@ function CardFooter(props) {
           ></i>
         )}
       </div>
+      {isShare && (
+        <ShareModal url={`http://localhost:3000/post/${props.post._id}`} />
+      )}
     </div>
   );
 }

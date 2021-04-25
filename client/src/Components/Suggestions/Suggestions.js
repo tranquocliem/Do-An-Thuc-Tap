@@ -1,7 +1,6 @@
 import React from "react";
 import "./suggestions.css";
 import ListUsers from "../Header/ListUsers";
-import Toastify from "../Toastify/Toastify";
 import LoadingImg from "../../img/loading.gif";
 import { Link } from "react-router-dom";
 import BtnFollow from "./BtnFollow";
@@ -17,7 +16,6 @@ function Suggestions(props) {
 
   return (
     <>
-      <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
       <div className="main-suggestions">
         {props.myUser && (
           <Link to={`/profile/${props.user.username}/`}>

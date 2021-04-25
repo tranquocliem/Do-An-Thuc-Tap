@@ -3,8 +3,15 @@ import { Link } from "react-router-dom";
 import Avatar from "../../Avatar/Avatar";
 import moment from "moment";
 import "moment/locale/vi";
+import { MyToast } from "../../Toastify/toast";
 
 function CardHeader(props) {
+  const onCoppyLink = () => {
+    navigator.clipboard.writeText(
+      `http://localhost:3000/post/${props.post._id}`
+    );
+    MyToast("succ", "Đã Sao Chép Đường Dẫn");
+  };
   return (
     <>
       <div className="card_header">
@@ -56,7 +63,7 @@ function CardHeader(props) {
                 <i className="fas fa-info"></i> Chi tiết
               </Link>
             </div>
-            <div className="dropdown-item no-select">
+            <div className="dropdown-item no-select" onClick={onCoppyLink}>
               <i className="fas fa-copy"></i> Sao chép
             </div>
           </div>

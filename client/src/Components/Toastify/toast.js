@@ -15,7 +15,7 @@ export const MyToast = (title, message) => {
   } else if (title === "succ") {
     return toast.success(`🦄 ${message}`, {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 2500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: false,

@@ -55,21 +55,27 @@ function CommentCard({
   }, [heartComments, user._id]);
 
   const fDropHeartComment = async () => {
-    const variable = {
-      commentId: comment._id,
-      replyHeart: commentId,
-      postId: post._id,
-    };
-    const data = await dropHeartComment(variable);
-    if (data.success) {
+    try {
+      const variable = {
+        commentId: comment._id,
+        replyHeart: commentId,
+        postId: post._id,
+      };
+      await dropHeartComment(variable);
+      SetIsLike(true);
+      setTotalHeartComment(totalHeartComment + 1);
+    } catch (error) {
       SetIsLike(true);
       setTotalHeartComment(totalHeartComment + 1);
     }
   };
 
   const fUnHeartComment = async () => {
-    const data = await unHeartComment(comment._id);
-    if (data.success) {
+    try {
+      await unHeartComment(comment._id);
+      SetIsLike(false);
+      setTotalHeartComment(totalHeartComment - 1);
+    } catch (error) {
       SetIsLike(false);
       setTotalHeartComment(totalHeartComment - 1);
     }

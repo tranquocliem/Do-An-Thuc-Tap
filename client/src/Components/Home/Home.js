@@ -39,13 +39,14 @@ function Home() {
     }
   };
 
-  const getPostsForCreate = async (variable) => {
-    const data = await getPost(variable);
-    if (data.posts) {
-      setPosts([data.posts]);
-      setTotalPost(data.total);
-    }
-  };
+  // const getPostsForCreate = async (variable) => {
+  //   const data = await getPost(variable);
+
+  //   if (data.posts) {
+  //     setPosts([data.posts]);
+  //     setTotalPost(data.total);
+  //   }
+  // };
 
   useEffect(() => {
     setLoadingPost(true);
@@ -90,7 +91,7 @@ function Home() {
         getPosts(variable);
         setLoadingLoadMore(false);
         setOkScroll(true);
-      }, 500);
+      }, 650);
     }
   };
 
@@ -102,17 +103,21 @@ function Home() {
   // };
 
   const reloadPost = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    setLoadingPost(true);
-    setSkip(0);
-    setdem(1);
-    const variable = {
-      skip: 0,
-    };
+    // window.scrollTo({ top: 0.1, behavior: "smooth" });
+    // setLoadingPost(true);
+    // const variable = {
+    //   skip: 0,
+    // };
+    // setPosts([]);
+    // setSkip(0);
+    // setdem(1);
+    // setTimeout(() => {
+    //   getPostsForCreate(variable);
+    //   setLoadingPost(false);
+    // }, 600);
     setTimeout(() => {
-      setLoadingPost(false);
-      getPostsForCreate(variable);
-    }, 600);
+      window.location.reload();
+    }, 2700);
   };
 
   const getSuggestions = async (userID) => {

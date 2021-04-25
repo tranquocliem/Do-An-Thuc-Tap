@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { searchUser } from "../../Service/AccountService";
 import ListUsers from "./ListUsers";
 import ImgLoading from "../../img/loading.gif";
@@ -62,11 +62,6 @@ function Search() {
 
   return (
     <>
-      <ToastContainer
-        autoClose={2000}
-        pauseOnHover={false}
-        closeOnClick={false}
-      />
       <form
         onSubmit={(e) => e.preventDefault()}
         className="search-form mx-auto"

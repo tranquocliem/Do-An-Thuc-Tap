@@ -55,9 +55,26 @@ export const getPostById = (id) => {
     });
 };
 
-export const getPostByWriter = (id) => {
+export const getPostByWriter = (id, skip) => {
   return axios
-    .get(`/api/post/postByWriter?writer=${id}`)
+    .get(`/api/post/postByWriter?writer=${id}&skip=${skip}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
+export const getPostDiscover = (skip) => {
+  return axios
+    .get(`/api/post/getPostDiscover?skip=${skip}`)
     .then((res) => {
       return res.data;
     })

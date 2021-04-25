@@ -4,7 +4,6 @@ import { register } from "../../Service/AccountService";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./register.css";
-import Toastify from "../Toastify/Toastify";
 
 function Register(props) {
   const [userData, setUserData] = useState({
@@ -138,7 +137,6 @@ function Register(props) {
 
   return (
     <>
-      <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
       <div className="login-page">
         <form className="form-register">
           <h1 className="text-logo no-select text-uppercase text-center mb-3">

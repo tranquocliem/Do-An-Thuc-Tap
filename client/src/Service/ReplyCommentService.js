@@ -5,15 +5,6 @@ export const createReplyComment = (variable) => {
     .post("/api/replycomment/createReplyComment", variable)
     .then((res) => {
       return res.data;
-    })
-    .catch((err) => {
-      return {
-        message: {
-          msgBody: "Lỗi!!!",
-          msgError: true,
-        },
-        err,
-      };
     });
 };
 

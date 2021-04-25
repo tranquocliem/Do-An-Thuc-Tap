@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { checkImage, uploadImage } from "../../Shared/CheckImage";
-import Toastify from "../Toastify/Toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MyToast } from "../Toastify/toast";
@@ -53,7 +52,7 @@ function EditProfile(props) {
 
   const updateProfile = async (id) => {
     if (!userData.fullname) {
-      return MyToast("err", "Không bỏ trông họ và tên");
+      return MyToast("err", "Không bỏ trống họ và tên");
     } else if (userData.fullname.length > 35) {
       return MyToast("err", "Họ và tên quá dài");
     } else if (userData.story.length > 200) {
@@ -95,7 +94,6 @@ function EditProfile(props) {
   };
   return (
     <>
-      <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
       <div
         className="pending no-select"
         style={pending ? { display: "flex" } : { display: "none" }}

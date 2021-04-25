@@ -2,7 +2,10 @@ const express = require("express");
 const heartCommentRouter = express.Router();
 const passport = require("passport");
 const passportConfig = require("../configs/passport");
+const Comment = require("../models/Comment");
+const ReplyComment = require("../models/ReplyComment");
 const HeartComment = require("../models/HeartComment");
+const Post = require("../models/Post");
 
 // Thả tim comment
 heartCommentRouter.post(
@@ -14,6 +17,45 @@ heartCommentRouter.post(
       const { commentId, replyHeart, postId } = req.body;
 
       const isHeart = await HeartComment.findOne({ userId, commentId });
+
+      const post = await Post.findOne({ _id: postId });
+
+      if (!post) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bài viết không tồn tại",
+            msgErr: true,
+          },
+        });
+      }
+
+      if (commentId === replyHeart) {
+        const comment = await Comment.findOne({ _id: commentId });
+        if (!comment) {
+          return res.status(400).json({
+            success: false,
+            message: {
+              msgBody: "Bình luận không tồn tại",
+              msgErr: true,
+            },
+          });
+        }
+      } else {
+        const replyComment = await ReplyComment.findOne({
+          _id: commentId,
+          reply: replyHeart,
+        });
+        if (!replyComment) {
+          return res.status(400).json({
+            success: false,
+            message: {
+              msgBody: "Trả lời không tồn tại",
+              msgErr: true,
+            },
+          });
+        }
+      }
 
       if (isHeart) {
         return res.status(203).json({

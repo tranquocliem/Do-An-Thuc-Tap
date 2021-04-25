@@ -5,7 +5,7 @@
   height: 100vh;
   /* background-color: black; */
 }
-svg {
+.loading svg {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -14,18 +14,18 @@ svg {
   width: 100px;
   height: 150px;
 }
-svg g {
+.loading svg g {
   animation: slide 2s linear infinite;
 }
-svg g:nth-child(2) {
+.loading svg g:nth-child(2) {
   animation-delay: 0.5s;
 }
-svg g:nth-child(2) path {
+.loading svg g:nth-child(2) path {
   animation-delay: 0.5s;
   stroke-dasharray: 0px 158px;
   stroke-dashoffset: 1px;
 }
-svg path {
+.loading svg path {
   stroke: url(#gradient);
   stroke-width: 20px;
   stroke-linecap: round;

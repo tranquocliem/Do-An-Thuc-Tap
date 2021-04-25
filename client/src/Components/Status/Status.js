@@ -4,7 +4,6 @@ import Avatar from "../Avatar/Avatar";
 import { AuthContext } from "../../Context/AuthContext";
 import TextareaAutosize from "react-textarea-autosize";
 import { Link } from "react-router-dom";
-import Toastify from "../Toastify/Toastify";
 import { MyToast } from "../Toastify/toast";
 import "react-toastify/dist/ReactToastify.css";
 import LoadingImg from "../../img/loading.gif";
@@ -167,8 +166,8 @@ function Status(props) {
       const { message } = data;
       setPending(false);
       resetModal();
+      MyToast("succ", `${message.msgBody}, khởi động lại sau 2 giây`);
       props.reloadPost();
-      MyToast("succ", `${message.msgBody}`);
     } catch (error) {
       return MyToast("err", `${error}`);
     }
@@ -176,7 +175,6 @@ function Status(props) {
 
   return (
     <>
-      <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
       <div
         className="pending no-select"
         style={pending ? { display: "flex" } : { display: "none" }}

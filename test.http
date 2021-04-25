@@ -22,7 +22,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"tranquocliem",
+    "username":"test",
     "password":"123456"
 }
 
@@ -134,7 +134,12 @@ GET   {{baseURL}}/post/postById?id=607a51f922b9401064cf6025
 ###
 
 # @name GetPostsByWriter
-GET {{baseURL}}/post/postByWriter?writer=60744a94ead6c73ee8dfd9a3
+GET {{baseURL}}/post/postByWriter?writer=60744a94ead6c73ee8dfd9a3&skip=0
+
+###
+
+# @name GetPostsDiscover
+GET {{baseURL}}/post/getPostDiscover?skip=0
 
 ###
 
@@ -167,6 +172,12 @@ Content-Type: application/json
         }
     ]
 }
+
+###
+
+# @name DeletePost
+DELETE {{baseURL}}/post/deletePost?_id=608543fd0ac0d32428ec2b45
+
 
 ###
 

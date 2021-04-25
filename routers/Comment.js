@@ -5,6 +5,7 @@ const passportConfig = require("../configs/passport");
 const Comment = require("../models/Comment");
 const ReplyComment = require("../models/ReplyComment");
 const HeartComment = require("../models/HeartComment");
+const Post = require("../models/Post");
 
 // Tạo bình luận
 commentRouter.post(
@@ -20,6 +21,18 @@ commentRouter.post(
         postId,
         postUserId,
       });
+
+      const post = await Post.findOne({ _id: postId });
+
+      if (!post) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bài viết không tồn tại",
+            msgErr: true,
+          },
+        });
+      }
 
       await newComment.save();
 

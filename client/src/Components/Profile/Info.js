@@ -101,7 +101,7 @@ function Info(props) {
                     type="button"
                     onClick={() => setOnModal(true)}
                   >
-                    Chỉnh sửa
+                    <i className="fas fa-cog"></i>
                   </button>
                 ) : (
                   <FollowBtn

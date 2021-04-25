@@ -278,7 +278,7 @@ var Images =
               className: "cover-text",
               style: { fontSize: "200%" },
             },
-            React.createElement("p", null, "+", extra)
+            React.createElement("p", null, "+", extra + 1)
           ),
       ];
     };

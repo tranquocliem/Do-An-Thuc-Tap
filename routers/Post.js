@@ -4,6 +4,10 @@ const passport = require("passport");
 const passportConfig = require("../configs/passport");
 const Post = require("../models/Post");
 const cloudinary = require("cloudinary").v2;
+const Comment = require("../models/Comment");
+const ReplyComment = require("../models/ReplyComment");
+const Heart = require("../models/Heart");
+const HeartComment = require("../models/HeartComment");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -112,15 +116,10 @@ postRouter.get(
     try {
       const _id = req.query.id;
 
-      const post = await Post.findOne({ _id })
-        .populate("writer", "username fullname avatar")
-        .populate({
-          path: "comments",
-          populate: {
-            path: "user likes",
-            select: "-password",
-          },
-        });
+      const post = await Post.findOne({ _id }).populate(
+        "writer",
+        "username fullname avatar"
+      );
 
       res.status(200).json({
         success: true,
@@ -150,9 +149,15 @@ postRouter.get(
     try {
       const { writer } = req.query;
 
+      const skip = req.query.skip ? req.query.skip : 0;
+
       const posts = await Post.find({ writer })
         .sort("-createdAt")
+        .skip(parseInt(skip))
+        .limit(4)
         .populate("writer", "username fullname avatar");
+
+      const totalPosts = await Post.countDocuments({ writer });
 
       return res.status(200).json({
         success: true,
@@ -160,7 +165,7 @@ postRouter.get(
           msgBody: "Lấy bài viết thành công",
           msgError: false,
         },
-        total: posts.length,
+        total: totalPosts,
         posts,
       });
     } catch (error) {
@@ -170,6 +175,48 @@ postRouter.get(
           msgBody: "Lấy bài viết không thành công",
           msgError: true,
         },
+        error,
+      });
+    }
+  }
+);
+
+// Get bài viết cho discover
+postRouter.get(
+  "/getPostDiscover",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const skip = req.query.skip ? req.query.skip : 0;
+      const { _id, following } = req.user;
+
+      const posts = await Post.find({ writer: { $nin: [...following, _id] } })
+        .sort("-createdAt")
+        .skip(parseInt(skip))
+        .limit(8)
+        .populate("writer", "username fullname avatar");
+
+      const total = await Post.countDocuments({
+        writer: { $nin: [...following, _id] },
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Lấy bài viết thành công",
+          msgError: false,
+        },
+        total: total,
+        posts,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lấy bài viết không thành công",
+          msgError: true,
+        },
+        error,
       });
     }
   }
@@ -259,6 +306,78 @@ postRouter.patch(
         success: false,
         message: {
           msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+// Delete post
+postRouter.delete(
+  "/deletePost",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { _id } = req.query;
+      const post = await Post.findOne({ _id });
+
+      if (post) {
+        const IMG = post.images;
+        const writer = post.writer;
+        if (req.user._id.toString() === writer.toString()) {
+          IMG.map((item) => {
+            cloudinary.uploader.destroy(item.public_id, async (err, result) => {
+              if (err) {
+                return res.status(400).json({
+                  success: false,
+                  message: {
+                    msgBody: "Lôi!!!",
+                    msgError: true,
+                  },
+                  err,
+                });
+              }
+            });
+          });
+
+          await Post.deleteOne({ _id });
+          await Comment.deleteMany({ postId: _id });
+          await ReplyComment.deleteMany({ postId: _id });
+          await Heart.deleteMany({ postId: _id });
+          await HeartComment.deleteMany({ postId: _id });
+
+          return res.status(200).json({
+            success: true,
+            message: {
+              msgBody: "Xoá bài viết thành công",
+              msgError: false,
+            },
+          });
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: {
+              msgBody: "Có lỗi về quyền",
+              msgError: true,
+            },
+          });
+        }
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bài viết không tồn tại",
+            msgError: true,
+          },
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
           msgError: true,
         },
         error,

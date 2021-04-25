@@ -3,6 +3,7 @@ const heartRouter = express.Router();
 const passport = require("passport");
 const passportConfig = require("../configs/passport");
 const Heart = require("../models/Heart");
+const Post = require("../models/Post");
 
 // Thả tim
 heartRouter.post(
@@ -14,6 +15,18 @@ heartRouter.post(
       const { postId } = req.body;
 
       const isHeart = await Heart.findOne({ userId, postId });
+
+      const post = await Post.findOne({ _id: postId });
+
+      if (!post) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bài viết không tồn tại",
+            msgErr: true,
+          },
+        });
+      }
 
       if (isHeart) {
         return res.status(203).json({

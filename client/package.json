@@ -16,6 +16,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-share": "^4.4.0",
     "react-textarea-autosize": "^8.3.2",
     "react-toastify": "^7.0.3",
     "react-waypoint": "^9.0.3",

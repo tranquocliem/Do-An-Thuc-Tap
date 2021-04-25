@@ -5,7 +5,6 @@ import {
   getPostById,
   updatePost,
 } from "../../../Service/PostService";
-import Toastify from "../../Toastify/Toastify";
 import { MyToast } from "../../Toastify/toast";
 import LoadingImg from "../../../img/loading.gif";
 import CardBody from "../Post_Card/CardBody";
@@ -21,12 +20,14 @@ import Emoji from "../../Emoji/Emoji";
 import TextareaAutosize from "react-textarea-autosize";
 import CommentDetail from "./CommentDetail";
 import "../posts.css";
+import NotFound from "../../NotFound/NotFound";
 
 function DetailPost(props) {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const [post, setPost] = useState();
   const [loadingPost, setLoadingPost] = useState(false);
+  const [exist, setExist] = useState(true);
 
   const [onModal, setOnModal] = useState(false);
 
@@ -56,9 +57,12 @@ function DetailPost(props) {
         setContent(data.post.content);
         setImages(data.post.images);
         setLoadingPost(false);
+        setExist(true);
+      } else {
+        setExist(false);
       }
     } catch (error) {
-      MyToast("err", "Có lỗi xãy ra");
+      MyToast("err", "Có lỗi xãy ra, hoặc không tồn tại");
     }
   };
 
@@ -236,261 +240,271 @@ function DetailPost(props) {
     }
   };
 
-  return (
-    <>
-      <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
-      <div className="container">
-        <div className="row home">
-          <div className="col">
-            {loadingPost ? (
-              <img
-                src={LoadingImg}
-                alt="loading-posts"
-                className="mt-5 no-select"
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%,-50%)",
-                }}
-              />
-            ) : (
-              <div className="post">
-                <div className="card my-3 mx-auto">
-                  <div className="card_header">
-                    <div className="d-flex">
-                      <Avatar user={post && post.writer} size="big-avatar" />
-                      <div className="card-name">
-                        <h6 className="m-0">
-                          <Link
-                            to={
-                              post ? `/profile/${post.writer.username}` : "!#"
-                            }
-                          >
-                            {post && post.writer.username}
-                          </Link>
-                        </h6>
-                        <small className="text-muted no-select">
-                          {`${moment(
-                            post && post.createdAt
-                          ).fromNow()} (${moment(post && post.createdAt).format(
-                            "L"
-                          )})`}
-                        </small>
-                      </div>
-                    </div>
-                    <div className="nav-item dropdown">
-                      <i
-                        className="fas fa-ellipsis-h"
-                        id="moreLink"
-                        data-toggle="dropdown"
-                      ></i>
-                      <div className="dropdown-menu">
-                        {post && user._id === post.writer._id && (
-                          <>
-                            <div
-                              className="dropdown-item no-select"
-                              onClick={offOnModal}
+  if (exist && post !== null) {
+    return (
+      <>
+        <div className="container">
+          <div className="row home">
+            <div className="col">
+              {loadingPost ? (
+                <img
+                  src={LoadingImg}
+                  alt="loading-posts"
+                  className="mt-5 no-select"
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%,-50%)",
+                  }}
+                />
+              ) : (
+                <div className="post">
+                  <div className="card my-3 mx-auto">
+                    <div className="card_header">
+                      <div className="d-flex">
+                        <Avatar user={post && post.writer} size="big-avatar" />
+                        <div className="card-name">
+                          <h6 className="m-0">
+                            <Link
+                              to={
+                                post ? `/profile/${post.writer.username}` : "!#"
+                              }
                             >
-                              <i className="fas fa-edit"></i> Chỉnh sửa
-                            </div>
-                            <div className="dropdown-item no-select">
-                              <i className="fas fa-trash-alt"></i> Xoá bài viết
-                            </div>
-                          </>
-                        )}
-                        <div className="dropdown-item no-select">
-                          <i className="fas fa-copy"></i> Sao chép
+                              {post && post.writer.username}
+                            </Link>
+                          </h6>
+                          <small className="text-muted no-select">
+                            {`${moment(
+                              post && post.createdAt
+                            ).fromNow()} (${moment(
+                              post && post.createdAt
+                            ).format("L")})`}
+                          </small>
+                        </div>
+                      </div>
+                      <div className="nav-item dropdown">
+                        <i
+                          className="fas fa-ellipsis-h"
+                          id="moreLink"
+                          data-toggle="dropdown"
+                        ></i>
+                        <div className="dropdown-menu">
+                          {post && user._id === post.writer._id && (
+                            <>
+                              <div
+                                className="dropdown-item no-select"
+                                onClick={offOnModal}
+                              >
+                                <i className="fas fa-edit"></i> Chỉnh sửa
+                              </div>
+                              <div className="dropdown-item no-select">
+                                <i className="fas fa-trash-alt"></i> Xoá bài
+                                viết
+                              </div>
+                            </>
+                          )}
+                          <div className="dropdown-item no-select">
+                            <i className="fas fa-copy"></i> Sao chép
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <CardBody post={post} />
+                    <CardFooter post={post} user={user} />
+                    <CommentDetail post={post} postId={id} user={user} />
                   </div>
-                  <CardBody post={post} />
-                  <CardFooter post={post} user={user} />
-                  <CommentDetail post={post} postId={id} user={user} />
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <footer className="bg-light text-center text-lg-start mb-5"></footer>
+        <footer className="bg-light text-center text-lg-start mb-5"></footer>
 
-      <div
-        className="pending no-select"
-        style={pending ? { display: "flex" } : { display: "none" }}
-      >
-        <div className="spinner-loading font-weight-bold">
-          <Loading bg="none" />
-        </div>
-      </div>
-
-      {/* Modal Edit */}
-      <div>
-        {onModal ? <div className="my-show" onClick={offOnModal}></div> : null}
         <div
-          className="my-modal"
-          style={!onModal ? { display: "none", overflow: "hidden" } : null}
+          className="pending no-select"
+          style={pending ? { display: "flex" } : { display: "none" }}
         >
-          <div className="modal-dialog my-3">
-            <div className="modal-content">
-              <div className="modal-header d-flex justify-content-center">
-                <h5
-                  className="modal-title font-weight-bold"
-                  id="exampleModalLabel"
+          <div className="spinner-loading font-weight-bold">
+            <Loading bg="none" />
+          </div>
+        </div>
+
+        {/* Modal Edit */}
+        <div>
+          {onModal ? (
+            <div className="my-show" onClick={offOnModal}></div>
+          ) : null}
+          <div
+            className="my-modal"
+            style={!onModal ? { display: "none", overflow: "hidden" } : null}
+          >
+            <div className="modal-dialog my-3">
+              <div className="modal-content">
+                <div className="modal-header d-flex justify-content-center">
+                  <h5
+                    className="modal-title font-weight-bold"
+                    id="exampleModalLabel"
+                  >
+                    Cập nhật bài viết
+                  </h5>
+                </div>
+                <button
+                  className="btn btn-dark close-status btn-floating"
+                  onClick={offOnModal}
                 >
-                  Tạo bài viết
-                </h5>
-              </div>
-              <button
-                className="btn btn-dark close-status btn-floating"
-                onClick={offOnModal}
-              >
-                X
-              </button>
-              <div className="modal-body">
-                <form>
-                  <div className="form-group no-select">
-                    <TextareaAutosize
-                      ref={(textarea) => {
-                        document.testInput = textarea;
-                      }}
-                      minRows="2"
-                      maxRows="4"
-                      className="textarea-content w-100"
-                      id="content"
-                      name="content"
-                      spellCheck="false"
-                      placeholder={`${
-                        fulln[fulln.length - 1]
-                      } ơi, bạn đang nghĩ gì thế?`}
-                      value={content}
-                      onChange={(e) => setContent(e.target.value)}
-                    />
-                    <span
-                      className="show-emoji"
-                      role="img"
-                      aria-labelledby=""
-                      onClick={onOffshowEmoji}
-                    >
-                      😊
-                    </span>
-                  </div>
+                  X
+                </button>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group no-select">
+                      <TextareaAutosize
+                        ref={(textarea) => {
+                          document.testInput = textarea;
+                        }}
+                        minRows="2"
+                        maxRows="4"
+                        className="textarea-content w-100"
+                        id="content"
+                        name="content"
+                        spellCheck="false"
+                        placeholder={`${
+                          fulln[fulln.length - 1]
+                        } ơi, bạn đang nghĩ gì thế?`}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                      />
+                      <span
+                        className="show-emoji"
+                        role="img"
+                        aria-labelledby=""
+                        onClick={onOffshowEmoji}
+                      >
+                        😊
+                      </span>
+                    </div>
 
-                  {showEmoji && <Emoji addEmoji={addEmoji} />}
+                    {showEmoji && <Emoji addEmoji={addEmoji} />}
 
-                  <div className="form-group show-images">
-                    {images.map((img, i) => (
-                      <div key={i} id="file-img">
-                        <img
-                          className="img-thumbnail no-select"
-                          src={
-                            img.camera
-                              ? img.camera
-                              : img.url
-                              ? img.url
-                              : URL.createObjectURL(img)
-                          }
-                          alt="images"
+                    <div className="form-group show-images">
+                      {images.map((img, i) => (
+                        <div key={i} id="file-img">
+                          <img
+                            className="img-thumbnail no-select"
+                            src={
+                              img.camera
+                                ? img.camera
+                                : img.url
+                                ? img.url
+                                : URL.createObjectURL(img)
+                            }
+                            alt="images"
+                          />
+                          <span
+                            className="no-select"
+                            onClick={() => deleteImages(i, img)}
+                          >
+                            <p>&times;</p>
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {camera && (
+                      <div className="camera position-relative">
+                        {!showCamera && (
+                          <img
+                            src={LoadingImg}
+                            alt="loading-camera"
+                            className="d-block mx-auto mt-2"
+                          />
+                        )}
+                        <video
+                          style={{
+                            transform: !reverse ? "scalex(1)" : "scalex(-1)",
+                          }}
+                          src=""
+                          autoPlay
+                          muted
+                          ref={cameraRef}
+                          width="100%"
+                          height="100%"
+                          className="mt-2"
                         />
-                        <span
-                          className="no-select"
-                          onClick={() => deleteImages(i, img)}
-                        >
-                          <p>&times;</p>
-                        </span>
+                        <canvas
+                          ref={canvasRef}
+                          style={{
+                            display: "none",
+                            transform: !reverse ? "scalex(1)" : "scalex(-1)",
+                          }}
+                        />
+                        {btnStopCamera && (
+                          <span onClick={offCamera}>&times;</span>
+                        )}
                       </div>
-                    ))}
-                  </div>
+                    )}
 
-                  {camera && (
-                    <div className="camera position-relative">
-                      {!showCamera && (
-                        <img
-                          src={LoadingImg}
-                          alt="loading-camera"
-                          className="d-block mx-auto mt-2"
-                        />
-                      )}
-                      <video
-                        style={{
-                          transform: !reverse ? "scalex(1)" : "scalex(-1)",
-                        }}
-                        src=""
-                        autoPlay
-                        muted
-                        ref={cameraRef}
-                        width="100%"
-                        height="100%"
-                        className="mt-2"
-                      />
-                      <canvas
-                        ref={canvasRef}
-                        style={{
-                          display: "none",
-                          transform: !reverse ? "scalex(1)" : "scalex(-1)",
-                        }}
-                      />
-                      {btnStopCamera && (
-                        <span onClick={offCamera}>&times;</span>
+                    <div className="input-images form-group mt-3">
+                      {camera ? (
+                        <>
+                          <i
+                            className="fas fa-camera no-select"
+                            onClick={onCapture}
+                          />
+                          <i
+                            style={{
+                              transform: reverse ? "scalex(1)" : "scalex(-1)",
+                            }}
+                            className="fas fa-redo-alt no-select"
+                            onClick={reverseCamera}
+                          ></i>
+                        </>
+                      ) : (
+                        <>
+                          <i
+                            className="fas fa-camera no-select"
+                            onClick={onCamera}
+                          />
+                          <div className="file-upload">
+                            <i className="fas fa-image" />
+                            <input
+                              className="no-select"
+                              type="file"
+                              name="file"
+                              id="file"
+                              multiple
+                              accept="image/*"
+                              onChange={uploadImages}
+                            />
+                          </div>
+                        </>
                       )}
                     </div>
-                  )}
-
-                  <div className="input-images form-group mt-3">
-                    {camera ? (
-                      <>
-                        <i
-                          className="fas fa-camera no-select"
-                          onClick={onCapture}
-                        />
-                        <i
-                          style={{
-                            transform: reverse ? "scalex(1)" : "scalex(-1)",
-                          }}
-                          className="fas fa-redo-alt no-select"
-                          onClick={reverseCamera}
-                        ></i>
-                      </>
-                    ) : (
-                      <>
-                        <i
-                          className="fas fa-camera no-select"
-                          onClick={onCamera}
-                        />
-                        <div className="file-upload">
-                          <i className="fas fa-image" />
-                          <input
-                            className="no-select"
-                            type="file"
-                            name="file"
-                            id="file"
-                            multiple
-                            accept="image/*"
-                            onChange={uploadImages}
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </form>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-dark w-100"
-                  onClick={onSubmit}
-                >
-                  Đăng
-                </button>
+                  </form>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-dark w-100"
+                    onClick={onSubmit}
+                  >
+                    Cập nhật
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
+  } else {
+    return (
+      <>
+        <NotFound />
+      </>
+    );
+  }
 }
 
 export default DetailPost;

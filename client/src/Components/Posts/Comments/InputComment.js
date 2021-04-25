@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createComment } from "../../../Service/CommentService";
 import { createReplyComment } from "../../../Service/ReplyCommentService";
 import "./comments.css";
+import { MyToast } from "../../Toastify/toast";
 
 function InputComment({
   post,
@@ -20,27 +21,38 @@ function InputComment({
     if (!content.trim()) return;
 
     if (reply) {
-      const newReplyComment = {
-        postId: post._id,
-        postUserId: post.writer._id,
-        content,
-        tag: comment.writer,
-        reply,
-      };
-      await createReplyComment(newReplyComment);
-      setContent("");
-      setOnReply(false);
-      reloadComment();
-      reloadReplyComment();
+      try {
+        const newReplyComment = {
+          postId: post._id,
+          postUserId: post.writer._id,
+          content,
+          tag: comment.writer,
+          reply,
+        };
+        await createReplyComment(newReplyComment);
+
+        setContent("");
+        setOnReply(false);
+        reloadComment();
+        reloadReplyComment();
+      } catch (error) {
+        reloadComment();
+        reloadReplyComment();
+        MyToast("err", "Bài viết hoặc bình luận không tồn tại");
+      }
     } else {
-      const newComment = {
-        postId: post._id,
-        postUserId: post.writer._id,
-        content,
-      };
-      await createComment(newComment);
-      setContent("");
-      reloadComment();
+      try {
+        const newComment = {
+          postId: post._id,
+          postUserId: post.writer._id,
+          content,
+        };
+        await createComment(newComment);
+        setContent("");
+        reloadComment();
+      } catch (error) {
+        MyToast("err", "Bài viết hoặc bình luận không tồn tại");
+      }
     }
   };
 
