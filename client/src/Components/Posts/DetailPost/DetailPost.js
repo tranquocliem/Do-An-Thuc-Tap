@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import {
+  deletePost,
   destroyImages,
   getPostById,
   updatePost,
@@ -240,6 +241,21 @@ function DetailPost(props) {
     }
   };
 
+  const onDeletePost = async () => {
+    try {
+      if (window.confirm("Bạn có chắc muốn xoá bài viết")) {
+        await deletePost(id);
+        setLoadingPost(true);
+        MyToast("succ", "Xoá bài viết thành công");
+        setTimeout(() => {
+          window.history.back();
+        }, 1500);
+      }
+    } catch (error) {
+      MyToast("err", "Xoá bài viết không thành công");
+    }
+  };
+
   if (exist && post !== null) {
     return (
       <>
@@ -298,7 +314,10 @@ function DetailPost(props) {
                               >
                                 <i className="fas fa-edit"></i> Chỉnh sửa
                               </div>
-                              <div className="dropdown-item no-select">
+                              <div
+                                className="dropdown-item no-select"
+                                onClick={onDeletePost}
+                              >
                                 <i className="fas fa-trash-alt"></i> Xoá bài
                                 viết
                               </div>

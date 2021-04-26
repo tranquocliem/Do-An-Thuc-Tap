@@ -8,6 +8,8 @@ const Comment = require("../models/Comment");
 const ReplyComment = require("../models/ReplyComment");
 const Heart = require("../models/Heart");
 const HeartComment = require("../models/HeartComment");
+const SavePost = require("../models/SavePost");
+const Account = require("../models/Account");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -76,14 +78,14 @@ postRouter.post(
         .sort("-createdAt")
         .skip(skip)
         .limit(3)
-        .populate("writer", "username fullname avatar")
-        .populate({
-          path: "comments",
-          populate: {
-            path: "user likes",
-            select: "-password",
-          },
-        });
+        .populate("writer", "username fullname avatar");
+      // .populate({
+      //   path: "comments",
+      //   populate: {
+      //     path: "user likes",
+      //     select: "-password",
+      //   },
+      // });
       const total = await Post.countDocuments({ writer: [...following, _id] });
 
       return res.status(200).json({
@@ -373,6 +375,184 @@ postRouter.delete(
           },
         });
       }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+// Save post
+postRouter.post(
+  "/savePost",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { postId } = req.body;
+      const userId = req.user._id;
+      const newSavePost = new SavePost({ userId, postId });
+
+      const post = await Post.findOne({ _id: postId });
+      const savePost = await SavePost.findOne({ userId, postId });
+
+      if (!post) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bài viết không tồn tại",
+            msgError: true,
+          },
+        });
+      } else if (post.writer.toString() === userId.toString()) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bạn là tác giả của bài viết này",
+            msgError: true,
+          },
+        });
+      }
+
+      if (savePost) {
+        return res.status(400).json({
+          success: false,
+          message: {
+            msgBody: "Bạn đã lưu bài viết này rồi",
+            msgError: true,
+          },
+        });
+      }
+
+      await newSavePost.save();
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Lưu bài viết thành công",
+          msgError: false,
+        },
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+// Get save post by userId
+postRouter.get(
+  "/getSavePostByUser",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const userId = req.user._id;
+
+      const savePost = await SavePost.find({ userId }).populate({
+        path: "postId",
+        model: Post,
+        options: {
+          populate: {
+            path: "writer",
+            model: Account,
+            select: "-password",
+          },
+        },
+      });
+
+      return res.status(200).json({
+        success: true,
+        total: savePost.length,
+        message: {
+          msgBody: "Lấy bài viết thành công",
+          msgError: false,
+        },
+        savePost,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+// Get save post by postId
+postRouter.get(
+  "/getSavePostByPost",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { postId } = req.query;
+
+      const savePost = await SavePost.find({ postId }).populate({
+        path: "postId",
+        model: Post,
+        options: {
+          populate: {
+            path: "writer",
+            model: Account,
+            select: "-password",
+          },
+        },
+      });
+
+      return res.status(200).json({
+        success: true,
+        total: savePost.length,
+        message: {
+          msgBody: "Lấy bài viết thành công",
+          msgError: false,
+        },
+        savePost,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+// Delete save post
+postRouter.delete(
+  "/deleteSavePost",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { postId } = req.query;
+      const userId = req.user._id;
+
+      await SavePost.findOneAndDelete({ userId, postId });
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Xoá bài viết thành công",
+          msgError: false,
+        },
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,

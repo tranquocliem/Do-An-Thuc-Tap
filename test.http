@@ -1,7 +1,6 @@
 @baseURL = http://localhost:8000/api
 
-# Account
-
+// ------------------------------------------------------------ ACCOUNT ------------------------------------------------------------ //
 # @name Register
 POST {{baseURL}}/account/register
 Content-Type: application/json
@@ -68,6 +67,16 @@ GET {{baseURL}}/account/authenticated
 
 ###
 
+# @name Suggestions
+GET {{baseURL}}/account/suggestions
+
+###
+
+// ------------------------------------------------------------ ACCOUNT ------------------------------------------------------------ //
+
+
+
+// ------------------------------------------------------------ FOLLOW ------------------------------------------------------------ //
 # @name Follow
 POST {{baseURL}}/follow/following
 Content-Type: application/json
@@ -118,6 +127,11 @@ Content-Type: application/json
 
 ###
 
+// ------------------------------------------------------------ FOLLOW ------------------------------------------------------------ //
+
+
+
+// ------------------------------------------------------------ POST ------------------------------------------------------------ //
 # @name GetPosts
 POST {{baseURL}}/post/getPost
 Content-Type: application/json
@@ -178,14 +192,13 @@ Content-Type: application/json
 # @name DeletePost
 DELETE {{baseURL}}/post/deletePost?_id=608543fd0ac0d32428ec2b45
 
-
 ###
 
-# @name Suggestions
-GET {{baseURL}}/account/suggestions
+// ------------------------------------------------------------ POST ------------------------------------------------------------ //
 
-###
 
+
+// ------------------------------------------------------------ HEART ------------------------------------------------------------ //
 # @name DropHeart
 POST  {{baseURL}}/heart/dropHeart
 Content-Type: application/json
@@ -211,6 +224,11 @@ GET    {{baseURL}}/heart/getHeartPost?id=607a51f922b9401064cf6025
 
 ###
 
+// ------------------------------------------------------------ HEART ------------------------------------------------------------ //
+
+
+
+// ------------------------------------------------------------ COMMENT ------------------------------------------------------------ //
 # @name GetCommentByPostId
 GET    {{baseURL}}/comment/getComment?postId=607ea73a96e54c1b1c2c103c&limit=2
 
@@ -226,6 +244,16 @@ Content-Type: application/json
 
 ###
 
+# @name DeleteComment
+DELETE {{baseURL}}/comment/deleteComment?_id=6081511e17fca809502a3f7f
+
+###
+
+// ------------------------------------------------------------ COMMENT ------------------------------------------------------------ //
+
+
+
+// ------------------------------------------------------------ REPLYCOMMENT ------------------------------------------------------------ //
 # @name UpdateReplyComment
 PATCH  {{baseURL}}/replycomment/updateReplyComment?_id=608106127f8f2d3f7491e345
 Content-Type: application/json
@@ -236,16 +264,16 @@ Content-Type: application/json
 
 ###
 
-# @name DeleteComment
-DELETE {{baseURL}}/comment/deleteComment?_id=6081511e17fca809502a3f7f
-
-###
-
 # @name DeleteReplyComment
 DELETE {{baseURL}}/replycomment/deleteReplyComment?_id=60815070eb5f1a2e2c209aef
 
 ###
 
+// ------------------------------------------------------------ REPLYCOMMENT ------------------------------------------------------------ //
+
+
+
+// ------------------------------------------------------------ HEARTCOMMENT ------------------------------------------------------------ //
 # @name DropHeartComment
 POST {{baseURL}}/heartcomment/dropHeartComment
 Content-Type: application/json
@@ -263,3 +291,35 @@ DELETE {{baseURL}}/heartcomment/unHeartComment?commentId=607fd6d2b747a30200c3c57
 
 # @name GetHeartComment
 GET {{baseURL}}/heartcomment/getHeartComment?id=607fd6d2b747a30200c3c57c
+
+###
+
+// ------------------------------------------------------------ HEARTCOMMENT ------------------------------------------------------------ //
+
+
+
+// ------------------------------------------------------------ POST ------------------------------------------------------------ //
+# @name SavePost
+POST {{baseURL}}/post/savePost
+Content-Type: application/json
+
+{
+    "postId":"6083e9c14a644e33a890fb5b"
+}
+
+###
+
+# @name GetSavePostByUser
+GET {{baseURL}}/post/getSavePostByUser
+
+###
+
+# @name GetSavePostByPost
+GET {{baseURL}}/post/getSavePostByPost?postId=6083e9c14a644e33a890fb5b
+
+###
+
+# @name DeleteSavePost
+DELETE {{baseURL}}/post/deleteSavePost?postId=6083e9c14a644e33a890fb5b
+
+// ------------------------------------------------------------ POST ------------------------------------------------------------ //

@@ -26,6 +26,7 @@ function Home() {
   const [loadingLoadMore, setLoadingLoadMore] = useState(false);
 
   const [okScroll, setOkScroll] = useState(true);
+  const [hideWaypoint, setHideWaypoint] = useState(false);
 
   const { user } = useContext(AuthContext);
 
@@ -39,14 +40,13 @@ function Home() {
     }
   };
 
-  // const getPostsForCreate = async (variable) => {
-  //   const data = await getPost(variable);
-
-  //   if (data.posts) {
-  //     setPosts([data.posts]);
-  //     setTotalPost(data.total);
-  //   }
-  // };
+  const getPostsForCreate = async (variable) => {
+    const data = await getPost(variable);
+    if (data.posts) {
+      setPosts([data.posts]);
+      setTotalPost(data.total);
+    }
+  };
 
   useEffect(() => {
     setLoadingPost(true);
@@ -73,14 +73,15 @@ function Home() {
 
   const totalLoadmore = Math.ceil(totalPost / 3);
 
-  const infiniteScroll = () => {
+  const infiniteScroll = async () => {
     if (totalLoadmore === dem || totalPost <= 3) return;
 
     setLoadingLoadMore(true);
 
     setOkScroll(false);
+
     if (okScroll) {
-      setTimeout(() => {
+      try {
         const Skip = skip + 3;
         const Dem = dem + 1;
         const variable = {
@@ -88,10 +89,24 @@ function Home() {
         };
         setSkip(Skip);
         setdem(Dem);
-        getPosts(variable);
+        await getPosts(variable);
         setLoadingLoadMore(false);
         setOkScroll(true);
-      }, 650);
+      } catch (error) {
+        console.log(error);
+      }
+      //   setTimeout(() => {
+      //     const Skip = skip + 3;
+      //     const Dem = dem + 1;
+      //     const variable = {
+      //       skip: Skip,
+      //     };
+      //     setSkip(Skip);
+      //     setdem(Dem);
+      //     getPosts(variable);
+      //     setLoadingLoadMore(false);
+      //     setOkScroll(true);
+      //   }, 650);
     }
   };
 
@@ -102,7 +117,24 @@ function Home() {
   //   }
   // };
 
-  const reloadPost = () => {
+  const reloadPost = async () => {
+    try {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setLoadingPost(true);
+      setHideWaypoint(true);
+      const variable = {
+        skip: 0,
+      };
+      setPosts([]);
+      setSkip(0);
+      setdem(1);
+      await getPostsForCreate(variable);
+      setLoadingPost(false);
+      setHideWaypoint(false);
+    } catch (error) {
+      console.log(error);
+    }
+
     // window.scrollTo({ top: 0.1, behavior: "smooth" });
     // setLoadingPost(true);
     // const variable = {
@@ -115,9 +147,10 @@ function Home() {
     //   getPostsForCreate(variable);
     //   setLoadingPost(false);
     // }, 600);
-    setTimeout(() => {
-      window.location.reload();
-    }, 2700);
+
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 2700);
   };
 
   const getSuggestions = async (userID) => {
@@ -226,7 +259,7 @@ function Home() {
             />
           </div>
         </div>
-        {totalPost <= 3 || dem === totalLoadmore ? null : (
+        {totalPost <= 3 || dem === totalLoadmore || hideWaypoint ? null : (
           <Waypoint onEnter={infiniteScroll}></Waypoint>
         )}
       </div>

@@ -62,8 +62,8 @@ function EditProfile(props) {
       let media;
       setPending(true);
       if (avatar) {
+        await destroyAvatar();
         media = await uploadImage([avatar]);
-        destroyAvatar();
       }
       const variable = {
         fullname: userData.fullname,

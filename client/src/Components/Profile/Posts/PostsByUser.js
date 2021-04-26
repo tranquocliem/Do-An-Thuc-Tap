@@ -39,7 +39,7 @@ function PostsByUser({ user }) {
     setTimeout(() => {
       setLoadingPosts(true);
       setHidenLoading(false);
-    }, 400);
+    }, 550);
     setTimeout(() => {
       user._id && fgetPostByWriter(user._id, 0);
     }, 1000);
@@ -50,7 +50,7 @@ function PostsByUser({ user }) {
 
   const totalLoadmore = Math.ceil(totalPosts / 4);
 
-  const loadMore = () => {
+  const loadMore = async () => {
     if (totalLoadmore === dem || totalPosts <= 4) return;
 
     setLoadingLoadMore(true);
@@ -58,10 +58,8 @@ function PostsByUser({ user }) {
     const Dem = dem + 1;
     setSkip(Skip);
     setdem(Dem);
-    setTimeout(() => {
-      fLoadMorePostByWriter(user._id, Skip);
-      setLoadingLoadMore(false);
-    }, 650);
+    await fLoadMorePostByWriter(user._id, Skip);
+    setLoadingLoadMore(false);
   };
 
   return (

@@ -106,6 +106,23 @@ export const updatePost = (id, variable) => {
     });
 };
 
+export const deletePost = (id) => {
+  return axios
+    .delete(`/api/post/deletePost?_id=${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
 export const destroyImages = (variable) => {
   return axios
     .post("/api/post/destroyImages", variable)
