@@ -12,6 +12,7 @@ function CommentDisplay({ post, comment, user, reloadComment }) {
   const [loadingShowReplyComment, setLoadingShowReplyComment] = useState(false);
 
   const fGetReplyComment = async (id, reply, limit) => {
+    if (!id || id !== post._id || reply !== comment._id) return;
     const data = await getReplyComment(id, reply, limit);
     setReplyComments(data.Replycomments);
     setTotalReplyComments(data.total);
@@ -32,14 +33,14 @@ function CommentDisplay({ post, comment, user, reloadComment }) {
     }, 300);
   }, [post._id, comment._id, limit]);
 
-  const reloadReplyComment = () => {
-    fGetReplyComment(post._id, comment._id, limit);
-    setLimit(setTotalReplyComments);
+  const reloadReplyComment = async () => {
+    await fGetReplyComment(post._id, comment._id, limit);
+    setLimit(totalReplyComments + 1);
   };
 
   const showReplyComment = () => {
     setLoadingShowReplyComment(true);
-    setLimit(setTotalReplyComments);
+    setLimit(totalReplyComments);
   };
 
   const hideReplyComment = () => {

@@ -28,7 +28,7 @@ function Home() {
   const [okScroll, setOkScroll] = useState(true);
   const [hideWaypoint, setHideWaypoint] = useState(false);
 
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const userID = user._id;
 
@@ -179,29 +179,27 @@ function Home() {
     }, 500);
   };
 
-  const onFollowAndUnFollow = (idUser, btnFollow, username) => {
+  const onFollowAndUnFollow = async (idUser, btnFollow, username) => {
     if (btnFollow) {
       const variable = {
         followers: idUser,
       };
-      follow(variable).then((data) => {
-        if (data.success) {
-          MyToast("succ", `Đã theo dõi ${username}`);
-        } else {
-          MyToast("err", `Bạn đã ${data.message.msgBody} ${username} rồi`);
-        }
-      });
+      const data = await follow(variable, socket, idUser);
+      if (data.success) {
+        MyToast("succ", `Đã theo dõi ${username}`);
+      } else {
+        MyToast("err", `Bạn đã ${data.message.msgBody} ${username} rồi`);
+      }
     } else {
       const variable = {
         followers: idUser,
       };
-      unFollow(variable).then((data) => {
-        if (data.success) {
-          MyToast("err", `Đã bỏ theo dõi ${username}`);
-        } else {
-          MyToast("err", `Lỗi!!!`);
-        }
-      });
+      const data = await unFollow(variable, socket, idUser);
+      if (data.success) {
+        MyToast("err", `Đã bỏ theo dõi ${username}`);
+      } else {
+        MyToast("err", `Lỗi!!!`);
+      }
     }
   };
 

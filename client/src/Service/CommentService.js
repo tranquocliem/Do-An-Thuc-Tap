@@ -1,7 +1,8 @@
 import axios from "axios";
 
-export const createComment = (variable) => {
+export const createComment = (variable, socket, post) => {
   return axios.post("/api/comment/createComment", variable).then((res) => {
+    socket.emit("createComment", post);
     return res.data;
   });
 };
@@ -40,10 +41,11 @@ export const updateComment = (commentId, content) => {
     });
 };
 
-export const deleteComment = (CommentId) => {
+export const deleteComment = (CommentId, socket, post) => {
   return axios
     .delete(`/api/comment/deleteComment?_id=${CommentId}`)
     .then((res) => {
+      socket.emit("deleteComment", post);
       return res.data;
     })
     .catch((err) => {

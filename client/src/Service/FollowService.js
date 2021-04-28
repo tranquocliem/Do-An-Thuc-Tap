@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export const follow = (variable) => {
+export const follow = (variable, socket, idUser) => {
   return axios
     .post("/api/follow/following", variable)
     .then((res) => {
+      socket.emit("follow", idUser);
       return res.data;
     })
     .catch((res, err) => {
@@ -17,10 +18,11 @@ export const follow = (variable) => {
     });
 };
 
-export const unFollow = (variable) => {
+export const unFollow = (variable, socket, idUser) => {
   return axios
     .post("/api/follow/unfollow", variable)
     .then((res) => {
+      socket.emit("unFollow", idUser);
       return res.data;
     })
     .catch((err) => {

@@ -4,7 +4,6 @@ import ImgLoading from "../../img/loading.gif";
 import EditProfile from "./EditProfile";
 import FollowBtn from "./FollowBtn";
 import ListUsers from "../Header/ListUsers";
-import { Link } from "react-router-dom";
 
 function Info(props) {
   const [onModal, setOnModal] = useState(false);
@@ -124,13 +123,17 @@ function Info(props) {
                       ? props.user.followers.length + 1 + " Người theo dõi"
                       : props.user.followers.length + " Người theo dõi"
                     : null} */}
-                  {`${props.totalfollowers} Người theo dõi`}
+                  {`${
+                    props.totalfollowers ? props.totalfollowers : "0"
+                  } Người theo dõi`}
                 </span>
                 <span className="ml-5" onClick={onFollowing}>
                   {/* {props.user.followers
                     ? "Đang theo dõi " + props.user.following.length
                     : null} */}
-                  {`Đang theo dõi ${props.totalfollowing}`}
+                  {`Đang theo dõi ${
+                    props.totalfollowing ? props.totalfollowing : "0"
+                  }`}
                 </span>
               </div>
               <h6>
@@ -188,14 +191,10 @@ function Info(props) {
                   {
                     <div className="list-users">
                       {followings &&
-                        followings.map((fl) => (
-                          <Link
-                            onClick={onFollowing}
-                            key={fl._id}
-                            to={`/profile/${fl.username}/`}
-                          >
+                        followings.map((fl, i) => (
+                          <div key={fl._id + i} onClick={onFollowing}>
                             <ListUsers user={fl} border="border" />
-                          </Link>
+                          </div>
                         ))}
                     </div>
                   }
@@ -230,13 +229,9 @@ function Info(props) {
                     <div className="list-users">
                       {followers &&
                         followers.map((fl) => (
-                          <Link
-                            onClick={onFollower}
-                            key={fl._id}
-                            to={`/profile/${fl.username}/`}
-                          >
+                          <div key={fl._id} onClick={onFollower}>
                             <ListUsers user={fl} border="border" />
-                          </Link>
+                          </div>
                         ))}
                     </div>
                   }

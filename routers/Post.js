@@ -78,7 +78,7 @@ postRouter.post(
         .sort("-createdAt")
         .skip(skip)
         .limit(3)
-        .populate("writer", "username fullname avatar");
+        .populate("writer", "username fullname avatar followers");
       // .populate({
       //   path: "comments",
       //   populate: {
@@ -120,7 +120,7 @@ postRouter.get(
 
       const post = await Post.findOne({ _id }).populate(
         "writer",
-        "username fullname avatar"
+        "username fullname avatar followers"
       );
 
       res.status(200).json({

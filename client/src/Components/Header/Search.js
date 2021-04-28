@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { searchUser } from "../../Service/AccountService";
 import ListUsers from "./ListUsers";
@@ -101,13 +100,9 @@ function Search() {
 
         <div className="list-users">
           {users.map((user) => (
-            <Link
-              key={user._id}
-              to={`/profile/${user.username}/`}
-              onClick={onClose}
-            >
+            <div onClick={onClose}>
               <ListUsers user={user} border="border" />
-            </Link>
+            </div>
           ))}
         </div>
       </form>

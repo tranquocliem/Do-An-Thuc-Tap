@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { deleteReplyComment } from "../../../Service/ReplyCommentService";
 import { deleteComment } from "../../../Service/CommentService";
+import { AuthContext } from "../../../Context/AuthContext";
 
 function CommentMenu({
   post,
@@ -11,17 +12,20 @@ function CommentMenu({
   reloadComment,
   reloadHeartComment,
 }) {
-  const deleteCommentAndReply = () => {
+  const { socket } = useContext(AuthContext);
+
+  const deleteCommentAndReply = async () => {
     if (comment.reply) {
       deleteReplyComment(comment._id);
       reloadReplyComment();
       reloadHeartComment();
     } else {
-      deleteComment(comment._id);
+      await deleteComment(comment._id, socket, post);
       reloadComment();
       reloadHeartComment();
     }
   };
+
   const MenuItem = () => {
     return (
       <>

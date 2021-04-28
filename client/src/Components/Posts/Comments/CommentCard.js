@@ -124,6 +124,10 @@ function CommentCard({
     if (isLike) SetIsLike(false);
   };
 
+  const reloadRLCM = () => {
+    reloadReplyComment();
+  };
+
   return (
     <div className="comment-card mt-2">
       <Link
@@ -201,9 +205,17 @@ function CommentCard({
                 </small>
               </>
             ) : (
-              <small className="font-weight-bold mr-3" onClick={OnOffReply}>
-                {onReply ? "huỷ" : "trả lời"}
-              </small>
+              <>
+                <small className="font-weight-bold mr-3" onClick={OnOffReply}>
+                  {onReply ? "huỷ" : "trả lời"}
+                </small>
+                <span title="Cập nhật trả lời" onClick={reloadRLCM}>
+                  <i
+                    className="fas fa-sync-alt"
+                    style={{ fontSize: "0.8rem" }}
+                  ></i>
+                </span>
+              </>
             )}
           </div>
         </div>

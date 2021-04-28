@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export const createReplyComment = (variable) => {
+export const createReplyComment = (variable, socket, post) => {
   return axios
     .post("/api/replycomment/createReplyComment", variable)
     .then((res) => {
+      socket.emit("createReplyComment", post, variable.reply);
       return res.data;
     });
 };

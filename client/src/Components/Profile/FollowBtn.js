@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 import { follow, getFollowers, unFollow } from "../../Service/FollowService";
 import { MyToast } from "../Toastify/toast";
 
 function FollowBtn(props) {
   const [btnFollow, setBtnFollow] = useState(false);
   const [pendingBtn, setPendingBtn] = useState(false);
+  const { socket } = useContext(AuthContext);
 
   useEffect(() => {
     const variable = {
@@ -23,33 +25,31 @@ function FollowBtn(props) {
     });
   }, [props.user._id, props.myUser._id]);
 
-  const onFollowAndUnFollow = () => {
+  const onFollowAndUnFollow = async () => {
     if (!btnFollow) {
       const variable = {
         followers: props.user._id,
       };
-      follow(variable).then((data) => {
-        if (data.success) {
-          setBtnFollow(!btnFollow);
-          props.onFollowAndUnFollow();
-          MyToast("succ", `Đã theo dõi ${props.user.username}`);
-        } else {
-          MyToast("err", `Lỗi!!!`);
-        }
-      });
+      const data = await follow(variable, socket, props.user._id);
+      if (data.success) {
+        setBtnFollow(!btnFollow);
+        props.onFollowAndUnFollow();
+        MyToast("succ", `Đã theo dõi ${props.user.username}`);
+      } else {
+        MyToast("err", `Có lỗi, thử lại sau!!!`);
+      }
     } else {
       const variable = {
         followers: props.user._id,
       };
-      unFollow(variable).then((data) => {
-        if (data.success) {
-          setBtnFollow(!btnFollow);
-          props.onFollowAndUnFollow();
-          MyToast("err", `Đã bỏ theo dõi ${props.user.username}`);
-        } else {
-          MyToast("err", `Lỗi!!!`);
-        }
-      });
+      const data = await unFollow(variable, socket, props.user._id);
+      if (data.success) {
+        setBtnFollow();
+        props.onFollowAndUnFollow(!btnFollow);
+        MyToast("err", `Đã bỏ theo dõi ${props.user.username}`);
+      } else {
+        MyToast("err", `Có lỗi, thử lại sau!!!`);
+      }
     }
   };
 

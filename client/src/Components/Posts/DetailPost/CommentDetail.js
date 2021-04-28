@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CommentDisplay from "../Comments/CommentDisplay";
 import { getComment } from "../../../Service/CommentService";
 import InputComment from "../Comments/InputComment";
 import ImgLoading from "../../../img/loading.gif";
+import { AuthContext } from "../../../Context/AuthContext";
 
 function CommentDetail({ post, user, postId }) {
   const [comments, setComments] = useState([]);
   const [totalComments, setTotalComments] = useState(0);
+  const [totalCM, setTotalCM] = useState(0);
   const [loadingComment, setLoadingComment] = useState(false);
 
   const [limit, setLimit] = useState(3);
   const [loadingShowComment, setLoadingShowComment] = useState(false);
+  const [isShowComment, setIsShowComment] = useState(false);
+
+  const { socket } = useContext(AuthContext);
 
   const fGetComment = async (id, limit) => {
     const data = await getComment(id, limit);
     setComments(data.comments);
     setTotalComments(data.total);
+    setTotalCM(data.totalComment);
   };
 
   useEffect(() => {
@@ -23,6 +29,7 @@ function CommentDetail({ post, user, postId }) {
       const data = await getComment(id, limit);
       setComments(data.comments);
       setTotalComments(data.total);
+      setTotalCM(data.totalComment);
     };
     setTimeout(() => {
       fGetComment(postId, limit);
@@ -37,17 +44,56 @@ function CommentDetail({ post, user, postId }) {
     setTimeout(() => {
       fGetComment(post._id, limit);
       setLoadingComment(false);
+      if (isShowComment) {
+        setLimit(totalComments + 1);
+      }
     }, 300);
   };
 
   const showComment = () => {
     setLimit(totalComments);
     setLoadingShowComment(true);
+    setIsShowComment(true);
   };
 
   const hideComment = () => {
     setLimit(3);
+    setIsShowComment(false);
   };
+
+  // RealTime Comment
+  useEffect(() => {
+    socket.on("createCommentToClient", async (postId) => {
+      const data = await getComment(postId, limit);
+      if (data.comments) {
+        setComments(data.comments);
+        setTotalComments(data.total);
+        setTotalCM(data.totalComment);
+        if (isShowComment) {
+          setLimit(totalComments + 1);
+        }
+      }
+    });
+
+    return () => socket.off("createCommentToClient");
+  }, [socket, limit, isShowComment, totalComments]);
+
+  // RealTime Delete Comment
+  useEffect(() => {
+    socket.on("deleteCommentToClient", async (postId) => {
+      const data = await getComment(postId, limit);
+      if (data.comments) {
+        setComments(data.comments);
+        setTotalComments(data.total);
+        setTotalCM(data.totalComment);
+        if (isShowComment) {
+          setLimit(totalComments + 1);
+        }
+      }
+    });
+
+    return () => socket.off("deleteCommentToClient");
+  }, [socket, limit, isShowComment, totalComments]);
 
   return (
     <>
@@ -92,7 +138,7 @@ function CommentDetail({ post, user, postId }) {
             alt="loading-comments"
           />
         )}
-        {totalComments > limit ? (
+        {totalCM > limit ? (
           <div
             className="show-and-hide-comment no-select p-2 border-top"
             style={{ cursor: "pointer" }}
@@ -101,7 +147,7 @@ function CommentDetail({ post, user, postId }) {
             Xem tất cả bình luận
           </div>
         ) : (
-          totalComments > 3 &&
+          totalCM > 3 &&
           !loadingShowComment && (
             <div
               className="show-and-hide-comment no-select p-2 border-top"

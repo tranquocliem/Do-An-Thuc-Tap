@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { createComment } from "../../../Service/CommentService";
 import { createReplyComment } from "../../../Service/ReplyCommentService";
 import "./comments.css";
 import { MyToast } from "../../Toastify/toast";
+import { AuthContext } from "../../../Context/AuthContext";
 
 function InputComment({
   post,
@@ -15,6 +16,8 @@ function InputComment({
   reloadReplyComment,
 }) {
   const [content, setContent] = useState("");
+
+  const { socket } = useContext(AuthContext);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +32,7 @@ function InputComment({
           tag: comment.writer,
           reply,
         };
-        await createReplyComment(newReplyComment);
+        await createReplyComment(newReplyComment, socket, post);
 
         setContent("");
         setOnReply(false);
@@ -47,7 +50,7 @@ function InputComment({
           postUserId: post.writer._id,
           content,
         };
-        await createComment(newComment);
+        await createComment(newComment, socket, post);
         setContent("");
         reloadComment();
       } catch (error) {

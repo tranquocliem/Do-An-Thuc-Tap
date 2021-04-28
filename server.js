@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const SocketServer = require("./socketServer");
 
 require("dotenv").config({
   path: "./configs/.env",
@@ -32,6 +33,14 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "./serverUI/index.html"));
 });
 
+// Socket
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+
+io.on("connection", (socket) => {
+  SocketServer(socket);
+});
+
 app.use("/api/account", require("./routers/Account"));
 app.use("/api/follow", require("./routers/Follow"));
 app.use("/api/post", require("./routers/Post"));
@@ -49,4 +58,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, console.log(`Server Run With Port ${PORT}`));
+http.listen(PORT, console.log(`Server Run With Port ${PORT}`));

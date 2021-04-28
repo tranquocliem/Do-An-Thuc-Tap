@@ -69,9 +69,27 @@ function DetailPost(props) {
 
   useEffect(() => {
     setLoadingPost(true);
-    setTimeout(() => {
-      getPost(id);
-    }, 600);
+    // setTimeout(() => {
+    //   getPost(id);
+    // }, 600);
+    const getPosts = async (id) => {
+      try {
+        const data = await getPostById(id);
+        if (data.success) {
+          setPost(data.post);
+          setContent(data.post.content);
+          setImages(data.post.images);
+          setLoadingPost(false);
+          setExist(true);
+        } else {
+          setExist(false);
+        }
+      } catch (error) {
+        MyToast("err", "Có lỗi xãy ra, hoặc không tồn tại");
+      }
+    };
+
+    return getPosts(id);
   }, [id]);
 
   const offOnModal = () => {

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   dropHeart,
@@ -6,6 +7,7 @@ import {
   unHeart,
 } from "../../../Service/HeartService";
 import ShareModal from "./ShareModal";
+import { AuthContext } from "../../../Context/AuthContext";
 
 function CardFooter(props) {
   const [isLike, SetIsLike] = useState(false);
@@ -13,13 +15,15 @@ function CardFooter(props) {
   const [totalHeart, setTotalHeart] = useState(0);
   const [hearts, setHearts] = useState([]);
 
+  const { socket } = useContext(AuthContext);
+
   const postId = props.post && props.post._id;
   const userId = props.user && props.user._id;
 
   const [isShare, setIsShare] = useState(false);
 
   const fGetHeart = async (id) => {
-    if (!id) return;
+    if (!id || id !== postId) return;
     const data = await getHeartPost(id);
     if (data.success) {
       setTotalHeart(data.total);
@@ -32,7 +36,7 @@ function CardFooter(props) {
       const variable = {
         postId,
       };
-      await dropHeart(variable);
+      await dropHeart(variable, props.post, socket);
       SetIsLike(true);
       setTotalHeart(totalHeart + 1);
     } catch (error) {
@@ -43,7 +47,7 @@ function CardFooter(props) {
 
   const fUnHeart = async () => {
     try {
-      await unHeart(postId);
+      await unHeart(postId, props.post, socket);
       SetIsLike(false);
       setTotalHeart(totalHeart - 1);
     } catch (error) {
@@ -67,6 +71,24 @@ function CardFooter(props) {
       fDropHeart();
     }
   };
+
+  //Realtime DropHeart
+  useEffect(() => {
+    socket.on("heartPostToClient", async (postId) => {
+      await fGetHeart(postId);
+    });
+
+    return () => socket.off("heartPostToClient");
+  }, [socket]);
+
+  //Realtime UnHeart
+  useEffect(() => {
+    socket.on("unHeartPostToClient", async (postId) => {
+      fGetHeart(postId);
+    });
+
+    return () => socket.off("unHeartPostToClient");
+  }, [socket]);
 
   return (
     <div className="card_footer">

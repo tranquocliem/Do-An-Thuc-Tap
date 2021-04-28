@@ -2,7 +2,6 @@ import React from "react";
 import "./suggestions.css";
 import ListUsers from "../Header/ListUsers";
 import LoadingImg from "../../img/loading.gif";
-import { Link } from "react-router-dom";
 import BtnFollow from "./BtnFollow";
 
 function Suggestions(props) {
@@ -17,11 +16,7 @@ function Suggestions(props) {
   return (
     <>
       <div className="main-suggestions">
-        {props.myUser && (
-          <Link to={`/profile/${props.user.username}/`}>
-            <ListUsers user={props.user} />
-          </Link>
-        )}
+        {props.myUser && <ListUsers user={props.user} />}
         <div className="d-flex justify-content-between align-items-center">
           <h5>Gợi ý cho bạn</h5>
           <i
@@ -41,9 +36,7 @@ function Suggestions(props) {
             {props.suggestionsUser &&
               props.suggestionsUser.map((u, i) => (
                 <div key={i}>
-                  <Link to={`/profile/${u.username}/`}>
-                    <ListUsers user={u} />
-                  </Link>
+                  <ListUsers user={u} />
                   <BtnFollow
                     user={u}
                     onFollowAndUnFollow={onFollowAndUnFollow}

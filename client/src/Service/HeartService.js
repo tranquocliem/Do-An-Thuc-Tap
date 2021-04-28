@@ -1,9 +1,10 @@
 import axios from "axios";
 
-export const dropHeart = (variable) => {
+export const dropHeart = (variable, post, socket) => {
   return axios
     .post("/api/heart/dropHeart", variable)
     .then((res) => {
+      socket.emit("heartPost", post);
       return res.data;
     })
     .catch((err) => {
@@ -17,7 +18,8 @@ export const dropHeart = (variable) => {
     });
 };
 
-export const unHeart = (postId) => {
+export const unHeart = (postId, post, socket) => {
+  socket.emit("unHeartPost", post);
   return axios
     .delete(`/api/heart/unHeart?postId=${postId}`)
     .then((res) => {

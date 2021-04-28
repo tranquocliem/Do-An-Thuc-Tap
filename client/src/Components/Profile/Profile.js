@@ -15,7 +15,7 @@ import PostsByUser from "./Posts/PostsByUser";
 import "./profile.css";
 
 function Profile() {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser, socket } = useContext(AuthContext);
   const { username } = useParams();
   const [User, setUsers] = useState([]);
   const [edit, setEdit] = useState(true);
@@ -107,6 +107,30 @@ function Profile() {
       });
     }
   };
+
+  // Real Time Follower
+  useEffect(() => {
+    socket.on("followToClient", async (userId) => {
+      if (userId === user._id) {
+        const data = await getMyFollowers(userId);
+        setFollowers(data.followers);
+        setTotalFollowers(data.total);
+      }
+      return;
+    });
+
+    return () => socket.off("followToClient");
+  }, [socket]);
+  useEffect(() => {
+    socket.on("unFollowToClient", async (userId) => {
+      if (userId === user._id) {
+        const data = await getMyFollowers(userId);
+        setFollowers(data.followers);
+        setTotalFollowers(data.total);
+      }
+    });
+    return () => socket.off("unFollowToClient");
+  }, [socket]);
 
   if (User) {
     return (
