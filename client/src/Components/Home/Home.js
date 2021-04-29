@@ -12,6 +12,7 @@ import { AuthContext } from "../../Context/AuthContext";
 import { MyToast } from "../Toastify/toast";
 import { follow, unFollow } from "../../Service/FollowService";
 import { Waypoint } from "react-waypoint";
+import { createNotify } from "../../Service/NotifyService";
 
 function Home() {
   const [posts, setPosts] = useState([]);
@@ -185,6 +186,13 @@ function Home() {
         followers: idUser,
       };
       const data = await follow(variable, socket, idUser);
+      const msg = {
+        text: "đã theo dõi bạn.",
+        sender: user._id,
+        receiver: idUser,
+        url: `/profile/${user.username}/`,
+      };
+      await createNotify(msg, socket, user);
       if (data.success) {
         MyToast("succ", `Đã theo dõi ${username}`);
       } else {
@@ -202,6 +210,18 @@ function Home() {
       }
     }
   };
+
+  useEffect(() => {
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
+    } else if (Notification.permission === "granted") {
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission(function (permission) {
+        if (permission === "granted") {
+        }
+      });
+    }
+  }, []);
 
   return (
     <>

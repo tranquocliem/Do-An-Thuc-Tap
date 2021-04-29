@@ -21,7 +21,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"test",
+    "username":"test2",
     "password":"123456"
 }
 
@@ -323,3 +323,20 @@ GET {{baseURL}}/post/getSavePostByPost?postId=6083e9c14a644e33a890fb5b
 DELETE {{baseURL}}/post/deleteSavePost?postId=6083e9c14a644e33a890fb5b
 
 // ------------------------------------------------------------ POST ------------------------------------------------------------ //
+
+// ------------------------------------------------------------ NOTIFY ------------------------------------------------------------ //
+
+###
+
+# @name GetNotify
+GET  {{baseURL}}/notify/getNotify
+
+###
+
+# @name DeleteNotify
+DELETE {{baseURL}}/notify/deleteNotify?id=608a3144cd8ce200e80dac75
+
+###
+
+# @name DeleteAllNotify
+DELETE   {{baseURL}}/notify/deleteAllNotify

@@ -28,8 +28,11 @@ function Info(props) {
   };
 
   useEffect(() => {
-    const followings = props.followings.map((following) => following.followers);
-    const followers = props.followers.map((follower) => follower.following);
+    const followings =
+      props.followings &&
+      props.followings.map((following) => following.followers);
+    const followers =
+      props.followers && props.followers.map((follower) => follower.following);
     setFollowings(followings);
     setFollowers(followers);
   }, [props.followings, props.followers]);

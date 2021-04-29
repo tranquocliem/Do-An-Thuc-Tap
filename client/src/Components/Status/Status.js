@@ -11,9 +11,10 @@ import { createPost } from "../../Service/PostService";
 import Loading from "../Loading/Loading";
 import { uploadImage } from "../../Shared/CheckImage";
 import Emoji from "../Emoji/Emoji";
+import { createNotify } from "../../Service/NotifyService";
 
 function Status(props) {
-  const { user } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   const [onModal, setOnModal] = useState(false);
 
@@ -163,10 +164,19 @@ function Status(props) {
         images: media,
       };
       const data = await createPost(variable);
+      const msg = {
+        id: data.post._id,
+        text: "có một bài viết mới.",
+        receiver: user.followers,
+        url: `/post/${data.post._id}`,
+        content,
+        image: media[0].url,
+      };
+      await createNotify(msg, socket, user);
       const { message } = data;
       setPending(false);
       resetModal();
-      MyToast("succ", `${message.msgBody}, khởi động lại sau 2 giây`);
+      MyToast("succ", `${message.msgBody}`);
       props.reloadPost();
     } catch (error) {
       return MyToast("err", `${error}`);

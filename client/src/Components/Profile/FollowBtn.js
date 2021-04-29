@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
 import { follow, getFollowers, unFollow } from "../../Service/FollowService";
+import { createNotify } from "../../Service/NotifyService";
 import { MyToast } from "../Toastify/toast";
 
 function FollowBtn(props) {
   const [btnFollow, setBtnFollow] = useState(false);
   const [pendingBtn, setPendingBtn] = useState(false);
-  const { socket } = useContext(AuthContext);
+  const { user, socket } = useContext(AuthContext);
 
   useEffect(() => {
     const variable = {
@@ -31,6 +32,13 @@ function FollowBtn(props) {
         followers: props.user._id,
       };
       const data = await follow(variable, socket, props.user._id);
+      const msg = {
+        text: "đã theo dõi bạn.",
+        sender: user._id,
+        receiver: props.user._id,
+        url: `/profile/${user.username}/`,
+      };
+      await createNotify(msg, socket, user);
       if (data.success) {
         setBtnFollow(!btnFollow);
         props.onFollowAndUnFollow();

@@ -90,6 +90,69 @@
   border: none;
 }
 
+.hearder .menu .totalNotify {
+  position: absolute;
+  top: 49%;
+  left: 49%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.dropdown-my-menu {
+  position: absolute;
+  top: 150%;
+  right: 5%;
+  z-index: 1000;
+  /* display: none; */
+  opacity: 0;
+  /* min-width: 10rem; */
+  padding: 0.5rem 0;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  transition: 0.5s;
+  visibility: hidden;
+}
+
+.dropdown-my-menu.activeNotify {
+  top: 100%;
+  visibility: visible;
+  opacity: 1;
+}
+
+.dropdown-my-menu[data-mdb-popper] {
+  left: 0;
+  margin-top: 0.125rem;
+}
+
+.body-notify::-webkit-scrollbar {
+  display: none;
+}
+
+/* .hearder .menu .dropdown-my-menu {
+  position: absolute;
+  left: inherit;
+  right: 0;
+} */
+
+.dropdown-my-menu .btn-delete-notify {
+  border: 1px solid crimson;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  background: transparent;
+}
+
+.dropdown-my-menu .btn-delete-notify:hover {
+  background: crimson;
+  color: whitesmoke;
+}
+
 /* Reponsive */
 @media (max-width: 750px) {
   .hearder .menu {
@@ -112,10 +175,32 @@
     bottom: 100%;
     top: auto;
   }
+  .hearder .menu .dropdown-my-menu {
+    bottom: 100%;
+    top: auto;
+  }
   .hearder .search-form {
     width: 98%;
   }
   .hearder .logo h1 {
     font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 991.5px) {
+  .hearder .menu .totalNotify {
+    left: 68%;
+  }
+}
+
+@media (max-width: 420px) {
+  .hearder .menu .dropdown-my-menu {
+    right: -25%;
+  }
+}
+
+@media (max-width: 380px) {
+  .hearder .menu .dropdown-my-menu {
+    right: -95%;
   }
 }

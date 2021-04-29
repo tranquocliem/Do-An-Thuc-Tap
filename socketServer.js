@@ -71,6 +71,16 @@ const SocketServer = (socket) => {
     const user = users.find((user) => user.id === userId);
     user && socket.to(`${user.socketId}`).emit("unFollowToClient", userId);
   });
+
+  // Notify
+  socket.on("createNotify", (msg) => {
+    const clients = users.filter((user) => msg.receiver.includes(user.id));
+    if (clients.length > 0) {
+      clients.forEach((client) => {
+        socket.to(`${client.socketId}`).emit("createNotifyToClient", msg);
+      });
+    }
+  });
 };
 
 module.exports = SocketServer;

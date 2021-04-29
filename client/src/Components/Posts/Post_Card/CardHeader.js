@@ -57,12 +57,11 @@ function CardHeader(props) {
                 </div>
               </>
             )} */}
-
-            <div className="dropdown-item no-select">
-              <Link to={`/post/${props.post._id}`} className="text-dark">
+            <Link to={`/post/${props.post._id}`} className="text-dark">
+              <div className="dropdown-item no-select">
                 <i className="fas fa-info"></i> Chi tiết
-              </Link>
-            </div>
+              </div>
+            </Link>
             <div className="dropdown-item no-select" onClick={onCoppyLink}>
               <i className="fas fa-copy"></i> Sao chép
             </div>
