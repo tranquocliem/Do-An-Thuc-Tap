@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { login } from "../../Service/AccountService";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "./login.css";
+import MyHelmet from "../Helmet/MyHelmet";
 
 function Login(props) {
   const [userData, setUserData] = useState({ username: "", password: "" });
@@ -62,7 +63,10 @@ function Login(props) {
 
   return (
     <>
-      <ToastContainer />
+      <MyHelmet
+        title="Đăng Nhập"
+        description="Đăng nhập để có thể sử dụng các chức năng của 𝓲𝓷𝓼𝓽𝓪𝓰𝓲𝓻𝓵"
+      />
       <div className="login-page">
         <form>
           <h1 className="text-logo no-select text-uppercase text-center mb-3">
@@ -117,6 +121,12 @@ function Login(props) {
             Bạn có tài khoản chưa?{" "}
             <Link to="/register" style={{ color: "rgb(41, 37, 37)" }}>
               Đăng ký
+            </Link>
+          </p>
+          <p className="my-2">
+            Bạn đã quên mật khẩu?{" "}
+            <Link to="/forget" style={{ color: "rgb(41, 37, 37)" }}>
+              Forget
             </Link>
           </p>
         </form>

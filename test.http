@@ -5,13 +5,20 @@
 POST {{baseURL}}/account/register
 Content-Type: application/json
 
-{   "email":"test@example.com",
-    "username":"tranquocliem",
+{   "email":"quocliem1999@gmail.com",
+    "username":"quocliem1999",
     "fullname":"Trần Quốc Liêm",
-    "website":"https://github.com/tranquocliem",
-    "phone":"0782872822",
-    "story":"Xin chào các bạn đã đến với trang cá nhân của mình",
     "password":"123456"
+}
+
+###
+
+# @name ActivationAccount
+POST {{baseURL}}/account/activation
+Content-Type: application/json
+
+{   
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF1b2NsaWVtMTk5OUBnbWFpbC5jb20iLCJmdWxsbmFtZSI6IlRy4bqnbiBRdeG7kWMgTGnDqm0iLCJ1c2VybmFtZSI6InF1b2NsaWVtMTk5OSIsInBhc3N3b3JkSGFzaCI6IldOdUM2VnhXdHJyNUdKaElQNlZVM0JLeWZpb3ZlMythSFpQV2RFSUprYUVxOENxZit0TDVvNHB2SG1HTFpJTUtjQitpK2gvY1JnaDVTb1JxUWFrdUZCRm91WThqU3ZjeWFaSlllQzdjcUlSWVh2ZVhzODFQY1p5eFZQS2ZHZVlyRU5kVURQeUlwSzVEZ1NJVWZHejM4NkVla3FWRnFFRkV5Sk9yUmxxVHZHcz0iLCJpYXQiOjE2MTk3NzA1NzYsImV4cCI6MTYxOTg1Njk3Nn0.tsUbNNP3-ZLNyOook9IWWlo3ryiJZVkpnLsjZP8nWTM"
 }
 
 ###
@@ -21,7 +28,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"tranquocliem",
+    "username":"quocliem1999@gmail.com",
     "password":"123456"
 }
 
@@ -29,6 +36,27 @@ Content-Type: application/json
 
 # @name Logout
 GET {{baseURL}}/account/logout
+
+###
+
+# @name ForgetPass
+POST  {{baseURL}}/account/forgetPass
+Content-Type: application/json
+
+{
+    "email":"quocliem1999@gmail.com"
+}
+
+###
+
+# @name ResetPass
+POST  {{baseURL}}/account/resetPass
+Content-Type: application/json
+
+{
+    "resetLink":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDhiZjZiNzE3YzRlNzNiYjgwZWM0YTQiLCJpYXQiOjE2MTk3ODU0MjAsImV4cCI6MTYxOTc4NjAyMH0.80LydUWn29VykbmxMOILgJWSwhlDSlBZo1bA7RCxMa0",
+    "newPassword":"123456"
+}
 
 ###
 
@@ -298,7 +326,7 @@ GET {{baseURL}}/heartcomment/getHeartComment?id=607fd6d2b747a30200c3c57c
 
 
 
-// ------------------------------------------------------------ POST ------------------------------------------------------------ //
+// ------------------------------------------------------------ SAVEPOST ------------------------------------------------------------ //
 # @name SavePost
 POST {{baseURL}}/post/savePost
 Content-Type: application/json
@@ -322,7 +350,7 @@ GET {{baseURL}}/savepost/getSavePostByPost?postId=6083e9c14a644e33a890fb5b
 # @name DeleteSavePost
 DELETE {{baseURL}}/post/deleteSavePost?postId=6083e9c14a644e33a890fb5b
 
-// ------------------------------------------------------------ POST ------------------------------------------------------------ //
+// ------------------------------------------------------------ SAVEPOST ------------------------------------------------------------ //
 
 // ------------------------------------------------------------ NOTIFY ------------------------------------------------------------ //
 
@@ -340,3 +368,5 @@ DELETE {{baseURL}}/notify/deleteNotify?id=608a3144cd8ce200e80dac75
 
 # @name DeleteAllNotify
 DELETE   {{baseURL}}/notify/deleteAllNotify
+
+// ------------------------------------------------------------ NOTIFY ------------------------------------------------------------ //

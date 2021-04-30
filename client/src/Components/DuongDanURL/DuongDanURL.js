@@ -9,6 +9,9 @@ import NotFound from "../NotFound/NotFound";
 import Profile from "../Profile/Profile";
 import Discover from "../Discover/Discover";
 import DetailPost from "../Posts/DetailPost/DetailPost";
+import Activate from "../Register/Activate";
+import Forget from "../Forget/Forget";
+import ResetPass from "../Forget/ResetPass";
 function DuongDanURL() {
   return (
     <Switch>
@@ -18,6 +21,9 @@ function DuongDanURL() {
       <PrivateRouter path="/profile/:username" component={Profile} />
       <PrivateRouter path="/post/:id" component={DetailPost} />
       <PrivateRouter path="/discover" component={Discover} />
+      <UnPrivateRouter path="/user/activate/:token" component={Activate} />
+      <UnPrivateRouter path="/forget" component={Forget} />
+      <UnPrivateRouter path="/resetPassword/:token" component={ResetPass} />
       <Route path="*" component={NotFound} />
     </Switch>
   );

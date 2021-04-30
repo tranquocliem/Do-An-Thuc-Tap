@@ -34,7 +34,8 @@
   position: relative;
 }
 
-.login-page form {
+.login-page form,
+.card-notify {
   background: transparent;
   max-width: 400px;
   width: 100%;
@@ -48,6 +49,26 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.card-notify .text-notify {
+  font-size: 2rem;
+  font-weight: bold;
+  color: rgb(41, 37, 37);
+}
+
+.card-notify .text-content {
+  background: whitesmoke;
+  box-shadow: inset 4px 4px 5px rgba(255, 255, 255, 0.3),
+    inset -4px -4px 5px rgba(0, 0, 0, 0.1),
+    10px 40px 40px rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.card-notify .text-content p {
+  color: rgb(41, 37, 37);
+  font-weight: bold;
 }
 
 .login-page .text-logo {

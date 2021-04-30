@@ -17,6 +17,12 @@ export const register = (user) => {
     });
 };
 
+export const activation = (variable) => {
+  return axios.post("/api/account/activation", variable).then((response) => {
+    return response.data;
+  });
+};
+
 export const login = (user) => {
   return axios
     .post("/api/account/login", user)
@@ -43,6 +49,18 @@ export const login = (user) => {
 
 export const logout = () => {
   return axios.get("/api/account/logout").then((res) => {
+    return res.data;
+  });
+};
+
+export const forgetPass = (variable) => {
+  return axios.post("/api/account/forgetPass", variable).then((res) => {
+    return res.data;
+  });
+};
+
+export const resetPass = (variable) => {
+  return axios.post("/api/account/resetPass", variable).then((res) => {
     return res.data;
   });
 };
