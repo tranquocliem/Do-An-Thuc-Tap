@@ -65,6 +65,12 @@ export const resetPass = (variable) => {
   });
 };
 
+export const changePass = (variable) => {
+  return axios.post("/api/account/changePass", variable).then((res) => {
+    return res.data;
+  });
+};
+
 export const getUser = (username) => {
   return axios
     .get(`/api/account/getUser?username=${username}`)

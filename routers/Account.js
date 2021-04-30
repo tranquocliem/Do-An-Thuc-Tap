@@ -6,8 +6,6 @@ const JWT = require("jsonwebtoken");
 const Account = require("../models/Account");
 const bcrypt = require("bcrypt");
 const lodash = require("lodash");
-const { google } = require("googleapis");
-const nodemailer = require("nodemailer");
 const NodeRSA = require("node-rsa");
 const fs = require("fs");
 const path = require("path");
@@ -623,7 +621,7 @@ accRouter.post(
           });
         }
         if (password !== configPassword) {
-          return res.status(400).json({
+          return res.status(203).json({
             message: {
               msgBody: "Mật khẩu xác nhận không đúng",
               msgError: true,
@@ -652,7 +650,7 @@ accRouter.post(
               });
             }
             if (!isMatch) {
-              res.status(400).json({
+              res.status(203).json({
                 isMatch: isMatch,
                 message: {
                   msgBody: "Mật khẩu cũ không đúng",

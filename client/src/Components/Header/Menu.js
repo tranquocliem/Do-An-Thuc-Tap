@@ -254,8 +254,8 @@ function Menu() {
               >
                 Trang cá nhân
               </Link>
-              <Link className="dropdown-item" to="/saved">
-                Cài đặt
+              <Link className="dropdown-item" to="/changepassword">
+                Đổi mật khẩu
               </Link>
               <div className="dropdown-divider" />
               <Link className="dropdown-item" to="/login" onClick={Logout}>

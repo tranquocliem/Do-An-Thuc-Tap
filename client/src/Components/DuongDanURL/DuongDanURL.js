@@ -12,6 +12,7 @@ import DetailPost from "../Posts/DetailPost/DetailPost";
 import Activate from "../Register/Activate";
 import Forget from "../Forget/Forget";
 import ResetPass from "../Forget/ResetPass";
+import ChangePass from "../ChangePass/ChangePass";
 function DuongDanURL() {
   return (
     <Switch>
@@ -24,6 +25,7 @@ function DuongDanURL() {
       <UnPrivateRouter path="/user/activate/:token" component={Activate} />
       <UnPrivateRouter path="/forget" component={Forget} />
       <UnPrivateRouter path="/resetPassword/:token" component={ResetPass} />
+      <PrivateRouter path="/changepassword" component={ChangePass} />
       <Route path="*" component={NotFound} />
     </Switch>
   );
