@@ -1,3 +1,8 @@
+.profile {
+  width: 100%;
+  min-height: 100vh;
+}
+
 .info {
   width: 100%;
   max-width: 800px;
@@ -196,4 +201,31 @@
 
 .close-avatar {
   height: fit-content;
+}
+
+/* Save Post */
+.profile-tab {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-tab button {
+  outline: none;
+  border: none;
+  background: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 5px 20px;
+  margin: 0 25px;
+  opacity: 0.5;
+}
+
+.profile-tab button.activce {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  opacity: 0.8;
 }

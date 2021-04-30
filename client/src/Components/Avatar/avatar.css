@@ -2,12 +2,14 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .big-avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .medium-avatar {
@@ -15,12 +17,14 @@
   height: 30px;
   border-radius: 50%;
   line-height: normal;
+  object-fit: cover;
 }
 
 .small-avatar {
   width: 20px;
   height: 20px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .avatar-header img {

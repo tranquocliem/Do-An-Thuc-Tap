@@ -7,9 +7,19 @@ function PostThumb({ posts, totalPosts }) {
     <div className="post-thumb">
       {posts &&
         posts.map((post) => (
-          <Link key={post._id} to={`/post/${post._id}`}>
+          <Link
+            key={!post.postId ? post._id : post.postId._id}
+            to={`/post/${!post.postId ? post._id : post.postId._id}`}
+          >
             <div className="post-thumb-display">
-              <img src={post.images[0].url} alt={post.images[0].url} />
+              <img
+                src={
+                  !post.postId ? post.images[0].url : post.postId.images[0].url
+                }
+                alt={
+                  !post.postId ? post.images[0].url : post.postId.images[0].url
+                }
+              />
               <PostThunbMenu post={post} />
             </div>
           </Link>

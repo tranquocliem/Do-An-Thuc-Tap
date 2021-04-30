@@ -21,7 +21,7 @@ POST {{baseURL}}/account/login
 Content-Type: application/json
 
 {
-    "username":"test2",
+    "username":"tranquocliem",
     "password":"123456"
 }
 
@@ -310,12 +310,12 @@ Content-Type: application/json
 ###
 
 # @name GetSavePostByUser
-GET {{baseURL}}/post/getSavePostByUser
+GET {{baseURL}}/savepost/getSavePostByUser
 
 ###
 
 # @name GetSavePostByPost
-GET {{baseURL}}/post/getSavePostByPost?postId=6083e9c14a644e33a890fb5b
+GET {{baseURL}}/savepost/getSavePostByPost?postId=6083e9c14a644e33a890fb5b
 
 ###
 

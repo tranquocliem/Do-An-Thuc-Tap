@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
@@ -12,6 +13,7 @@ import MyHelmet from "../Helmet/MyHelmet";
 import NotFound from "../NotFound/NotFound";
 import Info from "./Info";
 import PostsByUser from "./Posts/PostsByUser";
+import SavePost from "./Posts/SavePost";
 import "./profile.css";
 
 function Profile() {
@@ -24,6 +26,8 @@ function Profile() {
   const [followers, setFollowers] = useState([]);
   const [totalfollowing, setTotalFollowing] = useState();
   const [totalfollowers, setTotalFollowers] = useState();
+
+  const [saveTab, setSaveTab] = useState(false);
 
   const updateProfile = (id) => {
     if (id) {
@@ -156,7 +160,27 @@ function Profile() {
             edit={edit}
             loading={loading}
           />
-          <PostsByUser user={User} myUser={user} />
+          {user.username === username && (
+            <div className="container profile-tab">
+              <button
+                className={saveTab ? "" : "activce"}
+                onClick={() => setSaveTab(false)}
+              >
+                Bài viết
+              </button>
+              <button
+                className={saveTab ? "activce" : ""}
+                onClick={() => setSaveTab(true)}
+              >
+                Bài Lưu
+              </button>
+            </div>
+          )}
+          {saveTab ? (
+            <SavePost user={User} myUser={user} />
+          ) : (
+            <PostsByUser user={User} myUser={user} />
+          )}
         </div>
       </>
     );

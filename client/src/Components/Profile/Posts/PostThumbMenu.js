@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { getHeartPost } from "../../../Service/HeartService";
 import { getComment } from "../../../Service/CommentService";
@@ -6,6 +7,9 @@ function PostThunbMenu({ post }) {
   const [totalComments, setTotalComments] = useState(0);
 
   const fGetHeartPost = async (id) => {
+    if (post.postId) {
+      if (!id || id !== post.postId._id) return;
+    }
     const data = await getHeartPost(id);
     if (data.success) {
       setTotalHearts(data.total);
@@ -20,9 +24,13 @@ function PostThunbMenu({ post }) {
   };
 
   useEffect(() => {
+    if (post.postId) {
+      fGetHeartPost(post.postId._id);
+      fGetComment(post.postId._id);
+    }
     fGetHeartPost(post._id);
     fGetComment(post._id);
-  }, [post._id]);
+  }, [post._id, post.postId]);
 
   return (
     <div className="post-thumb-menu">

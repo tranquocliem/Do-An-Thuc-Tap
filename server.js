@@ -48,6 +48,7 @@ app.use("/api/heart", require("./routers/Heart"));
 app.use("/api/comment", require("./routers/Comment"));
 app.use("/api/heartcomment", require("./routers/HeartComment"));
 app.use("/api/replycomment", require("./routers/ReplyComment"));
+app.use("/api/savePost", require("./routers/SavePost"));
 app.use("/api/notify", require("./routers/Notify"));
 
 if (process.env.NODE_ENV === "production") {

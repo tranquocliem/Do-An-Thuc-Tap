@@ -247,7 +247,11 @@ function Menu() {
               <Avatar user={user} size="medium-avatar" />
             </span>
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link className="dropdown-item" to={`/profile/${user.username}/`}>
+              <Link
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="dropdown-item"
+                to={`/profile/${user.username}/`}
+              >
                 Trang cá nhân
               </Link>
               <Link className="dropdown-item" to="/saved">
