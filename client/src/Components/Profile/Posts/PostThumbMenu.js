@@ -17,6 +17,9 @@ function PostThunbMenu({ post }) {
   };
 
   const fGetComment = async (id) => {
+    if (post.postId) {
+      if (!id || id !== post.postId._id) return;
+    }
     const data = await getComment(id);
     if (data.success) {
       setTotalComments(data.total);
