@@ -13,7 +13,9 @@ function FollowBtn(props) {
     const variable = {
       id: props.user._id,
     };
-    getFollowers(variable).then((data) => {
+
+    const fGetFollowers = async () => {
+      const data = await getFollowers(variable);
       if (data.success) {
         setPendingBtn(true);
         data.follow.map((fl) => {
@@ -23,7 +25,21 @@ function FollowBtn(props) {
           return null;
         });
       }
-    });
+    };
+
+    return fGetFollowers();
+
+    // getFollowers(variable).then((data) => {
+    //   if (data.success) {
+    //     setPendingBtn(true);
+    //     data.follow.map((fl) => {
+    //       if (fl.following._id === props.myUser._id) {
+    //         return setBtnFollow(true);
+    //       }
+    //       return null;
+    //     });
+    //   }
+    // });
   }, [props.user._id, props.myUser._id]);
 
   const onFollowAndUnFollow = async () => {

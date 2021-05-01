@@ -144,10 +144,3 @@
 .grid-container .border:hover .animate-text {
   top: 62%;
 }
-
-.ril__image,
-.ril__imagePrev,
-.ril__imageNext {
-  max-height: 850px !important;
-  top: 50px !important;
-}

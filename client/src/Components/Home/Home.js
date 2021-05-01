@@ -38,6 +38,7 @@ function Home() {
     if (data.posts) {
       setPosts([...posts, data.posts]);
       setTotalPost(data.total);
+      setLoadingPost(false);
     }
   };
 
@@ -49,27 +50,27 @@ function Home() {
     }
   };
 
-  useEffect(() => {
-    setLoadingPost(true);
-    setTimeout(() => {
-      setLoadingPost(false);
-    }, 600);
-  }, []);
+  // useEffect(() => {
+  //   setLoadingPost(true);
+  //   setTimeout(() => {
+  //     setLoadingPost(false);
+  //   }, 600);
+  // }, []);
 
   useEffect(() => {
     const variable = {
       skip,
     };
     const getPosts = async (variable) => {
+      setLoadingPost(true);
       const data = await getPost(variable);
       if (data.posts) {
         setPosts([...posts, data.posts]);
         setTotalPost(data.total);
+        setLoadingPost(false);
       }
     };
-    setTimeout(() => {
-      getPosts(variable);
-    }, 600);
+    return getPosts(variable);
   }, []);
 
   const totalLoadmore = Math.ceil(totalPost / 3);
@@ -156,6 +157,7 @@ function Home() {
 
   const getSuggestions = async (userID) => {
     try {
+      setLoadingSuggestions(true);
       const data = await suggestions();
       if (data.success) {
         setSuggestionsUser(data.users.filter((u) => u._id !== userID));
@@ -167,17 +169,19 @@ function Home() {
   };
 
   useEffect(() => {
-    setLoadingSuggestions(true);
-    setTimeout(() => {
-      getSuggestions(userID);
-    }, 500);
+    // setLoadingSuggestions(true);
+    // setTimeout(() => {
+    //   getSuggestions(userID);
+    // }, 500);
+    getSuggestions(userID);
   }, [userID]);
 
   const reLoadSuggestions = () => {
-    setLoadingSuggestions(true);
-    setTimeout(() => {
-      getSuggestions(userID);
-    }, 500);
+    // setLoadingSuggestions(true);
+    // setTimeout(() => {
+    //   getSuggestions(userID);
+    // }, 500);
+    getSuggestions(userID);
   };
 
   const onFollowAndUnFollow = async (idUser, btnFollow, username) => {
