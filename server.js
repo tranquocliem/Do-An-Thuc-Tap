@@ -15,8 +15,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 //kết nối với database
-// const db = require("./configs/key").mongoURI;
-const db = "mongodb://localhost:27017/DATT";
+const db = require("./configs/key").mongoURI;
+// const db = "mongodb://localhost:27017/DATT";
 
 mongoose
   .connect(db, {
