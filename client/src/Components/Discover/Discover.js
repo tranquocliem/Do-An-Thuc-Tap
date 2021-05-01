@@ -19,6 +19,7 @@ function Discover() {
       setPosts([data.posts]);
       SetTotalPosts(data.total);
       setLoadingPosts(false);
+      setHidenBtnLoadMore(false);
     }
   };
 
@@ -34,17 +35,12 @@ function Discover() {
   useEffect(() => {
     setHidenBtnLoadMore(true);
     setLoadingPosts(true);
-    setTimeout(() => {
-      fgetPostDiscover(0);
-    }, 500);
-    setTimeout(() => {
-      setHidenBtnLoadMore(false);
-    }, 850);
+    fgetPostDiscover(0);
   }, []);
 
   const totalLoadmore = Math.ceil(totalPosts / 8);
 
-  const loadMore = () => {
+  const loadMore = async () => {
     if (totalLoadmore === dem || totalPosts <= 4) return;
 
     setLoadingLoadMore(true);
@@ -52,10 +48,8 @@ function Discover() {
     const Dem = dem + 1;
     setSkip(Skip);
     setdem(Dem);
-    setTimeout(() => {
-      fLoadMorePostDiscover(Skip);
-      setLoadingLoadMore(false);
-    }, 800);
+    await fLoadMorePostDiscover(Skip);
+    setLoadingLoadMore(false);
   };
 
   return (
@@ -82,7 +76,7 @@ function Discover() {
           alt="load-more"
         />
       )}
-      {totalPosts <= 4 || totalLoadmore === dem ? null : (
+      {totalPosts <= 8 || totalLoadmore === dem ? null : (
         <button
           onClick={loadMore}
           style={{ display: hidenBtnLoadMore ? "none" : "block" }}

@@ -139,3 +139,9 @@ export const destroyImages = (variable) => {
       };
     });
 };
+
+export const upload = () => {
+  return axios.post("/api/post/uploadImage").then((res) => {
+    return res.data;
+  });
+};

@@ -370,3 +370,15 @@ DELETE {{baseURL}}/notify/deleteNotify?id=608a3144cd8ce200e80dac75
 DELETE   {{baseURL}}/notify/deleteAllNotify
 
 // ------------------------------------------------------------ NOTIFY ------------------------------------------------------------ //
+
+###
+
+# @name SavePost
+POST {{baseURL}}/post/uploadImage
+Content-Type: application/json
+
+{
+    "images":[{"type": "image/png"}]
+}
+
+###

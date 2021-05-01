@@ -28,6 +28,7 @@ function Profile() {
   const [totalfollowers, setTotalFollowers] = useState();
 
   const [saveTab, setSaveTab] = useState(false);
+  const [hideSaveTab, setHideSaveTab] = useState(false);
 
   const updateProfile = (id) => {
     if (id) {
@@ -37,46 +38,82 @@ function Profile() {
     }
   };
 
+  const fGetMyFollowing = async () => {
+    const data = await getMyFollowing();
+    setFollowings(data.followings);
+    setTotalFollowing(data.total);
+  };
+
+  const fGetMyFollowers = async () => {
+    const data = await getMyFollowers();
+    setFollowers(data.followers);
+    setTotalFollowers(data.total);
+  };
+
+  const fGetFollowing = async (variable) => {
+    const data = await getFollowing(variable);
+    setFollowings(data.follow);
+    setTotalFollowing(data.total);
+  };
+
+  const fGetFollowers = async (variable) => {
+    const data = await getFollowers(variable);
+    setFollowers(data.follow);
+    setTotalFollowers(data.total);
+  };
+
+  const fGetUser = async () => {
+    const data = await getUser(username);
+    if (data.user) {
+      setloading(false);
+      const variable = {
+        id: data.user._id,
+      };
+      setUsers(data.user);
+      await fGetFollowing(variable);
+      await fGetFollowers(variable);
+    } else {
+      setUsers("");
+    }
+  };
+
   useEffect(() => {
     if (user.username === username) {
       setloading(true);
+      setHideSaveTab(true);
       setUsers(user);
       setEdit(true);
-      getMyFollowing().then((data) => {
-        setFollowings(data.followings);
-        setTotalFollowing(data.total);
-      });
-      getMyFollowers().then((data) => {
-        setFollowers(data.followers);
-        setTotalFollowers(data.total);
-      });
+      fGetMyFollowing();
+      fGetMyFollowers();
+      setHideSaveTab(false);
       setTimeout(() => {
         setloading(false);
       }, 400);
     } else {
       setEdit(false);
       setloading(true);
-      setTimeout(() => {
-        getUser(username).then((data) => {
-          setloading(false);
-          if (data.user) {
-            const variable = {
-              id: data.user._id,
-            };
-            getFollowing(variable).then((data) => {
-              setFollowings(data.follow);
-              setTotalFollowing(data.total);
-            });
-            getFollowers(variable).then((data) => {
-              setFollowers(data.follow);
-              setTotalFollowers(data.total);
-            });
-            setUsers(data.user);
-          } else {
-            setUsers("");
-          }
-        });
-      }, 400);
+      fGetUser();
+      // setTimeout(() => {
+      //   getUser(username).then((data) => {
+      //     setloading(false);
+      //     if (data.user) {
+      //       const variable = {
+      //         id: data.user._id,
+      //       };
+      //       getFollowing(variable).then((data) => {
+      //         setFollowings(data.follow);
+      //         setTotalFollowing(data.total);
+      //       });
+      //       getFollowers(variable).then((data) => {
+      //         setFollowers(data.follow);
+      //         setTotalFollowers(data.total);
+      //       });
+      //       setUsers(data.user);
+      //     } else {
+      //       setUsers("");
+      //     }
+      //   });
+      // }, 400);
     }
   }, [user, username]);
 
@@ -161,7 +198,10 @@ function Profile() {
             loading={loading}
           />
           {user.username === username && (
-            <div className="container profile-tab">
+            <div
+              style={{ display: hideSaveTab ? "none" : "" }}
+              className="container profile-tab"
+            >
               <button
                 className={saveTab ? "" : "activce"}
                 onClick={() => setSaveTab(false)}
@@ -179,7 +219,11 @@ function Profile() {
           {saveTab ? (
             <SavePost user={User} myUser={user} />
           ) : (
-            <PostsByUser user={User} myUser={user} />
+            <PostsByUser
+              setHideSaveTab={setHideSaveTab}
+              user={User}
+              myUser={user}
+            />
           )}
         </div>
       </>

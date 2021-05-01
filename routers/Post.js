@@ -9,6 +9,7 @@ const ReplyComment = require("../models/ReplyComment");
 const Heart = require("../models/Heart");
 const HeartComment = require("../models/HeartComment");
 const SavePost = require("../models/SavePost");
+const Multer = require("../configs/Multer");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -375,6 +376,39 @@ postRouter.delete(
           },
         });
       }
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+postRouter.post(
+  "/uploadImage",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const path = req.file.path;
+      const uniqueFilename = new Date().toISOString();
+      const data = await cloudinary.uploader.upload(path, {
+        public_id: `test/${uniqueFilename}`,
+        tags: `test`,
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: {
+          msgBody: "Ok",
+          msgError: true,
+        },
+        data,
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,

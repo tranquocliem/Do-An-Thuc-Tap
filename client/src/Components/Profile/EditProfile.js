@@ -76,18 +76,27 @@ function EditProfile(props) {
       };
       const data = await updateUser(variable);
       const { message } = data;
-      setTimeout(
-        () => {
-          if (message.msgError) {
-            MyToast("err", `${message.msgBody}`);
-          }
-          window.scrollTo({ top: 0, behavior: "smooth" });
-          props.updateProfile(id);
-          MyToast("succ", `${message.msgBody}`);
-          setPending(false);
-        },
-        avatar ? 1000 : 2000
-      );
+
+      if (message.msgError) {
+        MyToast("err", `${message.msgBody}`);
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      props.updateProfile(id);
+      MyToast("succ", `${message.msgBody}`);
+      setPending(false);
+
+      // setTimeout(
+      //   () => {
+      //     if (message.msgError) {
+      //       MyToast("err", `${message.msgBody}`);
+      //     }
+      //     window.scrollTo({ top: 0, behavior: "smooth" });
+      //     props.updateProfile(id);
+      //     MyToast("succ", `${message.msgBody}`);
+      //     setPending(false);
+      //   },
+      //   avatar ? 1000 : 2000
+      // );
     } catch (error) {
       return MyToast("err", `${error}`);
     }

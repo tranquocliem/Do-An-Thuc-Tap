@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { getPostByWriter } from "../../../Service/PostService";
 import PostThumb from "./PostThumb";
 import ImgLoading from "../../../img/loading.gif";
 import "./postbywriter.css";
 
-function PostsByUser({ user }) {
+function PostsByUser({ user, setHideSaveTab }) {
   const [posts, setPosts] = useState([]);
   const [totalPosts, SetTotalPosts] = useState(1);
   const [loadingPosts, setLoadingPosts] = useState(false);
@@ -21,6 +22,9 @@ function PostsByUser({ user }) {
       setPosts([data.posts]);
       SetTotalPosts(data.total);
       setLoadingPosts(false);
+      setHidenLoading(false);
+      setHidenBtnLoadMore(false);
+      setHideSaveTab(false);
     }
   };
 
@@ -36,16 +40,22 @@ function PostsByUser({ user }) {
   useEffect(() => {
     setHidenLoading(true);
     setHidenBtnLoadMore(true);
-    setTimeout(() => {
-      setLoadingPosts(true);
-      setHidenLoading(false);
-    }, 550);
-    setTimeout(() => {
-      user._id && fgetPostByWriter(user._id, 0);
-    }, 1000);
-    setTimeout(() => {
-      setHidenBtnLoadMore(false);
-    }, 1099);
+    setLoadingPosts(true);
+    setHideSaveTab(true);
+    user._id && fgetPostByWriter(user._id, 0);
+
+    // setHidenLoading(true);
+    // setHidenBtnLoadMore(true);
+    // setTimeout(() => {
+    //   setLoadingPosts(true);
+    //   setHidenLoading(false);
+    // }, 550);
+    // setTimeout(() => {
+    //   user._id && fgetPostByWriter(user._id, 0);
+    // }, 1000);
+    // setTimeout(() => {
+    //   setHidenBtnLoadMore(false);
+    // }, 1099);
   }, [user._id]);
 
   const totalLoadmore = Math.ceil(totalPosts / 4);
