@@ -16,11 +16,14 @@ function SavePost({ user }) {
   const [loadingLoadMore, setLoadingLoadMore] = useState(false);
 
   const fGetSavePostByUser = async (skip) => {
+    setLoadingPosts(true);
+    setHidenLoading(false);
     const data = await getSavePostByUser(skip);
     if (data.success) {
       setSavePosts([data.savePost]);
       SetTotalSavePosts(data.total);
       setLoadingPosts(false);
+      setHidenBtnLoadMore(false);
     }
   };
 
@@ -36,16 +39,17 @@ function SavePost({ user }) {
   useEffect(() => {
     setHidenLoading(true);
     setHidenBtnLoadMore(true);
-    setTimeout(() => {
-      setLoadingPosts(true);
-      setHidenLoading(false);
-    }, 550);
-    setTimeout(() => {
-      user._id && fGetSavePostByUser();
-    }, 1000);
-    setTimeout(() => {
-      setHidenBtnLoadMore(false);
-    }, 1099);
+    user._id && fGetSavePostByUser();
+    // setTimeout(() => {
+    //   setLoadingPosts(true);
+    //   setHidenLoading(false);
+    // }, 550);
+    // setTimeout(() => {
+    //   user._id && fGetSavePostByUser();
+    // }, 1000);
+    // setTimeout(() => {
+    //   setHidenBtnLoadMore(false);
+    // }, 1099);
   }, [user._id]);
 
   const totalLoadmore = Math.ceil(totalSavePosts / 4);

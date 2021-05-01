@@ -21,6 +21,7 @@ function Home() {
 
   const [suggestionsUser, setSuggestionsUser] = useState([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(false);
 
   const [dem, setdem] = useState(1);
   const [skip, setSkip] = useState(0);
@@ -185,6 +186,7 @@ function Home() {
   };
 
   const onFollowAndUnFollow = async (idUser, btnFollow, username) => {
+    setDisableBtn(true);
     if (btnFollow) {
       const variable = {
         followers: idUser,
@@ -197,6 +199,7 @@ function Home() {
         url: `/profile/${user.username}/`,
       };
       await createNotify(msg, socket, user);
+      setDisableBtn(false);
       if (data.success) {
         MyToast("succ", `Đã theo dõi ${username}`);
       } else {
@@ -207,6 +210,7 @@ function Home() {
         followers: idUser,
       };
       const data = await unFollow(variable, socket, idUser);
+      setDisableBtn(false);
       if (data.success) {
         MyToast("err", `Đã bỏ theo dõi ${username}`);
       } else {
@@ -270,6 +274,7 @@ function Home() {
           </div>
           <div className="col-md-5">
             <Suggestions
+              disableBtn={disableBtn}
               user={user}
               suggestionsUser={suggestionsUser}
               loadingSuggestions={loadingSuggestions}

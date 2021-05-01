@@ -219,11 +219,7 @@ function Profile() {
           {saveTab ? (
             <SavePost user={User} myUser={user} />
           ) : (
-            <PostsByUser
-              setHideSaveTab={setHideSaveTab}
-              user={User}
-              myUser={user}
-            />
+            <PostsByUser user={User} myUser={user} />
           )}
         </div>
       </>

@@ -15,6 +15,7 @@ function BtnFollow(props) {
     <button
       onClick={onFollowAndUnFollow}
       type="button"
+      disabled={props.disableBtn ? true : false}
       className={`btn ${btnFollow ? "btn-danger" : "btn-info"} btnFollow`}
     >
       {btnFollow ? "Bỏ theo dõi" : "Theo dõi"}

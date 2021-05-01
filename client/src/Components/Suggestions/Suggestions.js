@@ -38,6 +38,7 @@ function Suggestions(props) {
                 <div key={i}>
                   <ListUsers user={u} />
                   <BtnFollow
+                    disableBtn={props.disableBtn}
                     user={u}
                     onFollowAndUnFollow={onFollowAndUnFollow}
                   />

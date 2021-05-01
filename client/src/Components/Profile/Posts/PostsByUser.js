@@ -5,7 +5,7 @@ import PostThumb from "./PostThumb";
 import ImgLoading from "../../../img/loading.gif";
 import "./postbywriter.css";
 
-function PostsByUser({ user, setHideSaveTab }) {
+function PostsByUser({ user }) {
   const [posts, setPosts] = useState([]);
   const [totalPosts, SetTotalPosts] = useState(1);
   const [loadingPosts, setLoadingPosts] = useState(false);
@@ -17,14 +17,14 @@ function PostsByUser({ user, setHideSaveTab }) {
   const [loadingLoadMore, setLoadingLoadMore] = useState(false);
 
   const fgetPostByWriter = async (id, skip) => {
+    setLoadingPosts(true);
+    setHidenLoading(false);
     const data = await getPostByWriter(id, skip);
     if (data.success) {
       setPosts([data.posts]);
       SetTotalPosts(data.total);
       setLoadingPosts(false);
-      setHidenLoading(false);
       setHidenBtnLoadMore(false);
-      setHideSaveTab(false);
     }
   };
 
@@ -40,8 +40,6 @@ function PostsByUser({ user, setHideSaveTab }) {
   useEffect(() => {
     setHidenLoading(true);
     setHidenBtnLoadMore(true);
-    setLoadingPosts(true);
-    setHideSaveTab(true);
     user._id && fgetPostByWriter(user._id, 0);
 
     // setHidenLoading(true);

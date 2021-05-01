@@ -8,6 +8,7 @@ function FollowBtn(props) {
   const [btnFollow, setBtnFollow] = useState(false);
   const [pendingBtn, setPendingBtn] = useState(false);
   const { user, socket } = useContext(AuthContext);
+  const [disableBtn, setDisableBtn] = useState(false);
 
   useEffect(() => {
     const variable = {
@@ -43,6 +44,7 @@ function FollowBtn(props) {
   }, [props.user._id, props.myUser._id]);
 
   const onFollowAndUnFollow = async () => {
+    setDisableBtn(true);
     if (!btnFollow) {
       const variable = {
         followers: props.user._id,
@@ -55,6 +57,7 @@ function FollowBtn(props) {
         url: `/profile/${user.username}/`,
       };
       await createNotify(msg, socket, user);
+      setDisableBtn(false);
       if (data.success) {
         setBtnFollow(!btnFollow);
         props.onFollowAndUnFollow();
@@ -67,6 +70,7 @@ function FollowBtn(props) {
         followers: props.user._id,
       };
       const data = await unFollow(variable, socket, props.user._id);
+      setDisableBtn(false);
       if (data.success) {
         setBtnFollow();
         props.onFollowAndUnFollow(!btnFollow);
@@ -85,16 +89,18 @@ function FollowBtn(props) {
             onClick={onFollowAndUnFollow}
             className="btn btn-danger"
             type="button"
+            disabled={disableBtn ? true : false}
           >
-            Bỏ theo dõi
+            {disableBtn ? "..." : "Bỏ theo dõi"}
           </button>
         ) : (
           <button
             onClick={onFollowAndUnFollow}
             className="btn btn-primary"
             type="button"
+            disabled={disableBtn ? true : false}
           >
-            Theo dõi
+            {disableBtn ? "..." : "Theo dõi"}
           </button>
         )}
       </>
