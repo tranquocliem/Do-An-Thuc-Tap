@@ -48,7 +48,7 @@ function Suggestions(props) {
         )}
       </div>
       {props.footer && (
-        <div style={{ opacity: 0.8 }} className="my-2">
+        <div style={{ opacity: 0.8, textAlign: "center" }} className="my-2 ">
           <a
             href="https://www.facebook.com/tranquocliem99/"
             target="_blank"

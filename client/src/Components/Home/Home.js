@@ -272,7 +272,7 @@ function Home() {
               />
             )}
           </div>
-          <div className="col-md-5">
+          <div className="col-md-5" id="suggestions">
             <Suggestions
               disableBtn={disableBtn}
               user={user}
@@ -290,7 +290,6 @@ function Home() {
           <Waypoint onEnter={infiniteScroll}></Waypoint>
         )}
       </div>
-      <footer className="bg-light text-center text-lg-start mb-5"></footer>
     </>
   );
 }

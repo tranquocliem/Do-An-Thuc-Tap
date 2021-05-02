@@ -15,10 +15,12 @@ import AudioNotify from "../../audio/done-for-you-612.mp3";
 function Menu() {
   const { setIsAuthenticated, user, setUser, socket } = useContext(AuthContext);
   const [notifies, setNotifies] = useState();
-  const [totalNotifies, setTotalNotifies] = useState(1);
+  const [totalNotifies, setTotalNotifies] = useState();
   const [sound, setSound] = useState(localStorage.getItem("sound"));
   const [openNotify, setOpenNotify] = useState(false);
   const [pauseNotify, setPauseNotify] = useState(false);
+
+  const [loadingNotify, setLoadingNotify] = useState(false);
 
   const audioRef = useRef();
 
@@ -27,6 +29,7 @@ function Menu() {
     if (data.success) {
       setNotifies(data.notify);
       setTotalNotifies(data.total);
+      setLoadingNotify(true);
     }
   };
 
@@ -40,6 +43,7 @@ function Menu() {
   };
 
   useEffect(() => {
+    setLoadingNotify(false);
     fGetNotify();
   }, []);
 
@@ -137,7 +141,9 @@ function Menu() {
               <span>
                 <i
                   className="fa fa-heart"
-                  style={{ color: totalNotifies > 0 ? "crimson" : "" }}
+                  style={{
+                    color: loadingNotify && totalNotifies > 0 ? "crimson" : "",
+                  }}
                 ></i>
               </span>
               <span className="totalNotify">{totalNotifies}</span>

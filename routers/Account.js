@@ -343,7 +343,7 @@ accRouter.get(
     try {
       const newArr = [...req.user.following, req.user_id];
 
-      const num = req.query.num || 10;
+      const num = req.query.num || 8;
 
       const users = await Account.aggregate([
         { $match: { _id: { $nin: newArr } } },
