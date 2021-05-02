@@ -49,13 +49,20 @@ function Status(props) {
     let err = "";
     let newImages = [];
 
-    if (images.length <= 11) {
+    if (images.length <= 111) {
       files.forEach((file) => {
         if (!file) return (err = "Hình ảnh không tồn tại");
-        if (file.type !== "image/jpeg" && file.type !== "image/png") {
+        if (
+          file.type !== "image/jpeg" &&
+          file.type !== "image/png" &&
+          file.type !== "video/mp4"
+        ) {
           return (err = "Định dạng không hổ trợ");
         }
-        if (newImages.length <= 11) {
+        if (file.size > 1024 * 1024 * 25) {
+          return (err = "File tải lên quá lớn");
+        }
+        if (newImages.length <= 111) {
           return newImages.push(file);
         } else {
           err = "Chỉ đăng tối đa được 12 tấm hình";
@@ -65,7 +72,7 @@ function Status(props) {
       err = "Chỉ đăng tối đa được 12 tấm hình";
     }
 
-    if (images.length <= 11) {
+    if (images.length <= 111) {
       setImages([...images, ...newImages]);
     } else {
       err = "Chỉ đăng tối đa được 12 tấm hình";
@@ -115,7 +122,7 @@ function Status(props) {
     const ctx = canvasRef.current.getContext("2d");
     ctx.drawImage(cameraRef.current, 0, 0, width, height);
     let URL = canvasRef.current.toDataURL();
-    if (images.length <= 11) {
+    if (images.length <= 111) {
       setImages([...images, { camera: URL }]);
     } else {
       err = "Chỉ đăng tối đa được 12 tấm hình";
@@ -182,6 +189,21 @@ function Status(props) {
       return MyToast("err", `${error}`);
     }
   };
+
+  // const showImage = (src) => {
+  //   return <img className="img-thumbnail no-select" src={src} alt="images" />;
+  // };
+
+  // const showVideo = (src) => {
+  //   return (
+  //     <video
+  //       controls
+  //       className="img-thumbnail no-select"
+  //       src={src}
+  //       alt="images"
+  //     />
+  //   );
+  // };
 
   return (
     <>
@@ -262,6 +284,15 @@ function Status(props) {
                   <div className="form-group show-images">
                     {images.map((img, i) => (
                       <div key={i} id="file-img">
+                        {/* {img.camera ? (
+                          showImage(img.camera)
+                        ) : (
+                          <>
+                            {img.type.match(/video/i)
+                              ? showVideo(URL.createObjectURL(img))
+                              : showImage(URL.createObjectURL(img))}
+                          </>
+                        )} */}
                         <img
                           className="img-thumbnail no-select"
                           src={
@@ -342,7 +373,7 @@ function Status(props) {
                             name="file"
                             id="file"
                             multiple
-                            accept="image/*"
+                            accept="image/*, video/*"
                             onChange={uploadImages}
                           />
                         </div>

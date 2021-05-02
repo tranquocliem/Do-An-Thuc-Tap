@@ -10,7 +10,6 @@ const Heart = require("../models/Heart");
 const HeartComment = require("../models/HeartComment");
 const SavePost = require("../models/SavePost");
 const Multer = require("../configs/Multer");
-const fs = require("fs");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -393,19 +392,26 @@ postRouter.delete(
 postRouter.post(
   "/uploadImage",
   passport.authenticate("jwt", { session: false }),
-  Multer.array("images"),
+  Multer.array("file"),
   async (req, res) => {
     try {
       let arrImages = [];
       const files = req.files;
+      const promises = [];
       for (const file of files) {
         const { path } = file;
-        const data = await cloudinary.uploader.upload(path, {
-          public_id: `test/${new Date().toISOString()}_${file.originalname}`,
-          overwrite: true,
-        });
+        promises.push(
+          cloudinary.uploader.upload(path, {
+            folder: "instagirl/",
+            overwrite: true,
+          })
+        );
+      }
+
+      const datas = await Promise.all(promises);
+
+      for (const data of datas) {
         arrImages.push({ public_id: data.public_id, url: data.secure_url });
-        fs.unlinkSync(path);
       }
 
       return res.status(200).json({

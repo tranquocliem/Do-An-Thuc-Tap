@@ -299,9 +299,7 @@ accRouter.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const { _id } = req.user;
-      const user = await Account.findOne({ _id });
-      const public_id = user.public_id;
+      const { public_id } = req.user;
       if (!public_id) {
         return res.status(203).json({
           success: false,

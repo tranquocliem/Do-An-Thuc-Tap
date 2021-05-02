@@ -62,7 +62,7 @@ function EditProfile(props) {
       let media;
       setPending(true);
       if (avatar) {
-        await destroyAvatar();
+        destroyAvatar();
         media = await uploadImage([avatar]);
       }
       const variable = {
@@ -101,6 +101,7 @@ function EditProfile(props) {
       return MyToast("err", `${error}`);
     }
   };
+
   return (
     <>
       <div
