@@ -22,6 +22,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import CommentDetail from "./CommentDetail";
 import "../posts.css";
 import NotFound from "../../NotFound/NotFound";
+import { Helmet } from "react-helmet";
 
 function DetailPost(props) {
   const { user } = useContext(AuthContext);
@@ -277,6 +278,43 @@ function DetailPost(props) {
   if (exist && post !== null) {
     return (
       <>
+        <Helmet>
+          <title>Chi tiết</title>
+          <meta
+            name="og:url"
+            content={`https://instagirlss.herokuapp.com/post/${id}`}
+          />
+          <meta name="og:description" content={content} />
+          <meta name="og:image" content={images.length > 0 && images[0].url} />
+          <meta
+            property="og:title"
+            content="Instagirl"
+            data-react-helmet="true"
+          />
+          <meta name="og:type" content="website" />
+
+          <meta
+            name="twitter:card"
+            content="summary_large_image"
+            data-react-helmet="true"
+          />
+          <meta
+            name="twitter:title"
+            content="Instagirl"
+            data-react-helmet="true"
+          />
+          <meta
+            name="twitter:description"
+            content={content}
+            data-react-helmet="true"
+          />
+          <meta
+            name="twitter:image"
+            content={images.length > 0 && images[0].url}
+            data-react-helmet="true"
+          />
+        </Helmet>
+
         <div className="container">
           <div className="row home">
             <div className="col">

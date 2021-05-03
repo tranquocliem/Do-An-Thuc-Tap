@@ -12,6 +12,7 @@ import Loading from "../Loading/Loading";
 import { uploadImage } from "../../Shared/CheckImage";
 import Emoji from "../Emoji/Emoji";
 import { createNotify } from "../../Service/NotifyService";
+import { isAuthenticated } from "../../Service/AccountService";
 
 function Status(props) {
   const { user, socket } = useContext(AuthContext);
@@ -170,20 +171,28 @@ function Status(props) {
         content,
         images: media,
       };
+
       const data = await createPost(variable);
-      const msg = {
-        id: data.post._id,
-        text: "có một bài viết mới.",
-        receiver: user.followers,
-        url: `/post/${data.post._id}`,
-        content,
-        image: media[0].url,
-      };
-      await createNotify(msg, socket, user);
+
+      const myUser = await isAuthenticated();
+
+      if (myUser.user.followers.length > 0) {
+        const msg = {
+          id: data.post._id,
+          text: "có một bài viết mới.",
+          receiver: myUser.user.followers,
+          url: `/post/${data.post._id}`,
+          content,
+          image: media[0].url,
+        };
+
+        await await createNotify(msg, socket, user);
+      }
+
       const { message } = data;
+      MyToast("succ", `${message.msgBody}`);
       setPending(false);
       resetModal();
-      MyToast("succ", `${message.msgBody}`);
       props.reloadPost();
     } catch (error) {
       return MyToast("err", `${error}`);

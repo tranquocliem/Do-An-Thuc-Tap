@@ -99,8 +99,8 @@ function Search() {
         )}
 
         <div className="list-users">
-          {users.map((user) => (
-            <div onClick={onClose}>
+          {users.map((user, i) => (
+            <div onClick={onClose} key={i}>
               <ListUsers user={user} border="border" />
             </div>
           ))}
