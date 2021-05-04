@@ -33,24 +33,18 @@ function Comments({ post, user }) {
       setComments(data.comments);
       setTotalComments(data.total);
       setTotalCM(data.totalComment);
-    };
-    setTimeout(() => {
-      fGetComment(post._id, limit);
-    }, 200);
-    setTimeout(() => {
       setLoadingShowComment(false);
-    }, 300);
+    };
+    return fGetComment(post._id, limit);
   }, [post._id, limit]);
 
-  const reloadComment = () => {
+  const reloadComment = async () => {
     setLoadingComment(true);
-    setTimeout(() => {
-      fGetComment(post._id, limit);
-      setLoadingComment(false);
-      if (isShowComment) {
-        setLimit(totalComments + 1);
-      }
-    }, 300);
+    await fGetComment(post._id, limit);
+    setLoadingComment(false);
+    if (isShowComment) {
+      setLimit(totalComments + 1);
+    }
   };
 
   const showComment = () => {

@@ -23,14 +23,10 @@ function CommentDisplay({ post, comment, user, reloadComment }) {
       const data = await getReplyComment(id, reply, limit);
       setReplyComments(data.Replycomments);
       setTotalReplyComments(data.total);
-    };
-    setTimeout(() => {
-      fGetReplyComment(post._id, comment._id, limit);
-    }, 200);
-    setTimeout(() => {
       setLoadingReplyComment(false);
       setLoadingShowReplyComment(false);
-    }, 300);
+    };
+    return fGetReplyComment(post._id, comment._id, limit);
   }, [post._id, comment._id, limit]);
 
   const reloadReplyComment = async () => {

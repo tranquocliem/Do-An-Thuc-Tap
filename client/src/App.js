@@ -15,10 +15,12 @@ function App() {
       {isAuthenticated && <SocketClient />}
       <DuongDanURL />
       <Toastify autoClose={2000} pauseOnHover={false} closeOnClick={false} />
-      <footer
-        className="bg-light text-center text-lg-start"
-        style={{ marginBottom: "70px" }}
-      ></footer>
+      {isAuthenticated && (
+        <footer
+          className="bg-light text-center text-lg-start"
+          style={{ marginBottom: "70px" }}
+        ></footer>
+      )}
     </div>
   );
 }
