@@ -37,11 +37,11 @@ function NotifyRegister() {
               </a>
             </small>
           </div>
-          <button type="submit" className="mt-4 btn w-100 mb-3 ">
-            <a className="text-dark" href="https://mail.google.com/">
+          <a className="text-dark" href="https://mail.google.com/">
+            <button type="button" className="mt-4 btn w-100 mb-3 ">
               Đến email của bạn
-            </a>
-          </button>
+            </button>
+          </a>
         </div>
       </div>
     </>
