@@ -11,6 +11,7 @@ function Forget() {
   const [email, setEmail] = useState("");
 
   const [notifyForget, setNotifyForget] = useState(false);
+  const [btnPending, setBtnPending] = useState(false);
 
   const Reg = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
@@ -20,7 +21,10 @@ function Forget() {
     if (testEmail && email !== "") {
       setValiEmail(true);
       setValiEm(true);
+      setBtnPending(true);
       const data = await forgetPass({ email });
+
+      setBtnPending(false);
 
       const { message } = data;
 
@@ -85,9 +89,16 @@ function Forget() {
                 spellCheck="false"
               />
             </div>
-            <button type="submit" className="mt-4 btn w-100 mb-3">
-              Lấy Lại Mật Khẩu
-            </button>
+            {btnPending ? (
+              <button disabled type="submit" className="mt-4 btn w-100 mb-3">
+                Đang xử lý
+              </button>
+            ) : (
+              <button type="submit" className="mt-4 btn w-100 mb-3">
+                Lấy Lại Mật Khẩu
+              </button>
+            )}
+
             <p className="my-2">
               Bạn có tài khoản chưa?{" "}
               <Link to="/register" style={{ color: "rgb(41, 37, 37)" }}>

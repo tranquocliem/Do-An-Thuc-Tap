@@ -402,6 +402,7 @@ postRouter.post(
         const { path } = file;
         promises.push(
           cloudinary.uploader.upload(path, {
+            resource_type: "auto",
             folder: "instagirl/",
             overwrite: true,
           })

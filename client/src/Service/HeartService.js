@@ -36,6 +36,7 @@ export const unHeart = (postId, post, socket) => {
     });
 };
 
+// sử dụng
 export const getHeartPost = (id) => {
   return axios
     .get(`/api/heart/getHeartPost?id=${id}`)

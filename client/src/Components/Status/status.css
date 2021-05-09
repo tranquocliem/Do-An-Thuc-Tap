@@ -80,7 +80,8 @@
   height: 100%;
 }
 
-.modal-body .show-images #file-img img {
+.modal-body .show-images #file-img img,
+.modal-body .show-images #file-img video {
   display: block;
   object-fit: cover;
   object-position: top;

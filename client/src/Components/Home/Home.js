@@ -161,7 +161,8 @@ function Home() {
       setLoadingSuggestions(true);
       const data = await suggestions();
       if (data.success) {
-        setSuggestionsUser(data.users.filter((u) => u._id !== userID));
+        // setSuggestionsUser(data.users.filter((u) => u._id !== userID));
+        setSuggestionsUser(data.users);
         setLoadingSuggestions(false);
       }
     } catch (error) {

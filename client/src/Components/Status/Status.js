@@ -50,33 +50,29 @@ function Status(props) {
     let err = "";
     let newImages = [];
 
-    if (images.length <= 111) {
+    if (images.length <= 64) {
       files.forEach((file) => {
         if (!file) return (err = "Hình ảnh không tồn tại");
-        if (
-          file.type !== "image/jpeg" &&
-          file.type !== "image/png" &&
-          file.type !== "video/mp4"
-        ) {
+        if (file.type !== "image/jpeg" && file.type !== "image/png") {
           return (err = "Định dạng không hổ trợ");
         }
         if (file.size > 1024 * 1024 * 25) {
           return (err = "File tải lên quá lớn");
         }
-        if (newImages.length <= 111) {
+        if (newImages.length <= 64) {
           return newImages.push(file);
         } else {
-          err = "Chỉ đăng tối đa được 12 tấm hình";
+          err = "Số ảnh tải lên không quá 65";
         }
       });
     } else {
-      err = "Chỉ đăng tối đa được 12 tấm hình";
+      err = "Số ảnh tải lên không quá 65";
     }
 
-    if (images.length <= 111) {
+    if (images.length <= 64) {
       setImages([...images, ...newImages]);
     } else {
-      err = "Chỉ đăng tối đa được 12 tấm hình";
+      err = "Số ảnh tải lên không quá 65";
     }
 
     if (err) MyToast("err", err);
@@ -171,11 +167,8 @@ function Status(props) {
         content,
         images: media,
       };
-
       const data = await createPost(variable);
-
       const myUser = await isAuthenticated();
-
       if (myUser.user.followers.length > 0) {
         const msg = {
           id: data.post._id,
@@ -185,10 +178,8 @@ function Status(props) {
           content,
           image: media[0].url,
         };
-
         await await createNotify(msg, socket, user);
       }
-
       const { message } = data;
       MyToast("succ", `${message.msgBody}`);
       setPending(false);
@@ -199,20 +190,20 @@ function Status(props) {
     }
   };
 
-  // const showImage = (src) => {
-  //   return <img className="img-thumbnail no-select" src={src} alt="images" />;
-  // };
+  const showImage = (src) => {
+    return <img className="img-thumbnail no-select" src={src} alt="images" />;
+  };
 
-  // const showVideo = (src) => {
-  //   return (
-  //     <video
-  //       controls
-  //       className="img-thumbnail no-select"
-  //       src={src}
-  //       alt="images"
-  //     />
-  //   );
-  // };
+  const showVideo = (src) => {
+    return (
+      <video
+        controls
+        className="img-thumbnail no-select"
+        src={src}
+        alt="images"
+      />
+    );
+  };
 
   return (
     <>
@@ -293,7 +284,7 @@ function Status(props) {
                   <div className="form-group show-images">
                     {images.map((img, i) => (
                       <div key={i} id="file-img">
-                        {/* {img.camera ? (
+                        {img.camera ? (
                           showImage(img.camera)
                         ) : (
                           <>
@@ -301,14 +292,14 @@ function Status(props) {
                               ? showVideo(URL.createObjectURL(img))
                               : showImage(URL.createObjectURL(img))}
                           </>
-                        )} */}
-                        <img
+                        )}
+                        {/* <img
                           className="img-thumbnail no-select"
                           src={
                             img.camera ? img.camera : URL.createObjectURL(img)
                           }
                           alt="images"
-                        />
+                        /> */}
                         <span
                           className="no-select"
                           onClick={() => deleteImages(i)}

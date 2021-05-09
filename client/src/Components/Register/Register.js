@@ -24,6 +24,7 @@ function Register(props) {
   const [valiEmail, setValiEmail] = useState(true);
 
   const [notifyRegister, setNotifyRegister] = useState(false);
+  const [btnPending, setBtnPending] = useState(false);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -68,7 +69,10 @@ function Register(props) {
       setValiEm(true);
       setValiPass(true);
       setValiPassCF(true);
+      setBtnPending(true);
       const data = await register(userData);
+
+      setBtnPending(false);
 
       const { message } = data;
 
@@ -266,13 +270,25 @@ function Register(props) {
                   />
                 </label>
               </div>
-              <button
-                type="submit"
-                className="mt-4 btn w-100 mb-2"
-                onClick={onSubmit}
-              >
-                Đăng ký
-              </button>
+              {btnPending ? (
+                <button
+                  type="submit"
+                  className="mt-4 btn w-100 mb-2"
+                  onClick={onSubmit}
+                  disabled
+                >
+                  Đang xử lý
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="mt-4 btn w-100 mb-2"
+                  onClick={onSubmit}
+                >
+                  Đăng ký
+                </button>
+              )}
+
               <p className="my-2">
                 Bạn đã tài khoản chưa.{" "}
                 <Link to="/login" style={{ color: "rgb(41, 37, 37)" }}>

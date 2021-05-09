@@ -10,7 +10,7 @@ const NodeRSA = require("node-rsa");
 const fs = require("fs");
 const path = require("path");
 const cloudinary = require("cloudinary").v2;
-const sendMail = require("../configs/SendMail");
+const SendMail = require("../configs/SendMail");
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -86,7 +86,16 @@ accRouter.post("/register", async (req, res) => {
 
     const url = `http://localhost:3000/user/activate/${token}`;
 
-    await sendMail(
+    // await SendMail.sendMail(
+    //   email,
+    //   url,
+    //   "Kích Hoạt Tài Khoản",
+    //   "Xin chúc mừng! Bạn sắp bắt đầu sử dụng 𝓲𝓷𝓼𝓽𝓪𝓰𝓲𝓻𝓵.",
+    //   "Xác thực email",
+    //   "24 giờ"
+    // );
+
+    await SendMail.sendGrid(
       email,
       url,
       "Kích Hoạt Tài Khoản",
@@ -339,24 +348,24 @@ accRouter.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const newArr = [...req.user.following, req.user_id];
+      const newArr = [...req.user.following, req.user._id];
 
-      const num = req.query.num || 8;
+      const num = req.query.num || 5;
 
       const users = await Account.aggregate([
         { $match: { _id: { $nin: newArr } } },
         { $sample: { size: num } },
+        // {
+        //   $lookup: {
+        //     from: "Account",
+        //     localField: "followers",
+        //     foreignField: "_id",
+        //     as: "followers",
+        //   },
+        // },
         {
           $lookup: {
-            from: "users",
-            localField: "followers",
-            foreignField: "_id",
-            as: "followers",
-          },
-        },
-        {
-          $lookup: {
-            from: "users",
+            from: "Account",
             localField: "following",
             foreignField: "_id",
             as: "following",
@@ -402,7 +411,7 @@ accRouter.post("/forgetPass", async (req, res) => {
       const user = await Account.findOne({ email });
 
       if (!user) {
-        return res.status(400).json({
+        return res.status(201).json({
           success: false,
           message: {
             msgBody: "E-mail không tồn tại",
@@ -425,7 +434,7 @@ accRouter.post("/forgetPass", async (req, res) => {
 
               await user.updateOne({ resetLink: token });
 
-              await sendMail(
+              await SendMail.sendGrid(
                 email,
                 url,
                 "Đặt Lại Mật Khẩu",
@@ -442,7 +451,7 @@ accRouter.post("/forgetPass", async (req, res) => {
                 },
               });
             } else {
-              res.status(400).json({
+              res.status(203).json({
                 success: false,
                 message: {
                   msgBody: "Có lỗi khi xử lý",
