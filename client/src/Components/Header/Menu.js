@@ -34,6 +34,7 @@ function Menu() {
   };
 
   const Logout = () => {
+    localStorage.removeItem("user");
     logout().then((data) => {
       if (data.success) {
         setUser(data.user);
