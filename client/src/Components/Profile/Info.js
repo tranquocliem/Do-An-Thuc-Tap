@@ -127,7 +127,7 @@ function Info(props) {
                       : props.user.followers.length + " Người theo dõi"
                     : null} */}
                   {`${
-                    props.totalfollowers ? props.totalfollowers : "0"
+                    props.totalfollowers ? props.totalfollowers : "..."
                   } Người theo dõi`}
                 </span>
                 <span className="ml-5" onClick={onFollowing}>
@@ -135,7 +135,7 @@ function Info(props) {
                     ? "Đang theo dõi " + props.user.following.length
                     : null} */}
                   {`Đang theo dõi ${
-                    props.totalfollowing ? props.totalfollowing : "0"
+                    props.totalfollowing ? props.totalfollowing : "..."
                   }`}
                 </span>
               </div>

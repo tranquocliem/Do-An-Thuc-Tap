@@ -10,6 +10,8 @@ function ChangePass(props) {
     configPassword: "",
   });
 
+  const [btnPending, setBtnPending] = useState(false);
+
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setUserData({ ...userData, [name]: value });
@@ -22,6 +24,8 @@ function ChangePass(props) {
       userData.password !== "" &&
       userData.password.length + 1 > 6
     ) {
+      setBtnPending(true);
+
       const data = await changePass(userData);
 
       const { message } = data;
@@ -31,10 +35,12 @@ function ChangePass(props) {
 
         setTimeout(async () => {
           await logout();
+          localStorage.removeItem("user");
           window.location.reload();
         }, 2100);
       } else {
         MyToast("err", `${message.msgBody}`);
+        setBtnPending(false);
       }
     } else {
       MyToast("err", "Vui lòng không bỏ trống. Mật khẩu mới 6 ký tự trở lên");
@@ -81,9 +87,34 @@ function ChangePass(props) {
               onChange={onChangeInput}
             />
           </div>
-          <button type="submit" className="w-100 mt-3 btn btn-primary">
-            Đổi Mật Khẩu
-          </button>
+          {btnPending ? (
+            <button
+              type="button"
+              className="btn btn-primary mt-4 btn w-100 mb-3"
+              disabled
+            >
+              <span
+                className="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span
+                class="spinner-grow spinner-grow-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span className="visually-hidden">Loading...</span>
+            </button>
+          ) : (
+            <button type="submit" className="w-100 mt-3 btn btn-primary">
+              Đổi Mật Khẩu
+            </button>
+          )}
         </form>
       </div>
     </>

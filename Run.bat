@@ -1,1 +1,1 @@
-npm install && npm install --prefix ./client && npm run dev
+npm run dev

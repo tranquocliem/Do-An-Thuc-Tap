@@ -78,6 +78,10 @@ function Profile() {
   };
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     if (user.username === username) {
       setloading(true);
       setHideSaveTab(true);
