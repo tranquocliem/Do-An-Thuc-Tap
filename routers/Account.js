@@ -257,15 +257,8 @@ accRouter.patch(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const {
-        avatar,
-        fullname,
-        phone,
-        story,
-        website,
-        gender,
-        public_id,
-      } = req.body;
+      const { avatar, fullname, phone, story, website, gender, public_id } =
+        req.body;
       if (!fullname) {
         return res
           .status(400)
@@ -363,14 +356,14 @@ accRouter.get(
         //     as: "followers",
         //   },
         // },
-        {
-          $lookup: {
-            from: "Account",
-            localField: "following",
-            foreignField: "_id",
-            as: "following",
-          },
-        },
+        // {
+        //   $lookup: {
+        //     from: "Account",
+        //     localField: "following",
+        //     foreignField: "_id",
+        //     as: "following",
+        //   },
+        // },
       ]).project("-password");
 
       return res.status(200).json({
@@ -411,7 +404,7 @@ accRouter.post("/forgetPass", async (req, res) => {
       const user = await Account.findOne({ email });
 
       if (!user) {
-        return res.status(201).json({
+        return res.status(203).json({
           success: false,
           message: {
             msgBody: "E-mail không tồn tại",

@@ -110,6 +110,8 @@ function Info(props) {
                     myUser={props.myUser}
                     user={props.user}
                     onFollowAndUnFollow={onFollowAndUnFollow}
+                    totalfollowers={props.totalfollowers}
+                    setTotalFollowers={props.setTotalFollowers}
                   />
                 )}
               </div>
@@ -127,7 +129,7 @@ function Info(props) {
                       : props.user.followers.length + " Người theo dõi"
                     : null} */}
                   {`${
-                    props.totalfollowers ? props.totalfollowers : "..."
+                    props.totalfollowers ? props.totalfollowers : 0
                   } Người theo dõi`}
                 </span>
                 <span className="ml-5" onClick={onFollowing}>
@@ -135,7 +137,7 @@ function Info(props) {
                     ? "Đang theo dõi " + props.user.following.length
                     : null} */}
                   {`Đang theo dõi ${
-                    props.totalfollowing ? props.totalfollowing : "..."
+                    props.totalfollowing ? props.totalfollowing : 0
                   }`}
                 </span>
               </div>

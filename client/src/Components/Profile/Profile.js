@@ -191,6 +191,7 @@ function Profile() {
             onFollowAndUnFollow={onFollowAndUnFollow}
             totalfollowing={totalfollowing}
             totalfollowers={totalfollowers}
+            setTotalFollowers={setTotalFollowers}
             followings={followings}
             followers={followers}
             myUser={user}

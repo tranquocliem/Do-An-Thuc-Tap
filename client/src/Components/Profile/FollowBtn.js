@@ -58,6 +58,7 @@ function FollowBtn(props) {
       };
       await createNotify(msg, socket, user);
       setDisableBtn(false);
+      props.setTotalFollowers(props.totalfollowers + 1);
       if (data.success) {
         setBtnFollow(!btnFollow);
         props.onFollowAndUnFollow();
@@ -71,6 +72,7 @@ function FollowBtn(props) {
       };
       const data = await unFollow(variable, socket, props.user._id);
       setDisableBtn(false);
+      props.setTotalFollowers(props.totalfollowers - 1);
       if (data.success) {
         setBtnFollow();
         props.onFollowAndUnFollow(!btnFollow);
