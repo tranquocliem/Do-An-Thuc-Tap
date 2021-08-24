@@ -9,7 +9,7 @@ export const register = (user) => {
     .catch((err) => {
       return {
         message: {
-          msgBody: "Tạo tài khoản không thành công",
+          msgBody: "Có lỗi xảy ra vui lòng quay lại sau",
           msgError: true,
         },
         err,
@@ -40,7 +40,7 @@ export const login = (user) => {
     .catch((err) => {
       return {
         message: {
-          msgBody: "Sai tài khoản hoặc mật khẩu",
+          msgBody: "Có lỗi xảy ra vui lòng quay lại sau",
           msgError: true,
         },
       };
